@@ -21,14 +21,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        var authors = listOf("adrienne", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy").map {Shoutouts(it)}
+        authors = authors.toMutableList()
+        val adapter = ShoutoutsAdapter(authors)
 
         database = Firebase.database.reference.child("shoutouts")
-        database.setValue("testtest")
+//        database.child("0").setValue(Shoutouts("ALtesttest0"))
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val so = dataSnapshot.getValue<String>()
-                Log.d("TAG", "hello")
-                Log.d("TAG", so)
+                val so = dataSnapshot.getValue<ArrayList<HashMap<String, String>>>()
+                if (so != null) {
+                    authors.clear()
+                    for (map in so) {
+                        if (map.containsKey("author")) {
+                            map.get("author")?.let { Shoutouts(it) }?.let { authors.add(it) }
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+                Log.d("TAG", so.toString())
+                Log.d("TAG", authors.toString())
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -38,8 +50,6 @@ class MainActivity : AppCompatActivity() {
         }
         database.addValueEventListener(postListener)
 
-        val authors = listOf("adrienne", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy").map {Shoutouts(it)}
-        val adapter = ShoutoutsAdapter(authors)
         binding.shoutoutsView.adapter = adapter
     }
 }
