@@ -43,6 +43,7 @@ class ShoutoutsAdapter(private val data: List<Shoutouts>) : RecyclerView.Adapter
          */
         fun bind(item: Shoutouts) {
             binding.shoutout = item
+            /* This automatically executes all the "@BindingAdapter" in BindingUtils */
             binding.executePendingBindings()
         }
 

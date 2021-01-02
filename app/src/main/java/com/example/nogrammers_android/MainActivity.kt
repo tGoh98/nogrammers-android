@@ -21,12 +21,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        var authors = listOf("adrienne", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy").map {Shoutouts(it)}
+        var authors = listOf("adrienne", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim").map { Shoutouts(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
         authors = authors.toMutableList()
         val adapter = ShoutoutsAdapter(authors)
 
         database = Firebase.database.reference.child("shoutouts")
-//        database.child("0").setValue(Shoutouts("ALtesttest0"))
+//        database.child("0").setValue(Shoutouts("ALtesttest0", "hi"))
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val so = dataSnapshot.getValue<ArrayList<HashMap<String, String>>>()
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     authors.clear()
                     for (map in so) {
                         if (map.containsKey("author")) {
-                            map.get("author")?.let { Shoutouts(it) }?.let { authors.add(it) }
+                            map.get("author")?.let { Shoutouts(it, it) }?.let { authors.add(it) }
                         }
                     }
                     adapter.notifyDataSetChanged()
