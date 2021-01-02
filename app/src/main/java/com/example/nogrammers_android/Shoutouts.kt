@@ -1,5 +1,5 @@
 package com.example.nogrammers_android
 
-data class Shoutouts(val author: String) {
+data class Shoutouts(val author: String, val msg: String, val pfp: String="") {
 
 }
