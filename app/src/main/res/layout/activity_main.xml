@@ -14,5 +14,12 @@
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             android:scrollbars="vertical" />
+
+<!--        <fragment-->
+<!--            android:id="@+id/myNavHostFragment"-->
+<!--            android:name="com.example.nogrammers_android.NavHostFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            />-->
     </FrameLayout>
 </layout>

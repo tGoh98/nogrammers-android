@@ -3,7 +3,7 @@ package com.example.nogrammers_android
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nogrammers_android.databinding.ShoutoutItemNewBinding
+import com.example.nogrammers_android.databinding.ShoutoutItemBinding
 
 /**
  * Adapter for shoutouts item in recycler view
@@ -36,7 +36,7 @@ class ShoutoutsAdapter(private val data: List<Shoutouts>) : RecyclerView.Adapter
      * Extends view holder for shoutouts.
      * Binding contains inlined properties for msg, author, and pfp
      */
-    class ShoutoutViewHolder private constructor(val binding: ShoutoutItemNewBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ShoutoutViewHolder private constructor(val binding: ShoutoutItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         /**
          * Binds the content to shoutouts item using the helper functions in BindingUtils
@@ -52,7 +52,7 @@ class ShoutoutsAdapter(private val data: List<Shoutouts>) : RecyclerView.Adapter
          */
         companion object {
             fun from(parent: ViewGroup): ShoutoutViewHolder {
-                val binding = ShoutoutItemNewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ShoutoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ShoutoutViewHolder(binding)
             }
         }
