@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/shoutoutsFragment">
+    <fragment
+        android:id="@+id/shoutoutsFragment"
+        android:name="com.example.nogrammers_android.ShoutoutsFragment"
+        android:label="ShoutoutsFragment"
+        tools:layout="@layout/fragment_shoutouts" >
+        <action
+            android:id="@+id/action_shoutoutsFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="com.example.nogrammers_android.EventsFragment"
+        android:label="EventsFragment"
+        tools:layout="@layout/fragment_events" />
+</navigation>

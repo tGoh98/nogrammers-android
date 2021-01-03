@@ -60,5 +60,11 @@
                 android:backgroundTint="#808080"
                 android:text="Cancel" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/navEventsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Events" />
     </LinearLayout>
 </layout>

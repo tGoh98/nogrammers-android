@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.example.nogrammers_android.databinding.FragmentShoutoutsBinding
 
 
@@ -19,6 +20,9 @@ class ShoutoutsFragment : Fragment() {
         authors = authors.toMutableList()
         val adapter = ShoutoutsAdapter(authors)
         binding.shoutoutsView.adapter = adapter
+
+        binding.navEventsBtn.setOnClickListener { view : View ->
+            view.findNavController().navigate(R.id.action_shoutoutsFragment_to_eventsFragment) }
 
         return binding.root
     }
