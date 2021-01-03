@@ -1,6 +1,5 @@
 package com.example.nogrammers_android
 
-import android.icu.util.DateInterval
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
