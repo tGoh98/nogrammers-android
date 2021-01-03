@@ -15,8 +15,10 @@ class EventsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentEventsBinding>(inflater,
-            R.layout.fragment_events,container,false)
+        val binding = DataBindingUtil.inflate<FragmentEventsBinding>(
+            inflater,
+            R.layout.fragment_events, container, false
+        )
 
         return binding.root
     }
