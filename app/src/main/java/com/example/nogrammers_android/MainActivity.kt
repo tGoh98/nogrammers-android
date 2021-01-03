@@ -2,19 +2,31 @@ package com.example.nogrammers_android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import com.example.nogrammers_android.databinding.ActivityMainBinding
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
     private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
+
+        val shoutoutsFrag=ShoutoutsFragment()
+        val eventsFrag=EventsFragment()
+
+        setCurrentFragment(shoutoutsFrag)
+
+        findViewById<BottomNavigationView>(R.id.bottomNavView).setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.shoutouts_icon->setCurrentFragment(shoutoutsFrag)
+                R.id.events_icon->setCurrentFragment(eventsFrag)
+            }
+            true
+        }
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 //        var authors = listOf("adrienne", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim", "julie", "colin", "cindy", "tim").map { Shoutouts(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
 //        authors = authors.toMutableList()
@@ -75,4 +87,10 @@ class MainActivity : AppCompatActivity() {
 //        }
 
     }
+
+    private fun setCurrentFragment(fragment: Fragment)=
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_fragment,fragment)
+                commit()
+            }
 }

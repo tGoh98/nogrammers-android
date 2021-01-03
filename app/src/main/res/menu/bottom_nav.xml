@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/shoutouts_icon"
+        android:icon="@drawable/ic_baseline_cake_24"
+        android:title="Shoutouts"/>
+    <item
+        android:id="@+id/events_icon"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:title="Events"/>
+    <item
+        android:id="@+id/announcements_icon"
+        android:icon="@drawable/ic_baseline_announcement_24"
+        android:title="Announcements"/>
+    <item
+        android:id="@+id/profile_icon"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="My Profile"/>
+</menu>
