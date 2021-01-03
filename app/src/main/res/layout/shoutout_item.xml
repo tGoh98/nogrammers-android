@@ -30,24 +30,37 @@
             android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Kanga"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textStyle="bold"
             app:author="@{shoutout}"
             app:layout_constraintBottom_toTopOf="@id/pfp"
-            app:layout_constraintStart_toEndOf="@id/pfp" />
+            app:layout_constraintStart_toEndOf="@id/pfp"
+            tools:text="Kanga" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textStyle="bold"
+            app:author="@{shoutout}"
+            app:layout_constraintBottom_toBottomOf="@+id/author"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/author"
+            tools:text="now" />
 
         <TextView
             android:id="@+id/msg"
-            android:paddingStart="20dp"
-            android:paddingEnd="0dp"
-            android:paddingTop="3dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:paddingStart="20dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/pfp"
             app:layout_constraintTop_toTopOf="@+id/pfp"

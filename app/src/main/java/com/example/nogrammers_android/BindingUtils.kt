@@ -1,5 +1,6 @@
 package com.example.nogrammers_android
 
+import android.icu.util.DateInterval
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -15,6 +16,12 @@ fun TextView.setAuthor(item: Shoutouts) {
 @BindingAdapter("msg")
 fun TextView.setMsg(item: Shoutouts) {
     text = item.msg
+}
+
+@BindingAdapter("date")
+fun TextView.setDate(item: Shoutouts) {
+    text = java.util.Date(item.date.toLong()).toString()
+
 }
 
 @BindingAdapter("pfp")
