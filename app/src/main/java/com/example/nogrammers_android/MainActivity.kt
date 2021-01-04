@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
         /* Declare fragments */
         val shoutoutsFrag = ShoutoutsFragment()
         val eventsFrag = EventsFragment()
+        val announcementsFrag = AnnouncementsFragment()
+        val profileFrag = ProfileFragment()
 
         setCurrentFragment(shoutoutsFrag) // Home fragment is shoutouts
 
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.shoutouts_icon -> setCurrentFragment(shoutoutsFrag)
                 R.id.events_icon -> setCurrentFragment(eventsFrag)
+                R.id.announcements_icon -> setCurrentFragment(announcementsFrag)
+                R.id.profile_icon -> setCurrentFragment(profileFrag)
             }
             true
         }

@@ -6,23 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.nogrammers_android.databinding.FragmentEventsBinding
+import com.example.nogrammers_android.databinding.FragmentAnnouncementsBinding
 
 /**
- * Events tab
+ * Announcements tab
  */
-class EventsFragment : Fragment() {
+class AnnouncementsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentEventsBinding>(
+        val binding = DataBindingUtil.inflate<FragmentAnnouncementsBinding>(
             inflater,
-            R.layout.fragment_events, container, false
+            R.layout.fragment_announcements,
+            container,
+            false
         )
-
         return binding.root
     }
 }

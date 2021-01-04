@@ -6,23 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.nogrammers_android.databinding.FragmentEventsBinding
+import com.example.nogrammers_android.databinding.FragmentProfileBinding
 
 /**
- * Events tab
+ * Profile tab
  */
-class EventsFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentEventsBinding>(
-            inflater,
-            R.layout.fragment_events, container, false
-        )
-
+        val binding = DataBindingUtil.inflate<FragmentProfileBinding>(inflater, R.layout.fragment_profile, container, false)
         return binding.root
     }
 }
