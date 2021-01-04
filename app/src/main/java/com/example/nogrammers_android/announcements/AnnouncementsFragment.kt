@@ -29,7 +29,7 @@ class AnnouncementsFragment : Fragment() {
         val adapter = AnnouncementsAdapter((1..16).map {
             Announcement(
                 "Fire drill $it",
-                "Fire drill wee woo Fire drill wee woo Fire drill wee woo Fire drill wee woo",
+                "Fire drill wee woo Fire drill wee woo Fire drill wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo beep beep beep beep beep beep beep beep",
                 "snoopy$it"
             )
         })

@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.announcements.AnnouncementsFragment
+import com.example.nogrammers_android.events.EventsFragment
+import com.example.nogrammers_android.profile.ProfileFragment
 import com.example.nogrammers_android.shoutouts.ShoutoutsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
