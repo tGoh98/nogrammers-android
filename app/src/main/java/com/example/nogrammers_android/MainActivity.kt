@@ -3,6 +3,7 @@ package com.example.nogrammers_android
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.nogrammers_android.announcements.AnnouncementsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

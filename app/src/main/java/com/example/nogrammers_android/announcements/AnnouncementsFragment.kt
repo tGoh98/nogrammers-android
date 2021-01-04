@@ -1,4 +1,4 @@
-package com.example.nogrammers_android
+package com.example.nogrammers_android.announcements
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAnnouncementsBinding
 
 /**
@@ -24,6 +25,17 @@ class AnnouncementsFragment : Fragment() {
             container,
             false
         )
+
+        val adapter = AnnouncementsAdapter((1..16).map {
+            Announcement(
+                "Fire drill $it",
+                "Fire drill wee woo Fire drill wee woo Fire drill wee woo Fire drill wee woo",
+                "snoopy$it"
+            )
+        })
+
+        binding.announcementsView.adapter = adapter
+
         return binding.root
     }
 }
