@@ -1,4 +1,4 @@
-package com.example.nogrammers_android
+package com.example.nogrammers_android.shoutouts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.example.nogrammers_android.databinding.ShoutoutItemBinding
 /**
  * Adapter for shoutouts item in recycler view
  */
-class ShoutoutsAdapter(private val data: List<Shoutouts>) :
+class ShoutoutsAdapter(private val data: List<Shoutout>) :
     RecyclerView.Adapter<ShoutoutsAdapter.ShoutoutViewHolder>() {
 
     // TODO: instead of passing in static data, consider managing list contents with https://developer.android.com/codelabs/kotlin-android-training-diffutil-databinding/#3
@@ -43,7 +43,7 @@ class ShoutoutsAdapter(private val data: List<Shoutouts>) :
         /**
          * Binds the content to shoutouts item using the helper functions in BindingUtils
          */
-        fun bind(item: Shoutouts) {
+        fun bind(item: Shoutout) {
             binding.shoutout = item
             /* This automatically executes all the "@BindingAdapter" in BindingUtils */
             binding.executePendingBindings()

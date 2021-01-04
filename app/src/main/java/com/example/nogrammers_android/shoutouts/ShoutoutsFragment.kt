@@ -1,4 +1,4 @@
-package com.example.nogrammers_android
+package com.example.nogrammers_android.shoutouts
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentShoutoutsBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -17,6 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 class ShoutoutsFragment : Fragment() {
@@ -62,7 +64,7 @@ class ShoutoutsFragment : Fragment() {
             "colin",
             "cindy",
             "tim"
-        ).map { Shoutouts(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
+        ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
         authors = authors.toMutableList()
         val adapter = ShoutoutsAdapter(authors)
 
@@ -76,7 +78,7 @@ class ShoutoutsFragment : Fragment() {
                         map["author"]?.let {
                             map["msg"]?.let { it1 ->
                                 map["date"]?.let { it2 ->
-                                    Shoutouts(
+                                    Shoutout(
                                         it,
                                         it1,
                                         it2
@@ -119,10 +121,10 @@ class ShoutoutsFragment : Fragment() {
                         num = so.size
                     }
                     database.child(num.toString()).setValue(
-                        Shoutouts(
+                        Shoutout(
                             binding.editTextName.text.toString(),
                             binding.editTextMsg.text.toString(),
-                            java.util.Calendar.getInstance().timeInMillis.toString()
+                            Calendar.getInstance().timeInMillis.toString()
                         )
                     )
                     binding.cancelButton.performClick()
