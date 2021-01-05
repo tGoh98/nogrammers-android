@@ -34,6 +34,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:targetApi="lollipop" />
 
+        <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:id="@+id/transparentOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/announcementsContainer"
+            android:background="@color/greyOverlay" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

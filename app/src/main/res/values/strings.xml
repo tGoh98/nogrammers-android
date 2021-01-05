@@ -11,4 +11,12 @@
     <string name="todo_put_profile_here">TODO: put profile here</string>
     <string name="todo_put_events_here">TODO: put events here</string>
     <string name="create_announcement">Create announcement</string>
+    <string name="cancel_underlined"><u>Cancel</u></string>
+    <string name="new_announcement">New announcement</string>
+    <string name="announcement_title">Announcement Title</string>
+    <string name="announcement_body">Announcement body</string>
+    <string name="pin_announcement_to_top_of_page">Pin announcement to top of page</string>
+    <string name="post_announcement">Post announcement</string>
+    <string name="post_to_facebook">Post to Facebook</string>
+    <string name="send_to_listserv">Send to Listserv</string>
 </resources>
