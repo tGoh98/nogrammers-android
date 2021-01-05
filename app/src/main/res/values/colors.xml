@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="goldenrod">#bf923d</color>
     <color name="olive">#313d23</color>
+    <color name="greyBackground">#f5f5f4</color>
+    <color name="greyText">#757575</color>
+
 </resources>
