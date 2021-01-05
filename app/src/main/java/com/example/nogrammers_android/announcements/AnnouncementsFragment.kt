@@ -104,4 +104,5 @@ class AnnouncementsFragment : Fragment() {
     private fun disableRV(rv: RecyclerView) {
         rv.setOnTouchListener { _, _ -> true }
     }
+
 }
