@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "20345698079",
+    "firebase_url": "https://nogrammers.firebaseio.com",
+    "project_id": "nogrammers",
+    "storage_bucket": "nogrammers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20345698079:android:5fe7980b82287caa95e22a",
+        "android_client_info": {
+          "package_name": "com.example.nogrammers_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20345698079-a6k18j722nunfft5vdvccpldgchnbp9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZIC6wxi8Vh2JE9KwWpO7-KMGa_7xigdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20345698079-a6k18j722nunfft5vdvccpldgchnbp9u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "20345698079-7fq9rf89b8gjia8t7rtil2a93g0h0975.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.test.Nogrammers"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

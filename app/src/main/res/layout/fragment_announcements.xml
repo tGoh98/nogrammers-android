@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,7 +15,42 @@
             android:layout_gravity="top"
             android:layout_weight="2"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager" />
-    </LinearLayout>
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/createAnnouncementBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/goldenrod"
+            android:contentDescription="@string/create_announcement"
+            android:src="@drawable/ic_baseline_create_24"
+            app:borderWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="lollipop" />
+
+        <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:id="@+id/transparentOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/announcementsContainer"
+            android:background="@color/greyOverlay" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/announcementsContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
