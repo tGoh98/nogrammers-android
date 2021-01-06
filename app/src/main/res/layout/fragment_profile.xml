@@ -1,12 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".profile.ProfileFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/todo_put_profile_here" />
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/pfpImgProfile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/km1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profileNameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:text="Cynthia Sheng"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/pfpImgProfile"
+            app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
+
+        <TextView
+            android:id="@+id/bioTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Peace, love, Duncan"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
+            app:layout_constraintTop_toBottomOf="@+id/profileNameTxt" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/profileChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
+            app:layout_constraintTop_toBottomOf="@id/bioTxt">
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="President" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ add position" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/profileTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileChips"
+            app:tabIndicatorColor="@color/olive"
+            app:tabMode="scrollable"
+            app:tabTextColor="@color/olive" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/profileTabsPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileTabLayout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
