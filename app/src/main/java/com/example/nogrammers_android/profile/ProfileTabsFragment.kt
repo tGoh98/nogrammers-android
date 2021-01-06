@@ -32,16 +32,24 @@ class ProfileTabsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        /* Inflate the layout for this fragment */
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_profile_tabs, container, false
         )
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val position = requireArguments().getInt(ARG_POSITION)
+
+        /* Create recycler view */
+        val adapter = ProfileItemAdapter((1..25).map {
+            ProfileItem("let's count to $it, version $position")
+        })
+        binding.profileTabList.adapter = adapter
+
         binding.tabPos.text = "Position: $position"
     }
 

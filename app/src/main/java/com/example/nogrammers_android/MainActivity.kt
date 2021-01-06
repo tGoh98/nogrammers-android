@@ -23,8 +23,7 @@ class MainActivity : AppCompatActivity() {
         val announcementsFrag = AnnouncementsFragment()
         val profileFrag = ProfileFragment()
 
-        // TODO: revert this
-        setCurrentFragment(profileFrag) // Home fragment is shoutouts
+        setCurrentFragment(shoutoutsFrag) // Home fragment is shoutouts
 
         /* Fragments are controlled by the bottom nav bar */
         findViewById<BottomNavigationView>(R.id.bottomNavView).setOnNavigationItemSelectedListener {
