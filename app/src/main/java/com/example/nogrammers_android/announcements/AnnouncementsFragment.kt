@@ -11,6 +11,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAnnouncementsBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 /**
  * Announcements tab
@@ -20,22 +24,22 @@ class AnnouncementsFragment : Fragment() {
     private val model: AnnouncementsViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         /* Inflate the layout for this fragment with data binding */
         val binding = DataBindingUtil.inflate<FragmentAnnouncementsBinding>(
-            inflater,
-            R.layout.fragment_announcements,
-            container,
-            false
+                inflater,
+                R.layout.fragment_announcements,
+                container,
+                false
         )
         // TODO: dynamically populate the content for the recycler view
         val adapter = AnnouncementsAdapter((1..10).map {
             Announcement(
-                "Fire drill $it",
-                "Fire drill wee woo Fire drill wee woo Fire drill wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo beep beep beep beep beep beep beep beep",
-                "snoopy$it"
+                    "Fire drill $it",
+                    "Fire drill wee woo Fire drill wee woo Fire drill wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo wee woo beep beep beep beep beep beep beep beep",
+                    "snoopy$it"
             )
         })
         binding.announcementsView.adapter = adapter
@@ -45,12 +49,18 @@ class AnnouncementsFragment : Fragment() {
             if (newVal) {
                 /* Frag */
                 showNewAnnouncementsFrag()
-                /* Overlay */
-                binding.transparentOverlay.visibility = View.VISIBLE
-                /* FAB */
-                binding.createAnnouncementBtn.visibility = View.INVISIBLE
                 /* Freeze recycler view */
                 disableRV(binding.announcementsView)
+                /* FAB */
+                binding.createAnnouncementBtn.visibility = View.INVISIBLE
+                /* Overlay (add a delay via non-blocking thread) */
+                GlobalScope.launch {
+                    delay(300L)
+                    // Can only update UI via main thread
+                    activity?.runOnUiThread(Runnable {
+                        binding.transparentOverlay.visibility = View.VISIBLE
+                    })
+                }
             } else {
                 /* Frag */
                 hideNewAnnouncementsFrag()
@@ -76,14 +86,15 @@ class AnnouncementsFragment : Fragment() {
      * Shows new announcements fragment
      */
     private fun showNewAnnouncementsFrag() {
-        activity?.supportFragmentManager
-            ?.beginTransaction()
-            ?.add(
+        val transaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        transaction.setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down
+        ).add(
                 R.id.announcementsContainer,
                 CreateAnnouncementFragment(),
                 "createAnnouncement"
-            )
-            ?.commit()
+        ).commit()
     }
 
     /**
@@ -92,7 +103,10 @@ class AnnouncementsFragment : Fragment() {
     private fun hideNewAnnouncementsFrag() {
         val sfm = activity?.supportFragmentManager ?: return
         val fragment = sfm.findFragmentByTag("createAnnouncement")
-        if (fragment != null) sfm.beginTransaction().remove(fragment).commit()
+        if (fragment != null) sfm.beginTransaction().setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down
+        ).replace(R.id.announcementsContainer, TransparentFragment()).commit()
     }
 
     @SuppressLint("ClickableViewAccessibility")
