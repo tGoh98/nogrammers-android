@@ -1,5 +1,7 @@
 package com.example.nogrammers_android.announcements
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +13,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAnnouncementsBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 /**
@@ -22,6 +21,7 @@ import kotlinx.coroutines.launch
 class AnnouncementsFragment : Fragment() {
     /* Shared view model */
     private val model: AnnouncementsViewModel by activityViewModels()
+    private var shortAnimationDuration: Int = 0
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -53,19 +53,32 @@ class AnnouncementsFragment : Fragment() {
                 disableRV(binding.announcementsView)
                 /* FAB */
                 binding.createAnnouncementBtn.visibility = View.INVISIBLE
-                /* Overlay (add a delay via non-blocking thread) */
-                GlobalScope.launch {
-                    delay(300L)
-                    // Can only update UI via main thread
-                    activity?.runOnUiThread(Runnable {
-                        binding.transparentOverlay.visibility = View.VISIBLE
-                    })
+                /* Overlay */
+                binding.transparentOverlay.apply {
+                    // Set the content view to 0% opacity but visible, so that it is visible
+                    // (but fully transparent) during the animation.
+                    alpha = 0f
+                    visibility = View.VISIBLE
+
+                    // Animate the content view to 100% opacity, and clear any animation
+                    // listener set on the view.
+                    animate()
+                            .alpha(1f)
+                            .setDuration(300L)
+                            .setListener(null)
                 }
             } else {
                 /* Frag */
                 hideNewAnnouncementsFrag()
                 /* Overlay */
-                binding.transparentOverlay.visibility = View.INVISIBLE
+                binding.transparentOverlay.animate()
+                        .alpha(0f)
+                        .setDuration(shortAnimationDuration.toLong())
+                        .setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                binding.transparentOverlay.visibility = View.GONE
+                            }
+                        })
                 /* FAB */
                 binding.createAnnouncementBtn.visibility = View.VISIBLE
                 /* Unfreeze recycler view */
@@ -79,6 +92,8 @@ class AnnouncementsFragment : Fragment() {
             model.createMode.value = true
         }
 
+        shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+
         return binding.root
     }
 
@@ -86,6 +101,7 @@ class AnnouncementsFragment : Fragment() {
      * Shows new announcements fragment
      */
     private fun showNewAnnouncementsFrag() {
+        // Note: duration is set in the xml animation file
         val transaction = activity?.supportFragmentManager?.beginTransaction() ?: return
         transaction.setCustomAnimations(
                 R.anim.slide_up,

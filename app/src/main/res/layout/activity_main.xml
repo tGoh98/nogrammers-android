@@ -12,9 +12,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
+        android:paddingHorizontal="18dp"
+        android:paddingBottom="6dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:title="Shoutouts"
+        app:titleTextAppearance="@style/TabHeader"
         app:titleTextColor="@color/olive" />
 
     <FrameLayout
