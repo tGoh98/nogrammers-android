@@ -6,84 +6,82 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_bg"
+        android:background="@color/white"
         android:padding="25dp"
+        android:visibility="invisible"
         tools:context=".announcements.CreateAnnouncementFragment">
 
         <TextView
-            android:id="@+id/newAnnounceHeader"
+            android:id="@+id/newAnnounceHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_announcement"
             android:textColor="@color/olive"
-            android:textSize="26sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/cancelAnnounceBtn"
+            android:id="@+id/cancelAnnounceBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:text="@string/cancel_underlined"
             android:textColor="@color/greyText"
-            android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="@id/newAnnounceHeader"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/newAnnounceHeader2"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <EditText
-            android:id="@+id/newAnnouncementTitle"
+            android:id="@+id/newAnnouncementTitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
             android:hint="@string/announcement_title"
-            android:textSize="26sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newAnnounceHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/newAnnounceHeader2" />
 
         <EditText
-            android:id="@+id/newAnnouncementTxt"
+            android:id="@+id/newAnnouncementTxt2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/announcement_body"
             android:inputType="textMultiLine"
-            android:textSize="20sp"
             android:scrollbars="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newAnnouncementTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/newAnnouncementTitle2" />
 
         <CheckBox
-            android:id="@+id/pinAnnouncment"
+            android:id="@+id/pinAnnouncment2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pin_announcement_to_top_of_page"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/newAnnouncementTxt" />
+            app:layout_constraintTop_toBottomOf="@id/newAnnouncementTxt2" />
 
         <Button
-            android:id="@+id/postNewAnnouncementBtn"
+            android:id="@+id/postNewAnnouncementBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/post_announcement"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pinAnnouncment" />
+            app:layout_constraintTop_toBottomOf="@+id/pinAnnouncment2" />
 
         <CheckBox
-            android:id="@+id/postToFb"
+            android:id="@+id/postToFb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/post_to_facebook"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/postNewAnnouncementBtn" />
+            app:layout_constraintTop_toBottomOf="@id/postNewAnnouncementBtn2" />
 
         <CheckBox
-            android:id="@+id/sendToListserv"
+            android:id="@+id/sendToListserv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send_to_listserv"
-            app:layout_constraintStart_toStartOf="@+id/postToFb"
-            app:layout_constraintTop_toBottomOf="@id/postToFb" />
+            app:layout_constraintStart_toStartOf="@+id/postToFb2"
+            app:layout_constraintTop_toBottomOf="@id/postToFb2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

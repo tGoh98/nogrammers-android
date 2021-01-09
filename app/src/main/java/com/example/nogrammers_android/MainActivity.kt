@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         /* Declare fragments */
         val shoutoutsFrag = ShoutoutsFragment()
@@ -24,14 +25,27 @@ class MainActivity : AppCompatActivity() {
         val profileFrag = ProfileFragment()
 
         setCurrentFragment(shoutoutsFrag) // Home fragment is shoutouts
+        supportActionBar?.title = "Shoutouts"
 
         /* Fragments are controlled by the bottom nav bar */
         findViewById<BottomNavigationView>(R.id.bottomNavView).setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.shoutouts_icon -> setCurrentFragment(shoutoutsFrag)
-                R.id.events_icon -> setCurrentFragment(eventsFrag)
-                R.id.announcements_icon -> setCurrentFragment(announcementsFrag)
-                R.id.profile_icon -> setCurrentFragment(profileFrag)
+                R.id.shoutouts_icon -> {
+                    setCurrentFragment(shoutoutsFrag)
+                    supportActionBar?.title = "Shoutouts"
+                }
+                R.id.events_icon -> {
+                    setCurrentFragment(eventsFrag)
+                    supportActionBar?.title = "Events"
+                }
+                R.id.announcements_icon -> {
+                    setCurrentFragment(announcementsFrag)
+                    supportActionBar?.title = "Announcements"
+                }
+                R.id.profile_icon -> {
+                    setCurrentFragment(profileFrag)
+                    supportActionBar?.title = "Profile"
+                }
             }
             true
         }

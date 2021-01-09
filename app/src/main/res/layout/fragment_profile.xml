@@ -10,15 +10,31 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:id="@+id/pfpImgProfile"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/profile_image"
-            android:src="@drawable/km1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="10dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="40dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/pfpImgProfileSrc"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:contentDescription="@string/profile_image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cys_pfp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/profileNameTxt"
@@ -26,17 +42,42 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:text="@string/cynthia_sheng"
-            android:textSize="16sp"
+            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/pfpImgProfile"
+            app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
+
+        <TextView
+            android:id="@+id/profileDot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="5dp"
+            android:text="@string/dot"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/profileNameTxt"
+            app:layout_constraintEnd_toStartOf="@id/profileNameNetId"
+            app:layout_constraintStart_toEndOf="@+id/profileNameTxt"
+            app:layout_constraintTop_toTopOf="@id/profileNameTxt" />
+
+        <TextView
+            android:id="@+id/profileNameNetId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cys4"
+            android:textColor="@color/goldenrod"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/profileDot"
             app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
 
         <TextView
             android:id="@+id/bioTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="7dp"
             android:text="@string/peace_love_duncan"
-            android:textSize="16sp"
+            android:textSize="17sp"
             app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
             app:layout_constraintTop_toBottomOf="@+id/profileNameTxt" />
 
@@ -44,8 +85,9 @@
             android:id="@+id/profileChips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
-            app:layout_constraintTop_toBottomOf="@id/bioTxt">
+            android:layout_marginVertical="10dp"
+            app:layout_constraintStart_toStartOf="@+id/pfpImgProfile"
+            app:layout_constraintTop_toBottomOf="@id/pfpImgProfile">
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
@@ -62,12 +104,12 @@
             android:id="@+id/profileTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileChips"
-            app:tabIndicatorColor="@color/olive"
-            app:tabMode="scrollable"
-            app:tabTextColor="@color/olive" />
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/profileTabsPager"
