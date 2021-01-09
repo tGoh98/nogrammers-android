@@ -71,26 +71,17 @@ class ShoutoutsFragment : Fragment() {
         database = Firebase.database.reference.child("shoutouts")
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val so = dataSnapshot.getValue<ArrayList<HashMap<String, String>>>()
-                if (so != null) {
+                if (dataSnapshot.hasChildren()) {
                     authors.clear()
-                    for (map in so) {
-                        map["author"]?.let {
-                            map["msg"]?.let { it1 ->
-                                map["date"]?.let { it2 ->
-                                    Shoutout(
-                                        it,
-                                        it1,
-                                        it2
-                                    )
-                                }
-                            }
-                        }?.let { authors.add(it) }
+                    for (ds : DataSnapshot in dataSnapshot.children) {
+                        val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
+                        val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
+                        authors.add(newShoutout)
                     }
                     authors.sortByDescending { it.date }
                     adapter.notifyDataSetChanged()
                 }
-                Log.d("TAG", so.toString())
+                Log.d("TAG", dataSnapshot.toString())
                 Log.d("TAG2", authors.toString())
             }
 
