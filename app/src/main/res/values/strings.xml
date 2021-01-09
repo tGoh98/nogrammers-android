@@ -21,7 +21,9 @@
     <string name="send_to_listserv">Send to Listserv</string>
     <string name="profile_image">Profile image</string>
     <string name="cynthia_sheng">Cynthia Sheng</string>
+    <string name="dot">\u25CF</string>
     <string name="peace_love_duncan">Peace, love, Duncan</string>
     <string name="president">President</string>
     <string name="add_position">+ add position</string>
+    <string name="cys4">cys4</string>
 </resources>
