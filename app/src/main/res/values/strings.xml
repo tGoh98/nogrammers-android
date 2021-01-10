@@ -27,6 +27,8 @@
     <string name="add_position">+ add position</string>
     <string name="cys4">cys4</string>
     <string name="name">[Name]</string>
-    <string name="netid">[NetID]</string>
-    <string name="bio">[bio]</string>
+    <string name="netid">NetID</string>
+    <string name="bio">bio</string>
+    <string name="password">Password</string>
+    <string name="login_signup">Login/Signup</string>
 </resources>

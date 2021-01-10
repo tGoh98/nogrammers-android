@@ -8,7 +8,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nogrammersandroid">
-        <activity android:name=".MainActivity" android:theme="@style/Theme.Nogrammersandroid" />
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.Nogrammersandroid" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

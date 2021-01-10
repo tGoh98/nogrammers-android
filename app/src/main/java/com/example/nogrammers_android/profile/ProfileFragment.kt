@@ -18,17 +18,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 // View pager tutorial: https://www.raywenderlich.com/8192680-viewpager2-in-android-getting-started
 
 /**
  * Profile tab
  */
-class ProfileFragment : Fragment() {
+class ProfileFragment(private val netID: String, private val dbUserRef: DatabaseReference) : Fragment() {
 
-    private lateinit var database: DatabaseReference
+//    private lateinit var database: DatabaseReference
     private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
@@ -66,8 +64,7 @@ class ProfileFragment : Fragment() {
 //
 //        for (userObj in userObjs) database.child(userObj.netID).setValue(userObj)
 
-        val netId = "cys4"
-        database = Firebase.database.reference.child("users").child(netId)
+        val database = dbUserRef.child(netID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // TODO: add fail check
@@ -82,7 +79,7 @@ class ProfileFragment : Fragment() {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        database.addValueEventListener(updateListener)
+        database.addListenerForSingleValueEvent(updateListener)
 
         return binding.root
     }
