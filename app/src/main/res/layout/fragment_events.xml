@@ -10,9 +10,22 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-        <TextView
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/eventTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:tabMode="fixed"
+            app:tabTextColor="@color/olive" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/eventTabsPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/todo_put_events_here" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventTabLayout" />
+
     </LinearLayout>
 </layout>
