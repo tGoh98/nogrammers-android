@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bg"
+        android:padding="25dp"
+        tools:context=".announcements.CreateAnnouncementFragment">
+
+        <TextView
+            android:id="@+id/newAnnounceHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_announcement"
+            android:textColor="@color/olive"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cancelAnnounceBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="@string/cancel_underlined"
+            android:textColor="@color/greyText"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="@id/newAnnounceHeader"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/newAnnouncementTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:hint="@string/announcement_title"
+            android:textSize="26sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newAnnounceHeader" />
+
+        <EditText
+            android:id="@+id/newAnnouncementTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/announcement_body"
+            android:inputType="textMultiLine"
+            android:textSize="20sp"
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newAnnouncementTitle" />
+
+        <CheckBox
+            android:id="@+id/pinAnnouncment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pin_announcement_to_top_of_page"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newAnnouncementTxt" />
+
+        <Button
+            android:id="@+id/postNewAnnouncementBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_announcement"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pinAnnouncment" />
+
+        <CheckBox
+            android:id="@+id/postToFb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_to_facebook"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postNewAnnouncementBtn" />
+
+        <CheckBox
+            android:id="@+id/sendToListserv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_to_listserv"
+            app:layout_constraintStart_toStartOf="@+id/postToFb"
+            app:layout_constraintTop_toBottomOf="@id/postToFb" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -10,4 +10,20 @@
     <string name="events">Events</string>
     <string name="todo_put_profile_here">TODO: put profile here</string>
     <string name="todo_put_events_here">TODO: put events here</string>
+    <string name="create_announcement">Create announcement</string>
+    <string name="cancel_underlined"><u>Cancel</u></string>
+    <string name="new_announcement">New announcement</string>
+    <string name="announcement_title">Announcement Title</string>
+    <string name="announcement_body">Announcement body</string>
+    <string name="pin_announcement_to_top_of_page">Pin announcement to top of page</string>
+    <string name="post_announcement">Post announcement</string>
+    <string name="post_to_facebook">Post to Facebook</string>
+    <string name="send_to_listserv">Send to Listserv</string>
+    <string name="profile_image">Profile image</string>
+    <string name="cynthia_sheng">Cynthia Sheng</string>
+    <string name="dot">\u25CF</string>
+    <string name="peace_love_duncan">Peace, love, Duncan</string>
+    <string name="president">President</string>
+    <string name="add_position">+ add position</string>
+    <string name="cys4">cys4</string>
 </resources>
