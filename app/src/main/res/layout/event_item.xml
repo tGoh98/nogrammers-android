@@ -18,6 +18,20 @@
         android:layout_marginRight="20dp"
         android:background="@color/olive">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:backgroundPic="@{event}"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tint="@color/olive"
+            android:scaleType="centerCrop"
+            app:backgroundPic="@{event}"
+            android:alpha="0.7"/>
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -46,7 +60,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginVertical="10dp"
-            android:background="@color/olive"
+            android:background="#00FFFFFF"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

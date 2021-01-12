@@ -33,3 +33,9 @@ fun TextView.setSave(item: Event) {
 fun ImageView.setSavePic(item: Event) {
     setImageResource(R.drawable.heart)
 }
+
+@BindingAdapter("backgroundPic")
+fun ImageView.setBackground(item: Event) {
+    if (item.pic == "") setImageResource(R.drawable.testimg)
+    else TODO("need to implement custom images")
+}
