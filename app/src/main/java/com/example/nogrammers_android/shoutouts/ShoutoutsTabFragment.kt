@@ -1,5 +1,8 @@
 package com.example.nogrammers_android.shoutouts
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +12,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.R
+//import com.example.nogrammers_android.announcements.AnnouncementsViewModel
+//import com.example.nogrammers_android.announcements.TransparentFragment
 import com.example.nogrammers_android.databinding.FragmentShoutoutsTabsBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,6 +30,10 @@ import java.util.*
 
 class ShoutoutsTabFragment(val position: Int) : Fragment() {
     private lateinit var database: DatabaseReference
+    private val model: ShoutoutsViewModel by activityViewModels()
+    private var shortAnimationDuration: Int = 0
+
+    private var clicked: Int = -1
 
     lateinit var binding: FragmentShoutoutsTabsBinding
 
@@ -86,6 +97,7 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
         } else {
             database = Firebase.database.reference.child("sds")
         }
+        val createShoutouts = ShoutoutsCreateFragment(position)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
@@ -110,6 +122,56 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
         database.addValueEventListener(updateListener)
 
         binding.shoutoutsView.adapter = adapter
+
+        model.createMode.observe(viewLifecycleOwner, { newVal ->
+            Log.d("NEWVAL", newVal.toString())
+            if (!newVal) {
+                hideNewShoutoutsFrag()
+                /* Overlay */
+                binding.transparentShoutoutsOverlay.animate()
+                        .alpha(0f)
+                        .setDuration(shortAnimationDuration.toLong())
+                        .setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                binding.transparentShoutoutsOverlay.visibility = View.GONE
+                            }
+                        })
+                /* FAB */
+                binding.createShoutoutBtn.visibility = View.VISIBLE
+                /* Unfreeze recycler view */
+                enableRV(binding.shoutoutsView)
+            }
+        })
+
+        /* Listener for create announcement button */
+        val createBtn = binding.createShoutoutBtn
+        createBtn.setOnClickListener {
+            /* Frag */
+            showNewShoutoutsFrag(createShoutouts)
+            /* Freeze recycler view */
+            disableRV(binding.shoutoutsView)
+            /* FAB */
+            binding.createShoutoutBtn.visibility = View.INVISIBLE
+            /* Overlay */
+            binding.transparentShoutoutsOverlay.apply {
+                // Set the content view to 0% opacity but visible, so that it is visible
+                // (but fully transparent) during the animation.
+                alpha = 0f
+                visibility = View.VISIBLE
+
+                // Animate the content view to 100% opacity, and clear any animation
+                // listener set on the view.
+                animate()
+                        .alpha(1f)
+                        .setDuration(300L)
+                        .setListener(null)
+            }
+            model.createMode.value = true
+        }
+
+        val cancelBtn = binding.cancelButton
+
+        shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
 
         // Button listeners
         // Cancel, clear text fields and hide keyboard
@@ -149,11 +211,41 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        val position = requireArguments().getInt(ShoutoutsTabFragment.ARG_POSITION)
-//
-//        binding.shoutoutsView.adapter = adapter
-//
-//        binding.tabPos.text = "Position: $position"
-//    }
+    /**
+     * Shows new shoutouts fragment
+     */
+    private fun showNewShoutoutsFrag(frag: ShoutoutsCreateFragment) {
+        // Note: duration is set in the xml animation file
+        val transaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        transaction.setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down
+        ).add(
+                R.id.createShoutoutsContainer,
+                frag,
+                "createShoutout"
+        ).commit()
+    }
+
+    /**
+     * Hides new shoutouts fragment
+     */
+    private fun hideNewShoutoutsFrag() {
+        val sfm = activity?.supportFragmentManager ?: return
+        val fragment = sfm.findFragmentByTag("createShoutout")
+        if (fragment != null) sfm.beginTransaction().setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down
+        ).replace(R.id.createShoutoutsContainer, ShoutoutsCreateTransparentFragment()).commit()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun enableRV(rv: RecyclerView) {
+        rv.setOnTouchListener { _, _ -> false }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun disableRV(rv: RecyclerView) {
+        rv.setOnTouchListener { _, _ -> true }
+    }
 }

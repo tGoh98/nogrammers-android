@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -16,15 +16,59 @@
             android:layout_gravity="top"
             android:layout_weight="2"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager" />
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/transparentShoutoutsOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/createShoutoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="355dp"
+            android:backgroundTint="@color/goldenrod"
+            android:contentDescription="@string/create_shoutout_shit"
+            android:src="@drawable/ic_baseline_create_24"
+            app:borderWidth="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/transparentShoutoutsOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="lollipop" />
+
+        <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:id="@+id/transparentShoutoutsOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/greyOverlay"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/createShoutoutsContainer" />
+
+        <FrameLayout
+            android:id="@+id/createShoutoutsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="411dp"
+            android:layout_marginBottom="731dp"
             android:ems="10"
             android:hint="@string/author"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editTextMsg"
@@ -32,32 +76,41 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/who_s_a_good_roo"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/postButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:text="@string/post_shoutout" />
+        <Button
+            android:id="@+id/postButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:text="@string/post_shoutout"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:backgroundTint="#808080"
-                android:text="@string/cancel"
-                tools:targetApi="lollipop" />
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:backgroundTint="#808080"
+            android:text="@string/cancel"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="lollipop" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
