@@ -26,4 +26,20 @@
     <string name="president">President</string>
     <string name="add_position">+ add position</string>
     <string name="cys4">cys4</string>
+    <string name="action_filter">filter</string>
+    <string name="apply_filter">Apply Filters</string>
+    <string name="food">Food</string>
+    <string name="alcohol">Alcohol</string>
+    <string name="health">Health &amp; Wellness</string>
+    <string name="arts">Arts &amp; Music</string>
+    <string name="discussion">Discussion</string>
+    <string name="forums">Forums</string>
+    <string name="competition">Competition</string>
+    <string name="date">Date</string>
+    <string name="format">Format</string>
+    <string name="audience">Audience</string>
+    <string name="remote">Remote</string>
+    <string name="in_person">In-person</string>
+    <string name="Campus_wide">Campus-wide</string>
+    <string name="Duncaroos_only">Duncaroos-only</string>
 </resources>

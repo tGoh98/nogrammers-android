@@ -2,9 +2,8 @@ package com.example.nogrammers_android.events
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.graphics.alpha
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R

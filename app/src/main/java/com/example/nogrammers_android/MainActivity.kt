@@ -1,6 +1,7 @@
 package com.example.nogrammers_android
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.announcements.AnnouncementsFragment
@@ -59,4 +60,5 @@ class MainActivity : AppCompatActivity() {
                 replace(R.id.fl_fragment, fragment)
                 commit()
             }
+
 }

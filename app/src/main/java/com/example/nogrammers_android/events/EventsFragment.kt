@@ -1,10 +1,11 @@
 package com.example.nogrammers_android.events
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.alpha
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R
@@ -15,13 +16,14 @@ import com.google.android.material.tabs.TabLayoutMediator
  * Events tab
  */
 class EventsFragment : Fragment() {
+    lateinit var binding:FragmentEventsBinding;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentEventsBinding>(
+        binding = DataBindingUtil.inflate<FragmentEventsBinding>(
             inflater,
             R.layout.fragment_events, container, false
         )
@@ -37,7 +39,33 @@ class EventsFragment : Fragment() {
             }
         }.attach()
 
+        setHasOptionsMenu(true);
+
+        val order_options = listOf("Most recent first",
+         "Saved first", "Most popular first")
+        binding.ordering.adapter = this.context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, order_options) }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.event_actions, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val action = item.itemId;
+        if (action.equals(R.id.action_filter)) {
+            if (binding.filterLayout.visibility.equals(View.GONE)) {
+                binding.filterLayout.visibility = View.VISIBLE
+            }
+            else {
+                binding.filterLayout.visibility = View.GONE
+            }
+        }
+        else {
+            Log.d("TAG", "some button was pressed")
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
