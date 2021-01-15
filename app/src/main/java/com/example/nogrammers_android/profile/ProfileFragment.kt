@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener
  */
 class ProfileFragment(private val netID: String, private val dbUserRef: DatabaseReference) : Fragment() {
 
-//    private lateinit var database: DatabaseReference
     private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(

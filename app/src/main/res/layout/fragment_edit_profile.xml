@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:background="@color/greyBackground"
+        tools:context=".profile.EditProfileFragment">
+
+        <TextView
+            android:id="@+id/editProfileNameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editProfileNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="@+id/editProfileNameLabel"
+            app:layout_constraintTop_toBottomOf="@id/editProfileNameLabel"
+            tools:text="Cindy Sheng" />
+
+        <TextView
+            android:id="@+id/editProfileBioLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Bio"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/editProfileNameField"
+            app:layout_constraintTop_toBottomOf="@id/editProfileNameField" />
+
+        <EditText
+            android:id="@+id/editProfileBioField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="@+id/editProfileBioLabel"
+            app:layout_constraintTop_toBottomOf="@id/editProfileBioLabel"
+            tools:text="Peace, Love, Duncan!!!" />
+
+        <TextView
+            android:id="@+id/editProfileTagsLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Tags"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/editProfileBioField"
+            app:layout_constraintTop_toBottomOf="@id/editProfileBioField" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/editProfileChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            app:layout_constraintStart_toStartOf="@+id/editProfileTagsLabel"
+            app:layout_constraintTop_toBottomOf="@id/editProfileTagsLabel">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAddTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add tag"
+                android:textColor="@color/greyText"
+                app:chipBackgroundColor="@color/greyBackground"
+                app:chipStrokeColor="@color/greyText"
+                app:chipStrokeWidth="1dp" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <Button
+            android:id="@+id/editProfileSaveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="20dp"
+            android:text="Save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editProfileChips" />
+
+        <Button
+            android:id="@+id/editProfileCancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:backgroundTint="@color/greyButton"
+            android:text="Cancel"
+            app:layout_constraintEnd_toStartOf="@id/editProfileSaveBtn"
+            app:layout_constraintTop_toTopOf="@id/editProfileSaveBtn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

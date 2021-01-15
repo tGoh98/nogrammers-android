@@ -81,8 +81,6 @@ class ShoutoutsFragment : Fragment() {
                     authors.sortByDescending { it.date }
                     adapter.notifyDataSetChanged()
                 }
-                Log.d("TAG", dataSnapshot.toString())
-                Log.d("TAG2", authors.toString())
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
