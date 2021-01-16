@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
@@ -63,6 +64,9 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             val chipArr: MutableList<UserTags> = ArrayList()
             /* Convert chip texts to enum */
             for (chip in binding.editProfileChips) {
+                /* Deleted chips have visibility = GONE */
+                if (chip.visibility == View.GONE) continue
+
                 when ((chip as Chip).text.toString().filter { !it.isWhitespace() }) {
                     "+Addtag" -> continue
                     "H&DRep" -> chipArr.add(UserTags.HAndDRep)
@@ -96,6 +100,11 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         for (tag in userObj.tags) {
             val chip = Chip(context)
             chip.text = tag.toString()
+            chip.isCloseIconVisible = true
+            chip.setOnCloseIconClickListener {
+                Toast.makeText(context, "close clicked!", Toast.LENGTH_SHORT).show()
+                chip.visibility = View.GONE
+            }
             chipGroup.addView(chip, chipGroup.size - 1)
         }
     }
