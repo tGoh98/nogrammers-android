@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:text="@string/cynthia_sheng"
+            android:text="@string/name"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/pfpImgProfile"
@@ -65,7 +65,7 @@
             android:id="@+id/profileNameNetId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cys4"
+            android:text="@string/netid"
             android:textColor="@color/goldenrod"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/profileDot"
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="7dp"
-            android:text="@string/peace_love_duncan"
+            android:text="@string/bio"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
             app:layout_constraintTop_toBottomOf="@+id/profileNameTxt" />
@@ -89,15 +89,6 @@
             app:layout_constraintStart_toStartOf="@+id/pfpImgProfile"
             app:layout_constraintTop_toBottomOf="@id/pfpImgProfile">
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/president" />
-
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_position" />
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.tabs.TabLayout
