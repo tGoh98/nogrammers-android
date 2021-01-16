@@ -22,10 +22,10 @@ enum class UserTags {
     CJ {
         override fun toString() = "CJ"
     },
-    FreshRep {
+    FreshmanRep {
         override fun toString() = "Freshman Rep"
     },
-    SophRep {
+    SophomoreRep {
         override fun toString() = "Sophomore Rep"
     },
     JuniorRep {
