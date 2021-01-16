@@ -61,9 +61,12 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             else updatedUserObj.bio = newBio
 
             val chipArr: MutableList<UserTags> = ArrayList()
+            /* Convert chip texts to enum */
             for (chip in binding.editProfileChips) {
-                if (chip != binding.chipAddTag) {
-                    chipArr.add(UserTags.valueOf((chip as Chip).text.toString().filter { !it.isWhitespace() }))
+                when ((chip as Chip).text.toString().filter { !it.isWhitespace() }) {
+                    "+Addtag" -> continue
+                    "H&DRep" -> chipArr.add(UserTags.HAndDRep)
+                    else -> chipArr.add(UserTags.valueOf(chip.text.toString().filter { !it.isWhitespace() }))
                 }
             }
             updatedUserObj.tags = chipArr

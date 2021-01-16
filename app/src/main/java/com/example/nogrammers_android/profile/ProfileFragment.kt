@@ -52,15 +52,15 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
         // Create dummy users
 //        val db = Firebase.database.reference.child("users")
 //        val userObjs = listOf(
-//                User("tmg5", 2022, "Timothy Goh", "I like boba", arrayListOf(UserTags.JuniorRep)),
+//                User("tmg5", 2022, "Timothy Goh", "I like boba", arrayListOf(UserTags.JuniorRep, UserTags.HAndDRep, UserTags.OWeekCoordinator)),
 //                User("al84", 2023, "Adrienne Li", "I am the master coder", arrayListOf(UserTags.FreshmanRep, UserTags.PAA, UserTags.CCCRep)),
 //                User("cmz2", 2022, "Christina Zhou", "Archi is my passion", arrayListOf(UserTags.SophomoreRep, UserTags.RHA, UserTags.DiversityFacilitator)),
-//                User("cbk1", 2022, "Colin King", "Gym bro", arrayListOf(UserTags.StriveLiason, UserTags.CJ, UserTags.PHA)),
+//                User("cbk1", 2022, "Colin King", "Gym bro", arrayListOf(UserTags.BeerBikeCaptain, UserTags.Historian, UserTags.SocialsHead)),
 //                User("rjp5", 2023, "Julie Park", "Wakes up before the sun everyday :D", arrayListOf(UserTags.StriveLiason, UserTags.PHA, UserTags.CCCRep)),
 //                User("cys4", 2023, "Cindy Sheng", "Join Rice Design y'all", arrayListOf(UserTags.SophomoreRep, UserTags.FreshmanRep, UserTags.JuniorRep)),
 //                User("jdh16", 2021, "Johnny Ho", "Forza? ez", arrayListOf(UserTags.SeniorRep))
 //        )
-//
+
 //        for (userObj in userObjs) db.child(userObj.netID).setValue(userObj)
 
         val database = dbUserRef.child(netID)
