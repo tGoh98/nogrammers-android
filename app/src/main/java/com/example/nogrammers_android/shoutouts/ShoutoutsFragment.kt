@@ -22,7 +22,6 @@ class ShoutoutsFragment : Fragment() {
                 inflater,
                 R.layout.fragment_shoutouts, container, false
         )
-
         /* Create and set tabs adapter */
         binding.shoutoutsTabsPager.adapter = ShoutoutsTabAdapter(activity as AppCompatActivity, 2)
 

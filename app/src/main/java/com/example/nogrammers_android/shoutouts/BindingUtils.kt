@@ -62,5 +62,5 @@ fun ImageView.setPfp(item: Shoutout2) {
 
 @BindingAdapter("rooCount")
 fun TextView.setRooCount(item: Shoutout2) {
-    rooCount = item.rooCount
+//    rooCount = item.rooCount
 }

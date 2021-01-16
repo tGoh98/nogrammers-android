@@ -31,4 +31,10 @@
     <string name="shoutout_shit_body">Message</string>
     <string name="post_shoutout_shit">Post shoutout/shit</string>
     <string name="create_shoutout_shit">Create Shoutout/Shit</string>
+    <string name="name">[Name]</string>
+    <string name="netid">NetID</string>
+    <string name="bio">bio</string>
+    <string name="password">Password</string>
+    <string name="login_signup">Login/Signup</string>
+    <string name="edit_profile">Edit profile</string>
 </resources>
