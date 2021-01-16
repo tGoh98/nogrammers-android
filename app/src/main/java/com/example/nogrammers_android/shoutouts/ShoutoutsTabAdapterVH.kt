@@ -2,14 +2,17 @@ package com.example.nogrammers_android.shoutouts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.nogrammers_android.databinding.ShoutoutItemBinding
 
 /**
  * Adapter for shoutouts item in recycler view
  */
-class ShoutoutsAdapter(private val data: List<Shoutout>) :
-    RecyclerView.Adapter<ShoutoutsAdapter.ShoutoutViewHolder>() {
+class ShoutoutsTabAdapterVH(private val data: List<Shoutout>) :
+    RecyclerView.Adapter<ShoutoutsTabAdapterVH.ShoutoutViewHolder>() {
 
     // TODO: instead of passing in static data, consider managing list contents with https://developer.android.com/codelabs/kotlin-android-training-diffutil-databinding/#3
 
@@ -60,4 +63,10 @@ class ShoutoutsAdapter(private val data: List<Shoutout>) :
             }
         }
     }
+}
+class ShoutoutsTabAdapter(activity: AppCompatActivity, val itemsCount: Int) :
+        FragmentStateAdapter(activity) {
+    override fun getItemCount() = itemsCount
+
+    override fun createFragment(position: Int): Fragment = ShoutoutsTabFragment.getInstance(position)
 }
