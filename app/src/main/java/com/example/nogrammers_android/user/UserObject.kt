@@ -8,6 +8,6 @@ class UserObject {
     var gradYr: Int = -1
     var name: String = ""
     var bio: String = ""
-    var tags: List<UserTags> = ArrayList()
+    var tags: MutableList<UserTags> = mutableListOf()
     val admin: Boolean = false
 }

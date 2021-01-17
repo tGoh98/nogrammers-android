@@ -156,5 +156,14 @@ enum class UserTags {
     },
     PCA {
         override fun toString() = "PCA"
+    };
+
+    companion object {
+        fun textToUserTag(txt: String): UserTags {
+            return when (txt) {
+                "H&D Rep" -> HAndDRep
+                else -> valueOf(txt.filter { !it.isWhitespace() })
+            }
+        }
     }
 }

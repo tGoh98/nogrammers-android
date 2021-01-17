@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.announcements.AnnouncementsFragment
 import com.example.nogrammers_android.events.EventsFragment
@@ -24,7 +26,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     lateinit var database: DatabaseReference
-    var showEditIcon = false
+    var isProfilePage = false
     private lateinit var shoutoutsFrag: ShoutoutsFragment
     private lateinit var eventsFrag: EventsFragment
     private lateinit var announcementsFrag: AnnouncementsFragment
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
-        menu?.getItem(0)?.isVisible = showEditIcon
+        menu?.getItem(0)?.isVisible = isProfilePage
         return true
     }
 
@@ -104,7 +106,10 @@ class MainActivity : AppCompatActivity() {
     private fun setCurrentFragment(fragment: Fragment, tabTitle: String) {
         invalidateOptionsMenu()
         supportActionBar?.title = tabTitle
-        showEditIcon = fragment is ProfileFragment // Only display edit icon for profile main page
+        isProfilePage = fragment is ProfileFragment
+        val searchBarLayout = findViewById<ConstraintLayout>(R.id.searchBarLayout)
+        if (isProfilePage) searchBarLayout.visibility = View.VISIBLE
+        else searchBarLayout.visibility = View.GONE
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_fragment, fragment)

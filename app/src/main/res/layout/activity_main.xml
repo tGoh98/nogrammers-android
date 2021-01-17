@@ -7,10 +7,10 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/appBarLayout"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -22,12 +22,55 @@
             android:paddingHorizontal="18dp"
             android:paddingBottom="6dp"
             android:theme="?attr/actionBarTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/top_app_bar"
             app:title="Shoutouts"
             app:titleTextAppearance="@style/TabHeader"
-            app:titleTextColor="@color/olive" />
+            app:titleTextColor="@color/olive">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/searchBarLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="0dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/searchBarBackground"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/search_bar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/searchBarIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/ic_baseline_search_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/searchBarBackground"
+                    app:layout_constraintStart_toStartOf="@+id/searchBarBackground"
+                    app:layout_constraintTop_toTopOf="@id/searchBarBackground" />
+
+                <EditText
+                    android:id="@+id/searchBarEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:background="@color/greySearchBar"
+                    android:hint="Search by tag"
+                    android:textColor="@color/greyText"
+                    android:textColorHint="@color/greyText"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/searchBarIcon"
+                    app:layout_constraintStart_toEndOf="@+id/searchBarIcon"
+                    app:layout_constraintTop_toTopOf="@id/searchBarIcon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
