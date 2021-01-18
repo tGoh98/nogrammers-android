@@ -13,8 +13,8 @@ enum class UserTags {
     RHA {
         override fun toString() = "RHA"
     },
-    StriveLiason {
-        override fun toString() = "Strive Liason"
+    STRIVELiaison {
+        override fun toString() = "STRIVE Liaison"
     },
     CCCRep {
         override fun toString() = "CCC Rep"
@@ -156,13 +156,29 @@ enum class UserTags {
     },
     PCA {
         override fun toString() = "PCA"
-    };
+    },
+    DuncSquad {
+        override fun toString() = "Dunc Squad"
+    },
+    DuncEC {
+        override fun toString() = "Dunc EC"
+    },
+    Admin {
+        override fun toString() = "Admin"
+    },
+    UnknownTag;
 
     companion object {
         fun textToUserTag(txt: String): UserTags {
             return when (txt) {
                 "H&D Rep" -> HAndDRep
-                else -> valueOf(txt.filter { !it.isWhitespace() })
+                else -> {
+                    try {
+                        valueOf(txt.filter { !it.isWhitespace() })
+                    } catch (e: Exception) {
+                        UnknownTag
+                    }
+                }
             }
         }
     }

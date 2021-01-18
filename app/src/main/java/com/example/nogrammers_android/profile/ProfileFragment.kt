@@ -44,7 +44,7 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
         /* Tab layout mediator to connect tab labels to ViewPager */
         TabLayoutMediator(binding.profileTabLayout, binding.profileTabsPager) { tab, pos ->
             when (pos) {
-                0 -> tab.text = "My Posts"
+                0 -> tab.text = "Posts"
                 else -> tab.text = "Mentions"
             }
         }.attach()
@@ -56,7 +56,7 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
 //                User("al84", 2023, "Adrienne Li", "I am the master coder", arrayListOf(UserTags.FreshmanRep, UserTags.PAA, UserTags.CCCRep)),
 //                User("cmz2", 2022, "Christina Zhou", "Archi is my passion", arrayListOf(UserTags.SophomoreRep, UserTags.RHA, UserTags.DiversityFacilitator)),
 //                User("cbk1", 2022, "Colin King", "Gym bro", arrayListOf(UserTags.BeerBikeCaptain, UserTags.Historian, UserTags.SocialsHead)),
-//                User("rjp5", 2023, "Julie Park", "Wakes up before the sun everyday :D", arrayListOf(UserTags.StriveLiason, UserTags.PHA, UserTags.CCCRep)),
+//                User("rjp5", 2023, "Julie Park", "Wakes up before the sun everyday :D", arrayListOf(UserTags.STRIVELiason, UserTags.PHA, UserTags.CCCRep)),
 //                User("cys4", 2023, "Cindy Sheng", "Join Rice Design y'all", arrayListOf(UserTags.SophomoreRep, UserTags.FreshmanRep, UserTags.JuniorRep)),
 //                User("jdh16", 2021, "Johnny Ho", "Forza? ez", arrayListOf(UserTags.SeniorRep))
 //        )
@@ -94,6 +94,7 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
         val chipGroup = binding.profileChips
         for (tag in userObj.tags) {
             val chip = Chip(context)
+            // Note: crashes with NPE error if firebase tag array doesn't start with index 0
             chip.text = tag.toString()
             chipGroup.addView(chip)
         }

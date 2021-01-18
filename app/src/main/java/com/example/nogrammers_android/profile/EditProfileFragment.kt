@@ -64,9 +64,9 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
         /* Add tag chip */
         binding.chipAddTag.setOnClickListener {
-            val availTags = UserTags.values().filter { it !in userObj.tags }.map { it.toString() }
+            val availTags = UserTags.values().filter { it !in userObj.tags && it != UserTags.UnknownTag }.map { it.toString() }
                 .sortedBy { it }.toTypedArray()
-            val initialCheckedItem = 1
+            val initialCheckedItem = 0
             var chosenIndex = initialCheckedItem
 
             context?.let { it1 ->
