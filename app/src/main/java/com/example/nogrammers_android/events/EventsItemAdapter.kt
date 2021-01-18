@@ -1,8 +1,10 @@
 package com.example.nogrammers_android.events
 
+import android.R
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.databinding.EventItemBinding
 
@@ -37,6 +39,9 @@ class EventsItemAdapter(private val data: List<Event>) :
                         parent,
                         false
                 )
+                val markAs_options = listOf("Mark as", "Interested",
+                        "Going")
+                binding.markAs.adapter = ArrayAdapter(parent.context, R.layout.simple_spinner_item, markAs_options)
                 return EventViewHolder(binding)
             }
         }

@@ -42,4 +42,14 @@
     <string name="in_person">In-person</string>
     <string name="Campus_wide">Campus-wide</string>
     <string name="Duncaroos_only">Duncaroos-only</string>
+    <string name="title">Title</string>
+    <string name="add_event_title">Add Event Title</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="location_hint">ex. 123 Main St. or Coffeehouse</string>
+    <string name="description">Description</string>
+    <string name="description_hint">Add description</string>
+    <string name="tags">Tags</string>
+    <string name="add_event_image">Add event image</string>
+    <string name="post_event">Post event</string>
 </resources>

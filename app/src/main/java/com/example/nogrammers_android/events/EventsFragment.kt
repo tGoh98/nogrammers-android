@@ -1,13 +1,17 @@
 package com.example.nogrammers_android.events
 
+import android.graphics.Color
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.alpha
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentEventsBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -16,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator
  * Events tab
  */
 class EventsFragment : Fragment() {
-    lateinit var binding:FragmentEventsBinding;
+    lateinit var binding:FragmentEventsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +43,7 @@ class EventsFragment : Fragment() {
             }
         }.attach()
 
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
 
         val order_options = listOf("Most recent first",
          "Saved first", "Most popular first")
@@ -49,18 +53,23 @@ class EventsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.event_actions, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.event_actions, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
+    /**
+     * hide/show filter layout when action bar button is pressed
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val action = item.itemId;
+        val action = item.itemId
         if (action.equals(R.id.action_filter)) {
             if (binding.filterLayout.visibility.equals(View.GONE)) {
                 binding.filterLayout.visibility = View.VISIBLE
+                binding.addEventButton.visibility = View.GONE
             }
             else {
                 binding.filterLayout.visibility = View.GONE
+                binding.addEventButton.visibility = View.VISIBLE
             }
         }
         else {
@@ -68,4 +77,5 @@ class EventsFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }

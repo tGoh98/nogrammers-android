@@ -4,7 +4,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.nogrammers_android.R
-import com.example.nogrammers_android.shoutouts.Shoutout
 
 /**
  * Binding adapters for Events
@@ -22,16 +21,6 @@ fun TextView.setDesc(item: Event) {
 @BindingAdapter("date")
 fun TextView.setDate(item: Event) {
     text = item.start + " to " + item.end
-}
-
-@BindingAdapter("saveText")
-fun TextView.setSave(item: Event) {
-    text = "Save"
-}
-
-@BindingAdapter("savePic")
-fun ImageView.setSavePic(item: Event) {
-    setImageResource(R.drawable.heart)
 }
 
 @BindingAdapter("backgroundPic")
