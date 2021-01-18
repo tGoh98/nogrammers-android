@@ -13,8 +13,8 @@ enum class UserTags {
     RHA {
         override fun toString() = "RHA"
     },
-    StriveLiason {
-        override fun toString() = "Strive Liason"
+    STRIVELiaison {
+        override fun toString() = "STRIVE Liaison"
     },
     CCCRep {
         override fun toString() = "CCC Rep"
@@ -33,50 +33,153 @@ enum class UserTags {
     },
     SeniorRep {
         override fun toString() = "Senior Rep"
+    },
+    LVP {
+        override fun toString() = "LVP"
+    },
+    SpiritCommittee {
+        override fun toString() = "Spirit Committee"
+    },
+    SpiritHead {
+        override fun toString() = "Spirit Head"
+    },
+    SocialsCommittee {
+        override fun toString() = "Socials Committee"
+    },
+    SocialsHead {
+        override fun toString() = "Socials Head"
+    },
+    CultureAndArtCommittee {
+        override fun toString() = "Culture And Art Committee"
+    },
+    CultureAndArtsHead {
+        override fun toString() = "Culture And Arts Head"
+    },
+    ImprovementsCommittee {
+        override fun toString() = "Improvements Committee"
+    },
+    ImprovementsHead {
+        override fun toString() = "Improvements Head"
+    },
+    AssociatesCommittee {
+        override fun toString() = "Associates Committee"
+    },
+    AssociatesHead {
+        override fun toString() = "Associates Head"
+    },
+    SeniorHead {
+        override fun toString() = "Senior Head"
+    },
+    BeerBikeCommittee {
+        override fun toString() = "Beer Bike Committee"
+    },
+    BeerBikeHead {
+        override fun toString() = "Beer Bike Head"
+    },
+    BeerBikeCaptain {
+        override fun toString() = "Beer Bike Captain"
+    },
+    MerchRep {
+        override fun toString() = "Merch Rep"
+    },
+    EcoRep {
+        override fun toString() = "Eco Rep"
+    },
+    SMR {
+        override fun toString() = "SMR"
+    },
+    SportsRep {
+        override fun toString() = "Sports Rep"
+    },
+    KitchenRep {
+        override fun toString() = "Kitchen Rep"
+    },
+    TechRep {
+        override fun toString() = "Tech Rep"
+    },
+    Historian {
+        override fun toString() = "Historian"
+    },
+    ServiceRep {
+        override fun toString() = "Service Rep"
+    },
+    TOKCRep {
+        override fun toString() = "TOKC Rep"
+    },
+    AlumniRep {
+        override fun toString() = "Alumni Rep"
+    },
+    RPCRep {
+        override fun toString() = "RPC Rep"
+    },
+    InternationalStudentRep {
+        override fun toString() = "International Student Rep"
+    },
+    OCRep {
+        override fun toString() = "OC Rep"
+    },
+    HAndDRep {
+        override fun toString() = "H&D Rep"
+    },
+    LaundryRep {
+        override fun toString() = "Laundry Rep"
+    },
+    NewStudentCommittee {
+        override fun toString() = "New Student Committee"
+    },
+    SASenator {
+        override fun toString() = "SA Senator"
+    },
+    SANSR {
+        override fun toString() = "SA NSR"
+    },
+    VP {
+        override fun toString() = "VP"
+    },
+    President {
+        override fun toString() = "President"
+    },
+    Treasurer {
+        override fun toString() = "Treasurer"
+    },
+    UCourtRep {
+        override fun toString() = "UCourt Rep"
+    },
+    HonorCouncilRep {
+        override fun toString() = "Honor Council Rep"
+    },
+    OWeekCoordinator {
+        override fun toString() = "OWeek Coordinator"
+    },
+    OWeekAdvisor {
+        override fun toString() = "OWeek Advisor"
+    },
+    PCA {
+        override fun toString() = "PCA"
+    },
+    DuncSquad {
+        override fun toString() = "Dunc Squad"
+    },
+    DuncEC {
+        override fun toString() = "Dunc EC"
+    },
+    Admin {
+        override fun toString() = "Admin"
+    },
+    UnknownTag;
+
+    companion object {
+        fun textToUserTag(txt: String): UserTags {
+            return when (txt) {
+                "H&D Rep" -> HAndDRep
+                else -> {
+                    try {
+                        valueOf(txt.filter { !it.isWhitespace() })
+                    } catch (e: Exception) {
+                        UnknownTag
+                    }
+                }
+            }
+        }
     }
 }
-
-/*
-LVP
-Spirit Committee
-Spirit Head
-Socials Committee
-Socials Head
-Culture and Art Committee
-Culture and Arts Head
-Improvements Committee
-Improvements Head
-Associates Committee
-Associates Head
-Senior Head
-Beer Bike Committee
-Beer Bike Head
-Beer Bike Captain
-Merch Rep
-Eco Rep
-SMR
-Sports Rep
-Kitchen Rep
-Tech Rep
-Historians
-Service Rep
-TOKC Rep
-Alumni Rep
-RPC Rep
-International Student Rep
-OC Rep
-H&D Rep
-Laundry Rep
-New Student Committee
-SA Senator
-SA NSR
-VP
-President
-Treasurer
-U Court Rep
-Honor Council Rep
-OWeek Coordinator
-OWeek Advisor
-PCA
-
- */

@@ -24,18 +24,22 @@ import com.google.firebase.database.ValueEventListener
 /**
  * Profile tab
  */
-class ProfileFragment(private val netID: String, private val dbUserRef: DatabaseReference) : Fragment() {
+class ProfileFragment(
+    private val netID: String,
+    private val dbUserRef: DatabaseReference,
+    val showEditIcon: Boolean
+) : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         /* Inflate the layout for this fragment */
         binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_profile, container, false
+            inflater,
+            R.layout.fragment_profile, container, false
         )
 
         /* Create and set tabs adapter */
@@ -44,7 +48,7 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
         /* Tab layout mediator to connect tab labels to ViewPager */
         TabLayoutMediator(binding.profileTabLayout, binding.profileTabsPager) { tab, pos ->
             when (pos) {
-                0 -> tab.text = "My Posts"
+                0 -> tab.text = "Posts"
                 else -> tab.text = "Mentions"
             }
         }.attach()
@@ -52,15 +56,15 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
         // Create dummy users
 //        val db = Firebase.database.reference.child("users")
 //        val userObjs = listOf(
-//                User("tmg5", 2022, "Timothy Goh", "I like boba", arrayListOf(UserTags.JuniorRep)),
+//                User("tmg5", 2022, "Timothy Goh", "I like boba", arrayListOf(UserTags.JuniorRep, UserTags.HAndDRep, UserTags.OWeekCoordinator)),
 //                User("al84", 2023, "Adrienne Li", "I am the master coder", arrayListOf(UserTags.FreshmanRep, UserTags.PAA, UserTags.CCCRep)),
 //                User("cmz2", 2022, "Christina Zhou", "Archi is my passion", arrayListOf(UserTags.SophomoreRep, UserTags.RHA, UserTags.DiversityFacilitator)),
-//                User("cbk1", 2022, "Colin King", "Gym bro", arrayListOf(UserTags.StriveLiason, UserTags.CJ, UserTags.PHA)),
-//                User("rjp5", 2023, "Julie Park", "Wakes up before the sun everyday :D", arrayListOf(UserTags.StriveLiason, UserTags.PHA, UserTags.CCCRep)),
+//                User("cbk1", 2022, "Colin King", "Gym bro", arrayListOf(UserTags.BeerBikeCaptain, UserTags.Historian, UserTags.SocialsHead)),
+//                User("rjp5", 2023, "Julie Park", "Wakes up before the sun everyday :D", arrayListOf(UserTags.STRIVELiason, UserTags.PHA, UserTags.CCCRep)),
 //                User("cys4", 2023, "Cindy Sheng", "Join Rice Design y'all", arrayListOf(UserTags.SophomoreRep, UserTags.FreshmanRep, UserTags.JuniorRep)),
 //                User("jdh16", 2021, "Johnny Ho", "Forza? ez", arrayListOf(UserTags.SeniorRep))
 //        )
-//
+
 //        for (userObj in userObjs) db.child(userObj.netID).setValue(userObj)
 
         val database = dbUserRef.child(netID)
@@ -68,7 +72,14 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // TODO: add fail check
                 val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
-                val userObj = User(userObjTemp.netID, userObjTemp.gradYr, userObjTemp.name, userObjTemp.bio, userObjTemp.tags, userObjTemp.admin)
+                val userObj = User(
+                    userObjTemp.netID,
+                    userObjTemp.gradYr,
+                    userObjTemp.name,
+                    userObjTemp.bio,
+                    userObjTemp.tags,
+                    userObjTemp.admin
+                )
 
                 updateUI(userObj)
             }
@@ -94,6 +105,7 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
         val chipGroup = binding.profileChips
         for (tag in userObj.tags) {
             val chip = Chip(context)
+            // Note: crashes with NPE error if firebase tag array doesn't start with index 0
             chip.text = tag.toString()
             chipGroup.addView(chip)
         }

@@ -37,4 +37,5 @@
     <string name="password">Password</string>
     <string name="login_signup">Login/Signup</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="suggested_tags">Suggested Tags</string>
 </resources>
