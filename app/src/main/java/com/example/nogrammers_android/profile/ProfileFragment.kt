@@ -24,18 +24,22 @@ import com.google.firebase.database.ValueEventListener
 /**
  * Profile tab
  */
-class ProfileFragment(private val netID: String, private val dbUserRef: DatabaseReference) : Fragment() {
+class ProfileFragment(
+    private val netID: String,
+    private val dbUserRef: DatabaseReference,
+    val showEditIcon: Boolean
+) : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         /* Inflate the layout for this fragment */
         binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_profile, container, false
+            inflater,
+            R.layout.fragment_profile, container, false
         )
 
         /* Create and set tabs adapter */
@@ -68,7 +72,14 @@ class ProfileFragment(private val netID: String, private val dbUserRef: Database
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // TODO: add fail check
                 val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
-                val userObj = User(userObjTemp.netID, userObjTemp.gradYr, userObjTemp.name, userObjTemp.bio, userObjTemp.tags, userObjTemp.admin)
+                val userObj = User(
+                    userObjTemp.netID,
+                    userObjTemp.gradYr,
+                    userObjTemp.name,
+                    userObjTemp.bio,
+                    userObjTemp.tags,
+                    userObjTemp.admin
+                )
 
                 updateUI(userObj)
             }

@@ -64,8 +64,10 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
         /* Add tag chip */
         binding.chipAddTag.setOnClickListener {
-            val availTags = UserTags.values().filter { it !in userObj.tags && it != UserTags.UnknownTag }.map { it.toString() }
-                .sortedBy { it }.toTypedArray()
+            val availTags =
+                UserTags.values().filter { it !in userObj.tags && it != UserTags.UnknownTag }
+                    .map { it.toString() }
+                    .sortedBy { it }.toTypedArray()
             val initialCheckedItem = 0
             var chosenIndex = initialCheckedItem
 
@@ -91,6 +93,7 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
         /* Save button */
         binding.editProfileSaveBtn.setOnClickListener {
+            // TODO: Add validation/constraints (e.g. name cannot have special characters like parentheses)
             /* Update user obj */
             val updatedUserObj = User(userNetID)
             val newName = binding.editProfileNameField.text.toString()

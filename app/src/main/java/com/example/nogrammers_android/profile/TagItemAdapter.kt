@@ -13,7 +13,8 @@ import com.example.nogrammers_android.R
  * Adapter for recycler view for tag items
  * Takes in onclick handler to respond to selected items
  */
-class TagItemAdapter(var clickListener: CellClickListener) : ListAdapter<String, TagItemAdapter.TagItemViewHolder>(TagItemDiffCallback()) {
+class TagItemAdapter(var clickListener: CellClickListener) :
+    ListAdapter<String, TagItemAdapter.TagItemViewHolder>(TagItemDiffCallback()) {
 
     class TagItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val textView: TextView = view.findViewById(R.id.tagItem)
@@ -26,7 +27,8 @@ class TagItemAdapter(var clickListener: CellClickListener) : ListAdapter<String,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagItemViewHolder {
-        val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.tag_item, parent, false)
+        val adapterLayout =
+            LayoutInflater.from(parent.context).inflate(R.layout.tag_item, parent, false)
         return TagItemViewHolder(adapterLayout)
     }
 
@@ -42,5 +44,6 @@ class TagItemAdapter(var clickListener: CellClickListener) : ListAdapter<String,
 class TagItemDiffCallback : DiffUtil.ItemCallback<String>() {
     override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
 
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = areItemsTheSame(oldItem, newItem)
- }
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+        areItemsTheSame(oldItem, newItem)
+}
