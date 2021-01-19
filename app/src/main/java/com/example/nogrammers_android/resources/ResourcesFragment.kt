@@ -23,7 +23,12 @@ class ResourcesFragment : Fragment() {
     ): View? {
 
         /* Inflate the layout for this fragment */
-        val binding = DataBindingUtil.inflate<FragmentResourcesBinding>(inflater, R.layout.fragment_resources, container, false)
+        val binding = DataBindingUtil.inflate<FragmentResourcesBinding>(
+            inflater,
+            R.layout.fragment_resources,
+            container,
+            false
+        )
 
         /* Banner listener */
         binding.blmBannerLink.setOnClickListener {
@@ -32,8 +37,15 @@ class ResourcesFragment : Fragment() {
 
         /* Listeners */
         binding.resourceWebsiteCell.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://riceduncan.github.io/"))
-            startActivity(i)
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://riceduncan.github.io/")
+                )
+            )
+        }
+        binding.resourceFormsCell.setOnClickListener {
+            (activity as MainActivity).setFormsFragAdapter()
         }
 
         binding.joeyImg.setOnClickListener {

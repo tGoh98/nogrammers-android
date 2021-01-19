@@ -21,6 +21,7 @@ import com.example.nogrammers_android.profile.EditProfileFragment
 import com.example.nogrammers_android.profile.ProfileFragment
 import com.example.nogrammers_android.profile.TagSearchFragment
 import com.example.nogrammers_android.resources.BlmFragment
+import com.example.nogrammers_android.resources.FormsFragment
 import com.example.nogrammers_android.resources.ResourcesFragment
 import com.example.nogrammers_android.shoutouts.ShoutoutsFragment
 import com.example.nogrammers_android.user.User
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editProfileFrag: EditProfileFragment
     private lateinit var tagSearchFrag: TagSearchFragment
     private lateinit var blmFrag: BlmFragment
+    private lateinit var formsFrag: FormsFragment
     private lateinit var backArrow: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         announcementsFrag = AnnouncementsFragment()
         resourcesFrag = ResourcesFragment()
         blmFrag = BlmFragment()
+        formsFrag = FormsFragment()
         profileFrag = ProfileFragment(userNetID, database, true)
         editProfileFrag = EditProfileFragment(userNetID, database)
         tagSearchFrag = TagSearchFragment(object : CellClickListener {
@@ -195,12 +198,9 @@ class MainActivity : AppCompatActivity() {
                 setCurrentFragment(profileFrag, "Profile")
             }
         }
-        if (fragment is BlmFragment) {
+        if (fragment is BlmFragment || fragment is FormsFragment) {
             backArrow.visibility = View.VISIBLE
             backArrow.setOnClickListener {
-                /* Hide keyboard and clear search */
-                loseSearchBarFocus()
-
                 /* Replace fragment */
                 setCurrentFragment(resourcesFrag, "Resources")
             }
@@ -262,6 +262,13 @@ class MainActivity : AppCompatActivity() {
      */
     fun setBlmFragAdapter() {
         setCurrentFragment(blmFrag, "")
+    }
+
+    /**
+     * Adapter to navigate to forms fragment
+     */
+    fun setFormsFragAdapter() {
+        setCurrentFragment(formsFrag, "")
     }
 
     /**
