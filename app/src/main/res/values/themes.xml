@@ -46,7 +46,7 @@
     </style>
 
     <style name="RegularTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textSize">19sp</item> <!-- 14px = 19sp -->
+        <item name="android:textSize">19sp</item>
         <item name="android:fontFamily">@font/acarisans_regular</item>
         <item name="fontFamily">@font/acarisans_regular</item>
     </style>
@@ -74,6 +74,7 @@
         <item name="chipBackgroundColor">@color/olive</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/ChipText</item>
+        <item name="closeIconTint">@color/white</item>
     </style>
 
     <style name="ChipText" parent="@android:style/TextAppearance">
