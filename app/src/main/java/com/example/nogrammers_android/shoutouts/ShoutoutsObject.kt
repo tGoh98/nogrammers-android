@@ -7,4 +7,5 @@ class ShoutoutsObject {
     var author: String = "author"
     var date: String = "0"
     var msg: String = "test"
+    var rooCount: Int = 0
 }

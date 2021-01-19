@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var database: DatabaseReference
     var showEditIcon = false
+    var showShoutoutRanking = false
     private lateinit var shoutoutsFrag: ShoutoutsFragment
     private lateinit var eventsFrag: EventsFragment
     private lateinit var announcementsFrag: AnnouncementsFragment
@@ -83,7 +84,8 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
-        menu?.getItem(0)?.isVisible = showEditIcon
+        menu?.getItem(0)?.isVisible = showShoutoutRanking
+        menu?.getItem(1)?.isVisible = showEditIcon
         return true
     }
 
@@ -105,6 +107,7 @@ class MainActivity : AppCompatActivity() {
         invalidateOptionsMenu()
         supportActionBar?.title = tabTitle
         showEditIcon = fragment is ProfileFragment // Only display edit icon for profile main page
+        showShoutoutRanking = fragment is ShoutoutsFragment
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_fragment, fragment)

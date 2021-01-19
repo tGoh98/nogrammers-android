@@ -16,6 +16,8 @@
             android:layout_gravity="top"
             android:layout_weight="2"
             android:scrollbars="vertical"
+            android:paddingVertical="10dp"
+            android:clipToPadding="false"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/transparentShoutoutsOverlay"
             app:layout_constraintEnd_toEndOf="parent"

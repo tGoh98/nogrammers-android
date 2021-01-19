@@ -22,7 +22,7 @@ fun TextView.setMsg(item: Shoutout) {
 
 @BindingAdapter("date")
 fun TextView.setDate(item: Shoutout) {
-    val sdf = SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault())
+    val sdf = SimpleDateFormat("MM/dd/yy 'at' hh:mm a", Locale.getDefault())
     val date = java.util.Date(item.date.toLong())
     text = sdf.format(date)
 //    text = java.util.Date(item.date.toLong()).toString()
@@ -47,7 +47,7 @@ fun TextView.setMsg(item: Shoutout2) {
 
 @BindingAdapter("date2")
 fun TextView.setDate(item: Shoutout2) {
-    val sdf = SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault())
+    val sdf = SimpleDateFormat("MM/dd/yy 'at' hh:mm a", Locale.getDefault())
     val date = java.util.Date(item.date.toLong())
     text = sdf.format(date)
 //    text = java.util.Date(item.date.toLong()).toString()
