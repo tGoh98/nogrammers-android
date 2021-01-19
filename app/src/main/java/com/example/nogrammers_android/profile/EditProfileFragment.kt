@@ -16,20 +16,26 @@ import com.example.nogrammers_android.user.User
 import com.example.nogrammers_android.user.UserObject
 import com.example.nogrammers_android.user.UserTags
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
 
-class EditProfileFragment(private val userNetID: String, private val dbUserRef: DatabaseReference) : Fragment() {
+class EditProfileFragment(private val userNetID: String, private val dbUserRef: DatabaseReference) :
+    Fragment() {
 
     lateinit var binding: FragmentEditProfileBinding
+    lateinit var userObj: User
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         /* Inflate the layout for this fragment */
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
 
         /* Populate with user information */
         val database = dbUserRef.child(userNetID)
@@ -37,7 +43,14 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // TODO: add fail check
                 val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
-                val userObj = User(userObjTemp.netID, userObjTemp.gradYr, userObjTemp.name, userObjTemp.bio, userObjTemp.tags, userObjTemp.admin)
+                userObj = User(
+                    userObjTemp.netID,
+                    userObjTemp.gradYr,
+                    userObjTemp.name,
+                    userObjTemp.bio,
+                    userObjTemp.tags,
+                    userObjTemp.admin
+                )
 
                 updateUI(userObj)
             }
@@ -49,8 +62,38 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         }
         database.addListenerForSingleValueEvent(updateListener)
 
+        /* Add tag chip */
+        binding.chipAddTag.setOnClickListener {
+            val availTags =
+                UserTags.values().filter { it !in userObj.tags && it != UserTags.UnknownTag }
+                    .map { it.toString() }
+                    .sortedBy { it }.toTypedArray()
+            val initialCheckedItem = 0
+            var chosenIndex = initialCheckedItem
+
+            context?.let { it1 ->
+                MaterialAlertDialogBuilder(it1)
+                    .setTitle("Which tag do you want to add?")
+                    .setNeutralButton(resources.getString(R.string.cancel)) { _, _ ->
+                        /* Do nothing for cancel */
+                    }
+                    .setPositiveButton("Add tag") { _, _ ->
+                        /* Add selected tag */
+                        val newTag = UserTags.textToUserTag(availTags[chosenIndex])
+                        userObj.tags.add(newTag)
+                        addChip(newTag)
+                    }
+                    .setSingleChoiceItems(availTags, initialCheckedItem) { _, which ->
+                        /* Update selected item */
+                        chosenIndex = which
+                    }
+                    .show()
+            }
+        }
+
         /* Save button */
         binding.editProfileSaveBtn.setOnClickListener {
+            // TODO: Add validation/constraints (e.g. name cannot have special characters like parentheses)
             /* Update user obj */
             val updatedUserObj = User(userNetID)
             val newName = binding.editProfileNameField.text.toString()
@@ -61,10 +104,15 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             else updatedUserObj.bio = newBio
 
             val chipArr: MutableList<UserTags> = ArrayList()
+            /* Convert chip texts to enum */
             for (chip in binding.editProfileChips) {
-                if (chip != binding.chipAddTag) {
-                    chipArr.add(UserTags.valueOf((chip as Chip).text.toString().filter { !it.isWhitespace() }))
-                }
+                /* Deleted chips have visibility = GONE, don't include them */
+                if (chip.visibility == View.GONE) continue
+
+                val chipText = (chip as Chip).text.toString()
+                /* Skip "+ Add tag" */
+                if (chipText == "+ Add tag") continue
+                chipArr.add(UserTags.textToUserTag(chipText))
             }
             updatedUserObj.tags = chipArr
 
@@ -89,12 +137,23 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         binding.editProfileNameField.hint = userObj.name
         binding.editProfileBioField.hint = userObj.bio
 
-        val chipGroup = binding.editProfileChips
-        for (tag in userObj.tags) {
-            val chip = Chip(context)
-            chip.text = tag.toString()
-            chipGroup.addView(chip, chipGroup.size - 1)
+        for (userTag in userObj.tags) {
+            addChip(userTag)
         }
+    }
+
+    /**
+     * Given a user tag, adds the corresponding chip to the chip group
+     */
+    private fun addChip(newTag: UserTags) {
+        val chipGroup = binding.editProfileChips
+        val chip = Chip(context)
+        chip.text = newTag.toString()
+        chip.isCloseIconVisible = true
+        chip.setOnCloseIconClickListener {
+            chip.visibility = View.GONE
+        }
+        chipGroup.addView(chip, chipGroup.size - 1)
     }
 
     /**

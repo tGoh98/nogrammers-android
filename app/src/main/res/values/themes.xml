@@ -74,6 +74,7 @@
         <item name="chipBackgroundColor">@color/olive</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/ChipText</item>
+        <item name="closeIconTint">@color/white</item>
     </style>
 
     <style name="ChipText" parent="@android:style/TextAppearance">
