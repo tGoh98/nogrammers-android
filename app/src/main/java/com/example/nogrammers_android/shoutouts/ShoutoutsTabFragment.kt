@@ -28,7 +28,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-class ShoutoutsTabFragment(val position: Int) : Fragment() {
+class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
     private lateinit var database: DatabaseReference
     private val model: ShoutoutsViewModel by activityViewModels()
     private var shortAnimationDuration: Int = 0
@@ -40,8 +40,8 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
     companion object {
         const val ARG_POSITION = "position"
 
-        fun getInstance(position: Int): Fragment {
-            val shoutoutsTabFragment = ShoutoutsTabFragment(position)
+        fun getInstance(position: Int, netID: String): Fragment {
+            val shoutoutsTabFragment = ShoutoutsTabFragment(position, netID)
             val bundle = Bundle()
             bundle.putInt(ARG_POSITION, position)
             shoutoutsTabFragment.arguments = bundle
@@ -101,17 +101,19 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
+                    Log.d("NETID ", netID)
                     authors.clear()
                     for (ds : DataSnapshot in dataSnapshot.children) {
                         val data = ds.getValue<Any>()
                         val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
                         val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
-                        newShoutout.likes = so.likes.size
-                        newShoutout.angrys = so.angrys.size
-                        newShoutout.loves = so.loves.size
-                        newShoutout.hahas = so.hahas.size
-                        newShoutout.sads = so.sads.size
-                        newShoutout.surprises = so.surprises.size
+                        newShoutout.likes = so.likes
+                        newShoutout.angrys = so.angrys
+                        newShoutout.loves = so.loves
+                        newShoutout.hahas = so.hahas
+                        newShoutout.sads = so.sads
+                        newShoutout.surprises = so.surprises
+                        newShoutout.netID = netID
                         authors.add(newShoutout)
                     }
                     authors.sortByDescending { it.date }

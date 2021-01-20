@@ -1,5 +1,6 @@
 package com.example.nogrammers_android.shoutouts
 
+import android.graphics.Typeface
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -37,33 +38,47 @@ fun ImageView.setPfp(item: Shoutout) {
 
 @BindingAdapter("likes")
 fun TextView.setLikes(item: Shoutout) {
-    text = item.likes.toString()
+    text = item.likes.size.toString()
 }
 
 @BindingAdapter("angrys")
 fun TextView.setAngrys(item: Shoutout) {
-    text = item.angrys.toString()
+    text = item.angrys.size.toString()
 }
 
 @BindingAdapter("hahas")
 fun TextView.setHahas(item: Shoutout) {
-    text = item.hahas.toString()
+    text = item.hahas.size.toString()
 }
 
 @BindingAdapter("loves")
 fun TextView.setLoves(item: Shoutout) {
-    text = item.loves.toString()
+    text = item.loves.size.toString()
 }
 
 @BindingAdapter("sads")
 fun TextView.setSads(item: Shoutout) {
-    text = item.sads.toString()
+    text = item.sads.size.toString()
 }
 
 @BindingAdapter("surprises")
 fun TextView.setSurprises(item: Shoutout) {
-    text = item.surprises.toString()
+    text = item.surprises.size.toString()
 }
+
+@BindingAdapter("userNetID")
+fun TextView.setNetID(item: Shoutout) {
+    text = item.netID
+}
+
+//@BindingAdapter("isBoldLikes")
+//fun TextView.setBolded(item: Shoutout) {
+//    if (item.angrys.contains("jdh16")) {
+//        text.setTypeface(null, Typeface.BOLD)
+//    } else {
+//        textView.setTypeface(null, Typeface.NORMAL)
+//    }
+//}
 
 @BindingAdapter("author2")
 fun TextView.setAuthor(item: Shoutout2) {

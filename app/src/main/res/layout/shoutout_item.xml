@@ -8,6 +8,7 @@
         <variable
             name="shoutout"
             type="com.example.nogrammers_android.shoutouts.Shoutout" />
+        <import type="android.graphics.Typeface" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:likes="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.likes.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="19sp" />
 
             <Space
@@ -116,6 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:loves="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.loves.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="19sp" />
 
             <Space
@@ -136,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:hahas="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.hahas.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="19sp" />
 
             <Space
@@ -156,6 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:surprises="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.surprises.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="19sp" />
 
             <Space
@@ -176,6 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:sads="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.sads.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="19sp" />
 
             <Space
@@ -196,12 +202,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:angrys="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.angrys.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="19sp" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:userNetID="@{shoutout}"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
