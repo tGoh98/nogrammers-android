@@ -47,6 +47,9 @@ class ResourcesFragment : Fragment() {
         binding.resourceFormsCell.setOnClickListener {
             (activity as MainActivity).setFormsFragAdapter()
         }
+        binding.resourceSocialCell.setOnClickListener {
+            (activity as MainActivity).setSocialFragAdapter()
+        }
 
         binding.joeyImg.setOnClickListener {
             Toast.makeText(context, "Joey clicked!", Toast.LENGTH_SHORT).show()

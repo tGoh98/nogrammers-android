@@ -23,6 +23,7 @@ import com.example.nogrammers_android.profile.TagSearchFragment
 import com.example.nogrammers_android.resources.BlmFragment
 import com.example.nogrammers_android.resources.FormsFragment
 import com.example.nogrammers_android.resources.ResourcesFragment
+import com.example.nogrammers_android.resources.SocialFragment
 import com.example.nogrammers_android.shoutouts.ShoutoutsFragment
 import com.example.nogrammers_android.user.User
 import com.example.nogrammers_android.user.UserObject
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tagSearchFrag: TagSearchFragment
     private lateinit var blmFrag: BlmFragment
     private lateinit var formsFrag: FormsFragment
+    private lateinit var socialFrag: SocialFragment
     private lateinit var backArrow: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         resourcesFrag = ResourcesFragment()
         blmFrag = BlmFragment()
         formsFrag = FormsFragment()
+        socialFrag = SocialFragment()
         profileFrag = ProfileFragment(userNetID, database, true)
         editProfileFrag = EditProfileFragment(userNetID, database)
         tagSearchFrag = TagSearchFragment(object : CellClickListener {
@@ -111,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         /* Initialize backArrow, listeners are set later */
         backArrow = findViewById(R.id.tagSearchBackArrow)
 
-        setCurrentFragment(resourcesFrag, "Shoutouts") // Home fragment is shoutouts
+        setCurrentFragment(shoutoutsFrag, "Shoutouts") // Home fragment is shoutouts
 
         /* Fragments are controlled by the bottom nav bar */
         findViewById<BottomNavigationView>(R.id.bottomNavView).setOnNavigationItemSelectedListener {
@@ -198,7 +201,7 @@ class MainActivity : AppCompatActivity() {
                 setCurrentFragment(profileFrag, "Profile")
             }
         }
-        if (fragment is BlmFragment || fragment is FormsFragment) {
+        if (fragment is BlmFragment || fragment is FormsFragment || fragment is SocialFragment) {
             backArrow.visibility = View.VISIBLE
             backArrow.setOnClickListener {
                 /* Replace fragment */
@@ -269,6 +272,13 @@ class MainActivity : AppCompatActivity() {
      */
     fun setFormsFragAdapter() {
         setCurrentFragment(formsFrag, "")
+    }
+
+    /**
+     * Adapter to navigate to forms fragment
+     */
+    fun setSocialFragAdapter() {
+        setCurrentFragment(socialFrag, "")
     }
 
     /**

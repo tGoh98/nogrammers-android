@@ -47,6 +47,7 @@
 
     <style name="ResourceCell" parent="@android:style/TextAppearance">
         <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/olive</item>
         <item name="android:fontFamily">@font/acarisans_bold</item>
         <item name="fontFamily">@font/acarisans_bold</item>
         <item name="android:fontWeight" tools:targetApi="o">700</item>
