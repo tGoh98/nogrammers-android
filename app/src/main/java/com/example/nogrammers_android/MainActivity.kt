@@ -20,6 +20,10 @@ import com.example.nogrammers_android.profile.CellClickListener
 import com.example.nogrammers_android.profile.EditProfileFragment
 import com.example.nogrammers_android.profile.ProfileFragment
 import com.example.nogrammers_android.profile.TagSearchFragment
+import com.example.nogrammers_android.resources.BlmFragment
+import com.example.nogrammers_android.resources.FormsFragment
+import com.example.nogrammers_android.resources.ResourcesFragment
+import com.example.nogrammers_android.resources.SocialFragment
 import com.example.nogrammers_android.shoutouts.ShoutoutsFragment
 import com.example.nogrammers_android.user.User
 import com.example.nogrammers_android.user.UserObject
@@ -42,9 +46,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var shoutoutsFrag: ShoutoutsFragment
     private lateinit var eventsFrag: EventsFragment
     private lateinit var announcementsFrag: AnnouncementsFragment
+    private lateinit var resourcesFrag: ResourcesFragment
     private lateinit var profileFrag: ProfileFragment
     private lateinit var editProfileFrag: EditProfileFragment
     private lateinit var tagSearchFrag: TagSearchFragment
+    private lateinit var blmFrag: BlmFragment
+    private lateinit var formsFrag: FormsFragment
+    private lateinit var socialFrag: SocialFragment
+    private lateinit var backArrow: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +99,10 @@ class MainActivity : AppCompatActivity() {
         shoutoutsFrag = ShoutoutsFragment()
         eventsFrag = EventsFragment()
         announcementsFrag = AnnouncementsFragment()
+        resourcesFrag = ResourcesFragment()
+        blmFrag = BlmFragment()
+        formsFrag = FormsFragment()
+        socialFrag = SocialFragment()
         profileFrag = ProfileFragment(userNetID, database, true)
         editProfileFrag = EditProfileFragment(userNetID, database)
         tagSearchFrag = TagSearchFragment(object : CellClickListener {
@@ -98,6 +111,9 @@ class MainActivity : AppCompatActivity() {
                 showTaggedUsers(data)
             }
         })
+
+        /* Initialize backArrow, listeners are set later */
+        backArrow = findViewById(R.id.tagSearchBackArrow)
 
         setCurrentFragment(shoutoutsFrag, "Shoutouts") // Home fragment is shoutouts
 
@@ -108,6 +124,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.events_icon -> setCurrentFragment(eventsFrag, "Events")
                 R.id.announcements_icon -> setCurrentFragment(announcementsFrag, "Announcements")
                 R.id.profile_icon -> setCurrentFragment(profileFrag, "Profile")
+                R.id.resources_icon -> setCurrentFragment(resourcesFrag, "Resources")
             }
             true
         }
@@ -120,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 ""
             )
         }
-        /* Update results */
+        /* Update tag search results */
         val allTags = UserTags.values().map { it.toString() }.sortedBy { it }
         searchBarTxt.addTextChangedListener {
             tagSearchFrag.removeSuggestedLabel()
@@ -132,15 +149,6 @@ class MainActivity : AppCompatActivity() {
                     allTags.filter { it.startsWith(queryStr, true) },
                     allTags.filter { it.contains(queryStr) }).flatten().toSet().toList()
             )
-        }
-
-        /* Listener for tag search back button */
-        findViewById<ImageView>(R.id.tagSearchBackArrow).setOnClickListener {
-            /* Hide keyboard and clear search */
-            loseSearchBarFocus()
-
-            /* Replace fragment */
-            setCurrentFragment(profileFrag, "Profile")
         }
     }
 
@@ -177,16 +185,31 @@ class MainActivity : AppCompatActivity() {
             fragment is ProfileFragment && fragment.showEditIcon //shortcircuit eval ftw
         val searchBarLayout = findViewById<ConstraintLayout>(R.id.searchBarLayout)
         val searchBarBackground = findViewById<ImageView>(R.id.searchBarBackground)
-        val tagSearchBackArrow = findViewById<ImageView>(R.id.tagSearchBackArrow)
+
         if (fragment is ProfileFragment || fragment is TagSearchFragment) {
             searchBarLayout.visibility = View.VISIBLE
             searchBarBackground.layoutParams.width = dpToPx(200f)
         } else searchBarLayout.visibility = View.GONE
+
+        /* Show backArrow only for certain pages */
+        backArrow.visibility = View.GONE
         if (fragment is TagSearchFragment) {
             searchBarBackground.layoutParams.width = dpToPx(300f)
-            tagSearchBackArrow.visibility = View.VISIBLE
-        } else {
-            tagSearchBackArrow.visibility = View.GONE
+            backArrow.visibility = View.VISIBLE
+            backArrow.setOnClickListener {
+                /* Hide keyboard and clear search */
+                loseSearchBarFocus()
+
+                /* Replace fragment */
+                setCurrentFragment(profileFrag, "Profile")
+            }
+        }
+        if (fragment is BlmFragment || fragment is FormsFragment || fragment is SocialFragment) {
+            backArrow.visibility = View.VISIBLE
+            backArrow.setOnClickListener {
+                /* Replace fragment */
+                setCurrentFragment(resourcesFrag, "Resources")
+            }
         }
 
         /* Replace fragment */
@@ -238,6 +261,27 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         findViewById<EditText>(R.id.searchBarEditText).text.clear()
         findViewById<EditText>(R.id.searchBarEditText).clearFocus()
+    }
+
+    /**
+     * Adapter to navigate to blm fragment
+     */
+    fun setBlmFragAdapter() {
+        setCurrentFragment(blmFrag, "")
+    }
+
+    /**
+     * Adapter to navigate to forms fragment
+     */
+    fun setFormsFragAdapter() {
+        setCurrentFragment(formsFrag, "")
+    }
+
+    /**
+     * Adapter to navigate to forms fragment
+     */
+    fun setSocialFragAdapter() {
+        setCurrentFragment(socialFrag, "")
     }
 
     /**
