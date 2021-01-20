@@ -15,6 +15,10 @@
         android:icon="@drawable/ic_baseline_announcement_24"
         android:title="Announcements" />
     <item
+        android:id="@+id/resources_icon"
+        android:icon="@drawable/ic_baseline_help_24"
+        android:title="Resources" />
+    <item
         android:id="@+id/profile_icon"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="My Profile" />
