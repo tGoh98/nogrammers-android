@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.nogrammers_android.R
+import java.util.*
 
 /**
  * Binding adapters for Events
@@ -20,7 +21,10 @@ fun TextView.setDesc(item: Event) {
 
 @BindingAdapter("date")
 fun TextView.setDate(item: Event) {
-    text = item.start + " to " + item.end
+    text = DateTimeUtil.getStringFromDate(item.start.get(Calendar.MONTH),
+            item.start.get(Calendar.DAY_OF_MONTH)) + " to " +
+            DateTimeUtil.getStringFromDate(item.end.get(Calendar.MONTH),
+                    item.end.get(Calendar.DAY_OF_MONTH))
 }
 
 @BindingAdapter("backgroundPic")

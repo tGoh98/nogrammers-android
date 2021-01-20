@@ -4,6 +4,6 @@ import java.util.*
 
 data class Event(
         val author: String, val title: String, val desc: String,
-        val start: String, val end: String, val tags: List<String>, val format: String,
+        val start: Calendar, val end: Calendar, val tags: List<String>, val format: String,
         val audience: String, val pic: String = ""
 )
