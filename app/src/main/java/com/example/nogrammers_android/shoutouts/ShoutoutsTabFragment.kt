@@ -103,8 +103,15 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
                 if (dataSnapshot.hasChildren()) {
                     authors.clear()
                     for (ds : DataSnapshot in dataSnapshot.children) {
+                        val data = ds.getValue<Any>()
                         val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
                         val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
+                        newShoutout.likes = so.likes.size
+                        newShoutout.angrys = so.angrys.size
+                        newShoutout.loves = so.loves.size
+                        newShoutout.hahas = so.hahas.size
+                        newShoutout.sads = so.sads.size
+                        newShoutout.surprises = so.surprises.size
                         authors.add(newShoutout)
                     }
                     authors.sortByDescending { it.date }

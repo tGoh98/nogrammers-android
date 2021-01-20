@@ -35,6 +35,36 @@ fun ImageView.setPfp(item: Shoutout) {
     else TODO("need to implement custom images")
 }
 
+@BindingAdapter("likes")
+fun TextView.setLikes(item: Shoutout) {
+    text = item.likes.toString()
+}
+
+@BindingAdapter("angrys")
+fun TextView.setAngrys(item: Shoutout) {
+    text = item.angrys.toString()
+}
+
+@BindingAdapter("hahas")
+fun TextView.setHahas(item: Shoutout) {
+    text = item.hahas.toString()
+}
+
+@BindingAdapter("loves")
+fun TextView.setLoves(item: Shoutout) {
+    text = item.loves.toString()
+}
+
+@BindingAdapter("sads")
+fun TextView.setSads(item: Shoutout) {
+    text = item.sads.toString()
+}
+
+@BindingAdapter("surprises")
+fun TextView.setSurprises(item: Shoutout) {
+    text = item.surprises.toString()
+}
+
 @BindingAdapter("author2")
 fun TextView.setAuthor(item: Shoutout2) {
     text = item.author
