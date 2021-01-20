@@ -3,7 +3,9 @@ package com.example.nogrammers_android.events
 import android.R
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.databinding.EventItemBinding
@@ -32,17 +34,28 @@ class EventsItemAdapter(private val data: List<Event>) :
             binding.executePendingBindings()
         }
 
-        companion object {
+        companion object : AdapterView.OnItemSelectedListener {
             fun from(parent: ViewGroup): EventViewHolder {
                 val binding = EventItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                 )
-                val markAs_options = listOf("Mark as", "Interested",
+                val markAsOptions = listOf("Mark as", "Interested",
                         "Going")
-                binding.markAs.adapter = ArrayAdapter(parent.context, R.layout.simple_spinner_item, markAs_options)
+                binding.markAs.adapter = ArrayAdapter(parent.context, R.layout.simple_spinner_item, markAsOptions)
+                binding.markAs.onItemSelectedListener = this
                 return EventViewHolder(binding)
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (parent != null) {
+                    Log.d("Tag",parent.getItemAtPosition(position).toString())
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d("Tag","nothing selected")
             }
         }
     }

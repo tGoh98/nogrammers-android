@@ -212,16 +212,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun applyFilter(view: View) {
-        findViewById<ScrollView>(R.id.filterLayout).visibility = View.GONE
-    }
-
     fun addEvent(view: View) {
         // Create new fragment
         setCurrentFragment(AddEventFragment(), "New Event")
     }
-
-}
 
     /**
      * Adapter to reset current fragment

@@ -12,7 +12,7 @@ import com.example.nogrammers_android.databinding.FragmentEventTabBinding
 /**
  * Fragment for event tabs
  */
-class EventTabsFragment : Fragment() {
+class EventTabsFragment() : Fragment() {
 
     lateinit var binding: FragmentEventTabBinding
 
@@ -45,10 +45,23 @@ class EventTabsFragment : Fragment() {
         val position = requireArguments().getInt(ARG_POSITION)
 
         /* Create recycler view */
-        val adapter = EventsItemAdapter((1..25).map {
+        popEvents(position)
+    }
+
+    fun popEvents(position: Int) {
+        var eventsList = mutableListOf(
             Event("cys", "design club", "meeting time", "7:00", "8:00"
-            , listOf("all of them"), "remote", "duncan", "")
-        })
+                    , listOf("food", "art & music", "competition"), "remote", "duncan", ""),
+                Event("tmg", "brown's finest", "fun times at brown", "7:00", "8:00"
+                        , listOf("food", "art & music", "alcohol"), "in-person", "campus", "")
+        )
+
+        // if on my events tab, filter events
+        if (position == 1) {
+            eventsList.removeFirst()
+        }
+
+        val adapter = EventsItemAdapter(eventsList)
         binding.eventTabList.adapter = adapter
     }
 
