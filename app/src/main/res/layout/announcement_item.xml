@@ -21,18 +21,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="25dp"
-            android:paddingVertical="30dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="30dp">
 
             <TextView
                 android:id="@+id/announcement_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/greyText"
-                app:date="@{announcement}"
                 android:textSize="16sp"
+                app:date="@{announcement}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Thu, Oct 8, 1:34pm" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/urgentPill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.App.ChipUrgent"
+                android:text="Urgent"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:targetApi="lollipop"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/announcement_title"
@@ -63,8 +78,8 @@
                 android:id="@+id/announcement_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/olive"
                 android:layout_marginVertical="5dp"
+                android:textColor="@color/olive"
                 app:content="@{announcement}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/announcement_author"

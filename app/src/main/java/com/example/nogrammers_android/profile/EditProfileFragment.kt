@@ -119,6 +119,9 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             /* Write to firebase */
             dbUserRef.child(userNetID).setValue(updatedUserObj)
 
+            /* Update user's name in app */
+            (activity as MainActivity).userName = newName
+
             closeEditProfile()
         }
 
