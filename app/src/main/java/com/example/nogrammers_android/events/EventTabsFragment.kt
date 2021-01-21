@@ -25,7 +25,7 @@ class EventTabsFragment() : Fragment() {
     companion object {
         const val ARG_POSITION = "position"
 
-        fun getInstance(position: Int): Fragment {
+        fun getInstance(position: Int): EventTabsFragment {
             val eventTabsFrag = EventTabsFragment()
             val bundle = Bundle()
             bundle.putInt(ARG_POSITION, position)
@@ -43,7 +43,6 @@ class EventTabsFragment() : Fragment() {
                 inflater,
                 R.layout.fragment_event_tab, container, false
         )
-        setHasOptionsMenu(true)
 
         binding.applyButton.setOnClickListener {
             popEvents(requireArguments().getInt(ARG_POSITION), true)
@@ -88,6 +87,10 @@ class EventTabsFragment() : Fragment() {
 
         /* Create recycler view */
         popEvents(position, false)
+    }
+
+    fun getPosition(): Int {
+        return requireArguments().getInt(ARG_POSITION)
     }
 
     fun popEvents(position: Int, filter: Boolean) {
@@ -185,29 +188,16 @@ class EventTabsFragment() : Fragment() {
     }
 
     /**
-     * add the filter action to the menu
-     */
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.event_actions, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    /**
      * hide/show filter layout when action bar button is pressed
      */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val action = item.itemId
-        if (action.equals(R.id.action_filter)) {
-            if (binding.filterLayout.visibility.equals(View.GONE)) {
-                binding.filterLayout.visibility = View.VISIBLE
-                binding.addEventButton.visibility = View.GONE
-            } else {
-                binding.filterLayout.visibility = View.GONE
-                binding.addEventButton.visibility = View.VISIBLE
-            }
+    fun filterPressed() {
+        if (binding.filterLayout.visibility.equals(View.GONE)) {
+            binding.filterLayout.visibility = View.VISIBLE
+            binding.addEventButton.visibility = View.GONE
+        } else {
+            binding.filterLayout.visibility = View.GONE
+            binding.addEventButton.visibility = View.VISIBLE
         }
-        return super.onOptionsItemSelected(item)
     }
 
 }

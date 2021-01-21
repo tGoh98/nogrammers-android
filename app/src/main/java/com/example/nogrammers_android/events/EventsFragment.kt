@@ -45,7 +45,27 @@ class EventsFragment : Fragment() {
             }
         }.attach()
 
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    /**
+     * add the filter action to the menu
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.event_actions, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId.equals(R.id.action_filter)) {
+            for(fragment in parentFragmentManager.fragments) {
+                if (fragment is EventTabsFragment && fragment.getPosition() == binding.eventTabLayout.selectedTabPosition) {
+                    fragment.filterPressed()
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
