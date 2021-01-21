@@ -24,7 +24,7 @@ const val NETID_MESSAGE = "com.example.nogrammers_android.NETID_MESSAGE"
  */
 class LoginActivity : AppCompatActivity() {
     private val loginFormLink = "https://idp.rice.edu/idp/profile/cas/login"
-    private val validateLink = "https://idp.rice.edu/idp/profile/cas/serviceValidate"
+    private val validateLink = "https://idp.rice.edu/idp/profile/cas/serviceValidate?service=https://httpbin.org/get"
     private var executionCount = 1
     private var versionCount = 1
     private var currentTicket: String = ""
@@ -75,9 +75,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // preload the cas form info; our entries basically acts as the rice form
+    // Loads the cas form info; our entries basically acts as the rice form
     // first, try to access the form and get the e and s nums (execution html param)
     private fun obtainLoginForm(){
+        // Possibility 1: users are not logged in and the GET returns the form
         try {
             val formReq = StringRequest(
                 Request.Method.GET,
@@ -92,9 +93,8 @@ class LoginActivity : AppCompatActivity() {
                 },
                 Response.ErrorListener { })
             queue.add(formReq)
-            // if it fails, try to send the request again and look for a ticket.
-            //  this means they already are signed in
         } catch (e: Exception) {
+            // Possibility 2: Users already signed in, look for ticket in headers and body
             val ticketReq = object: JsonObjectRequest(
                 "$loginFormLink?service=https://httpbin.org/get",
                 null, // empty body makes it a GET request
@@ -130,6 +130,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Helper to extract ticket from json body
     private fun findTicket(response:JSONObject){
         try {
             var args = response.getJSONObject("args")
@@ -139,11 +140,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // After we get the form, we need to POST with execution info to get service ticket
     private fun obtainTicketAndValidate() {
 
         // if no ticket, then send POST to get it
         if (currentTicket == "") {
-
             try {
                 val signInReq = object:StringRequest(
                     Request.Method.POST,
@@ -164,19 +165,19 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 queue.add(signInReq)
-                // if it fails, try to send the request again and look for a ticket,
-                //  means they already are signed in
+
+            // TODO: If this fails we probably need to reload the form again, and grab new execution param
             } catch (e:Exception) {
                 e.printStackTrace()
             }
-            // otherwise, lets validate the ticket with CAS and let them through
+            // If we have a ticket, validate with CAS serviceValidate endpoint
         } else {
             val validateReq = object:StringRequest(
                 Request.Method.GET,
-                validateLink,
+                "$validateLink&ticket=$currentTicket",
                 Response.Listener<String> { response ->
                     run{
-                        if (response.contains("student") || response.contains("success"))
+                        if (response.contains("student") || response.contains("success")) // TODO: make this better
                             validated = true
                     }
                 },
