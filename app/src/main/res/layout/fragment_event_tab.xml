@@ -271,5 +271,20 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="50dp"
+            app:srcCompat="@drawable/plus"
+            app:fabCustomSize="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="addEvent"
+            app:tint="#FFFF00"
+            app:backgroundTint="@color/goldenrod"
+            android:contentDescription="@string/post_event"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

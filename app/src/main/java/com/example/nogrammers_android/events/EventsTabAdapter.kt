@@ -9,4 +9,5 @@ class EventsTabAdapter(activity: AppCompatActivity, val itemsCount: Int) :
     override fun getItemCount() = itemsCount
 
     override fun createFragment(position: Int): Fragment = EventTabsFragment.getInstance(position)
+    
 }

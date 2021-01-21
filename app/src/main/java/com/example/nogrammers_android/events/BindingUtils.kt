@@ -21,10 +21,11 @@ fun TextView.setDesc(item: Event) {
 
 @BindingAdapter("date")
 fun TextView.setDate(item: Event) {
-    text = DateTimeUtil.getStringFromDate(item.start.get(Calendar.MONTH),
-            item.start.get(Calendar.DAY_OF_MONTH)) + " to " +
-            DateTimeUtil.getStringFromDate(item.end.get(Calendar.MONTH),
-                    item.end.get(Calendar.DAY_OF_MONTH))
+    text = DateTimeUtil.getStringFromDate(item.start.get(Calendar.YEAR), item.start.get(Calendar.MONTH),
+            item.start.get(Calendar.DAY_OF_MONTH)) + "\n" +
+            DateTimeUtil.getStringFromTime(item.start.get(Calendar.HOUR), item.start.get(Calendar.MINUTE)) +
+            " to " + DateTimeUtil.getStringFromTime(item.end.get(Calendar.HOUR),
+                            item.end.get(Calendar.MINUTE))
 }
 
 @BindingAdapter("backgroundPic")

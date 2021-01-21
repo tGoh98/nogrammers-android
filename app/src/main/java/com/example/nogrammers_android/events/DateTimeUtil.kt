@@ -4,6 +4,7 @@ import java.sql.Time
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.time.Month
+import java.util.*
 
 object DateTimeUtil {
     val intToMonth = mapOf<Int, String>(Pair(1, "Jan"), Pair(2, "Feb"), Pair(3, "Mar"),
@@ -32,6 +33,10 @@ object DateTimeUtil {
          return getMonthFromInt(month + 1) + " " + getDateFromInt(dayOfMonth)
     }
 
+    fun getStringFromDate (year : Int, month : Int,  dayOfMonth : Int) : String {
+        return getMonthFromInt(month + 1) + " " + getDateFromInt(dayOfMonth) + ", " + year
+    }
+
     fun getStringFromTime (hourOfDay : Int, minute : Int) : String {
         var meridian = "AM"
         var hour = hourOfDay
@@ -43,5 +48,12 @@ object DateTimeUtil {
             hour = 12
         }
         return getDateFromInt(hour) + ":" + getDateFromInt(minute) + " $meridian"
+    }
+
+    fun getCalendarFromDate (year: Int, month : Int,  dayOfMonth : Int) : Calendar {
+        val cal = Calendar.getInstance()
+        cal.clear()
+        cal.set(year, month, dayOfMonth)
+        return cal
     }
 }

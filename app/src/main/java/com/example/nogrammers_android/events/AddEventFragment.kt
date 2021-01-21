@@ -2,19 +2,20 @@ package com.example.nogrammers_android.events
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAddEventBinding
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.internal.NavigationMenuItemView
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.options
 import java.util.*
 
 /**
@@ -23,6 +24,8 @@ import java.util.*
 class AddEventFragment : Fragment() {
 
     lateinit var binding : FragmentAddEventBinding
+    lateinit var startTime : MutableList<Int>
+    lateinit var endTime : MutableList<Int>
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +40,7 @@ class AddEventFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // hide soft keyboard when clicking outside of edittext
-        var hideKeyboardListener = View.OnFocusChangeListener { v, hasFocus ->  if (!hasFocus) {
+        val hideKeyboardListener = View.OnFocusChangeListener { v, hasFocus ->  if (!hasFocus) {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(requireView().windowToken, 0)
         }}
@@ -55,11 +58,17 @@ class AddEventFragment : Fragment() {
                 composeEmail()
             }
             this.activity?.findViewById<BottomNavigationItemView>(R.id.events_icon)?.performClick()
+
+            // create new event object
+            val newEvent = createEvent()
         }
 
         /**
          * Set up date and time pickers
          */
+        val cal = Calendar.getInstance()
+        startTime = mutableListOf(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE))
+        endTime = mutableListOf(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE))
 
         binding.datePickerButton.setOnClickListener {
             if (binding.datePicker.visibility.equals(View.GONE)) {
@@ -96,16 +105,21 @@ class AddEventFragment : Fragment() {
 
         binding.startTimePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
             binding.startTimePickerButton.text = DateTimeUtil.getStringFromTime(hourOfDay, minute)
+            startTime[0] = hourOfDay
+            startTime[1] = minute
         }
 
         binding.endTimePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
             binding.endTimePickerButton.text = DateTimeUtil.getStringFromTime(hourOfDay, minute)
+            endTime[0] = hourOfDay
+            startTime[1] = minute
         }
 
         return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.add_event_actions, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -135,6 +149,38 @@ class AddEventFragment : Fragment() {
         if (this.activity?.packageManager?.let { intent.resolveActivity(it) } != null) {
             startActivity(intent)
         }
+    }
+
+    fun createEvent() : Event {
+        // get current user for author
+        val author = ""
+
+        val title = binding.eventTitle.text.toString()
+
+        // get start and end date
+        val start = DateTimeUtil.getCalendarFromDate(binding.datePicker.year,
+                binding.datePicker.month, binding.datePicker.dayOfMonth)
+        start.set(Calendar.HOUR, startTime[0])
+        start.set(Calendar.MINUTE, startTime[1])
+        val end = DateTimeUtil.getCalendarFromDate(binding.datePicker.year,
+                binding.datePicker.month, binding.datePicker.dayOfMonth)
+        end.set(Calendar.HOUR, endTime[0])
+        end.set(Calendar.MINUTE, endTime[1])
+
+        val remote = binding.remoteBox.isChecked
+        val location = binding.eventLocation.text.toString()
+        val description = binding.eventDescription.text.toString()
+        val audience = if (binding.campusWideBox.isChecked) { "Campus-wide" }
+                        else {"Duncaroos only"}
+        val tags = mutableListOf<String>()
+        for(child in binding.tagGroup.children) {
+            if (child is Button && child.currentTextColor == Color.parseColor("#FFFFFFFF")) {
+                tags.add(child.text.toString())
+            }
+        }
+
+        val pic = ""
+        return Event(author, title, description, start, end, tags, location, audience, pic, remote)
     }
 
 }

@@ -48,6 +48,7 @@ class EventTabsFragment() : Fragment() {
         binding.applyButton.setOnClickListener {
             popEvents(requireArguments().getInt(ARG_POSITION), true)
             binding.filterLayout.visibility = View.GONE
+            binding.addEventButton.visibility = View.VISIBLE
         }
 
         /**
@@ -101,7 +102,7 @@ class EventTabsFragment() : Fragment() {
         future.set(2021, 0, 25)
         var eventsList = mutableListOf(
             Event("cys", "design club", "meeting time", past, present
-                    , listOf("Food"), "Remote", "Duncanaroos only", ""),
+                    , listOf("Food"), "Not Remote", "Duncanaroos only", "",true),
                 Event("tmg", "brown's finest", "fun times at brown", past, future
                         , listOf("Alcohol"), "In-person", "Campus-wide", ""),
                 Event("rjp5", "Duncan Forum", "fun times at brown", present, future
@@ -161,10 +162,10 @@ class EventTabsFragment() : Fragment() {
 
                 // format filter (if only one box is checked)
                 if (binding.remoteBox.isChecked and !binding.inPersonBox.isChecked) {
-                    if (!event.format.equals("Remote")) { addEvent = false }
+                    if (!event.remote) { addEvent = false }
                 }
                 else if (!binding.remoteBox.isChecked and binding.inPersonBox.isChecked) {
-                    if (event.format.equals("Remote")) { addEvent = false }
+                    if (event.remote) { addEvent = false }
                 }
 
                 // audience filter (if only one box is checked)
@@ -187,6 +188,7 @@ class EventTabsFragment() : Fragment() {
      * add the filter action to the menu
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.event_actions, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -199,8 +201,10 @@ class EventTabsFragment() : Fragment() {
         if (action.equals(R.id.action_filter)) {
             if (binding.filterLayout.visibility.equals(View.GONE)) {
                 binding.filterLayout.visibility = View.VISIBLE
+                binding.addEventButton.visibility = View.GONE
             } else {
                 binding.filterLayout.visibility = View.GONE
+                binding.addEventButton.visibility = View.VISIBLE
             }
         }
         return super.onOptionsItemSelected(item)
