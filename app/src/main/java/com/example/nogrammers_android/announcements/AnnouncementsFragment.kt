@@ -79,7 +79,7 @@ class AnnouncementsFragment(private val dbRef: DatabaseReference) : Fragment() {
         announceDbRef.addValueEventListener(updateListener)
 
         /* Populate adapter with data */
-        adapter = AnnouncementsAdapter()
+        adapter = context?.let { AnnouncementsAdapter(it) }!!
         binding.announcementsView.adapter = adapter
 
         /* Create view model */

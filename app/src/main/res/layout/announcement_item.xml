@@ -38,10 +38,10 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/urgentPill"
+                style="@style/Widget.App.ChipUrgent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.App.ChipUrgent"
-                android:text="Urgent"
+                android:text="@string/urgent"
                 android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,6 +84,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/announcement_author"
                 tools:text="Fire drill wee woo Fire drill wee woo Fire drill wee woo Fire drill wee woo Fire drill wee woo Fire drill wee woo" />
+
+            <TextView
+                android:id="@+id/announcementSeeMoreTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_more"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/announcement_content"
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

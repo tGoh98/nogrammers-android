@@ -43,4 +43,7 @@
     <string name="website">Website</string>
     <string name="duncan_website_graphic">Duncan website graphic</string>
     <string name="mark_as_urgent">Mark as urgent</string>
+    <string name="show_more"><u>Show more</u></string>
+    <string name="show_less"><u>Show less</u></string>
+    <string name="urgent">Urgent</string>
 </resources>
