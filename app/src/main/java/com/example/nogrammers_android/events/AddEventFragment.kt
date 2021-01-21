@@ -14,6 +14,11 @@ import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAddEventBinding
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.options
 import java.util.*
@@ -57,10 +62,10 @@ class AddEventFragment : Fragment() {
             if (binding.listservBox.isChecked) {
                 composeEmail()
             }
+            // create new event object and post to Firebase
+            postEventToFirebase(createEvent())
+            // close this fragment
             this.activity?.findViewById<BottomNavigationItemView>(R.id.events_icon)?.performClick()
-
-            // create new event object
-            val newEvent = createEvent()
         }
 
         /**
@@ -112,7 +117,7 @@ class AddEventFragment : Fragment() {
         binding.endTimePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
             binding.endTimePickerButton.text = DateTimeUtil.getStringFromTime(hourOfDay, minute)
             endTime[0] = hourOfDay
-            startTime[1] = minute
+            endTime[1] = minute
         }
 
         return binding.root
@@ -171,7 +176,7 @@ class AddEventFragment : Fragment() {
         val location = binding.eventLocation.text.toString()
         val description = binding.eventDescription.text.toString()
         val audience = if (binding.campusWideBox.isChecked) { "Campus-wide" }
-                        else {"Duncaroos only"}
+                        else {"Duncaroos-only"}
         val tags = mutableListOf<String>()
         for(child in binding.tagGroup.children) {
             if (child is Button && child.currentTextColor == Color.parseColor("#FFFFFFFF")) {
@@ -180,7 +185,24 @@ class AddEventFragment : Fragment() {
         }
 
         val pic = ""
-        return Event(author, title, description, start, end, tags, location, audience, pic, remote)
+        return Event(author, title, description, start.timeInMillis, end.timeInMillis, tags, location, audience, pic, remote)
     }
 
+    fun postEventToFirebase (event : Event) {
+        val database = Firebase.database.reference.child("events")
+        var num = 0
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val so = dataSnapshot.getValue<ArrayList<Map<String, Any>>>()
+                if (so != null) {
+                    num = so.size
+                }
+                database.child(num.toString()).setValue(event)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.addListenerForSingleValueEvent(postListener)
+    }
 }

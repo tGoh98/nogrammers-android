@@ -37,11 +37,14 @@ object DateTimeUtil {
         return getMonthFromInt(month + 1) + " " + getDateFromInt(dayOfMonth) + ", " + year
     }
 
-    fun getStringFromTime (hourOfDay : Int, minute : Int) : String {
+    fun getStringFromTime (hourOfDay : Int, minute : Int, meridianInt : Int = Calendar.AM) : String {
         var meridian = "AM"
         var hour = hourOfDay
         if (hour >= 12) {
             hour -= 12
+            meridian = "PM"
+        }
+        if (meridianInt == Calendar.PM) {
             meridian = "PM"
         }
         if (hour == 0) {
@@ -55,5 +58,20 @@ object DateTimeUtil {
         cal.clear()
         cal.set(year, month, dayOfMonth)
         return cal
+    }
+
+    fun getStringFromTimeinMillis (timeLong : Long) : String {
+        val time = Calendar.getInstance()
+        time.clear()
+        time.timeInMillis = timeLong
+        return getStringFromTime(time.get(Calendar.HOUR), time.get(Calendar.MINUTE), time.get(Calendar.AM_PM))
+    }
+
+    fun getStringFromDateinMillis (dateLong : Long) : String {
+        val date = Calendar.getInstance()
+        date.clear()
+        date.timeInMillis = dateLong
+        return getStringFromDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
+            date.get(Calendar.DAY_OF_MONTH))
     }
 }

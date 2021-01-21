@@ -13,6 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentEventTabBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 /**
@@ -21,6 +27,7 @@ import java.util.*
 class EventTabsFragment() : Fragment() {
 
     lateinit var binding: FragmentEventTabBinding
+    var allEventsList = mutableListOf<Event>()
 
     companion object {
         const val ARG_POSITION = "position"
@@ -79,6 +86,41 @@ class EventTabsFragment() : Fragment() {
             binding.endDateButton.text = DateTimeUtil.getStringFromDate(month, dayOfMonth)
         }
 
+        // connect to Firebase
+        val database = Firebase.database.reference.child("events")
+        val updateListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                allEventsList.clear()
+                for (child in dataSnapshot.children) {
+                    val eventObj = child.getValue<Map<String, Any>>()
+                    if (eventObj != null) {
+                        allEventsList.add(
+                            Event(
+                                eventObj.get("author") as String,
+                                eventObj.get("title") as String,
+                                eventObj.get("desc") as String,
+                                eventObj.get("start") as Long,
+                                eventObj.get("end") as Long,
+                                if (eventObj.get("tags") == null) {
+                                    mutableListOf<String>()} else {eventObj.get("tags") as List<String>},
+                                eventObj.get("location") as String,
+                                eventObj.get("audience") as String,
+                                eventObj.get("pic") as String,
+                                eventObj.get("remote") as Boolean
+                            )
+                        )
+                    }
+                }
+               popEvents(getPosition(), false)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.addValueEventListener(updateListener)
+
         return binding.root
     }
 
@@ -94,40 +136,12 @@ class EventTabsFragment() : Fragment() {
     }
 
     fun popEvents(position: Int, filter: Boolean) {
-        val past = Calendar.getInstance()
-        past.clear()
-        past.set(2021, 0, 1)
-        val present = Calendar.getInstance()
-        present.clear()
-        present.set(2021, 0, 19)
-        val future = Calendar.getInstance()
-        future.clear()
-        future.set(2021, 0, 25)
-        var eventsList = mutableListOf(
-            Event("cys", "design club", "meeting time", past, present
-                    , listOf("Food"), "Not Remote", "Duncanaroos only", "",true),
-                Event("tmg", "brown's finest", "fun times at brown", past, future
-                        , listOf("Alcohol"), "In-person", "Campus-wide", ""),
-                Event("rjp5", "Duncan Forum", "fun times at brown", present, future
-                        , listOf("Forums", "Discussion"), "In-person", "Campus-wide", ""),
-                Event("rjp5", "Office Hours", "fun times at brown", present, future
-                        , listOf("Discussion"), "In-person", "Campus-wide", ""),
-                Event("cmz2", "Design Class", "fun times at brown", present, future
-                        , listOf("Arts & Music", "Food"), "In-person", "Campus-wide", ""),
-                Event("duncan", "App-a-thon", "fun times at brown", present, future
-                        , listOf("Competition"), "In-person", "Campus-wide", ""),
-                Event("cbk1", "healthy living", "fun times at brown", present, future
-                        , listOf("Health & Wellness"), "In-person", "Campus-wide", "")
-        )
-
+        var eventsList = allEventsList
         // if on my events tab, filter events marked interested or going
-        if (position == 1) {
-            eventsList.removeFirst()
-        }
+//        if (position == 1)
 
         // if filter, apply all filters
         if (filter) {
-            val allEventsList = eventsList
             eventsList = mutableListOf()
 
             // get all tags that are selected
@@ -153,14 +167,14 @@ class EventTabsFragment() : Fragment() {
                     startDate.clear()
                     startDate.set(binding.startDatePicker.year, binding.startDatePicker.month,
                         binding.startDatePicker.dayOfMonth)
-                    if (startDate > event.start) { addEvent = false}
+                    if (startDate.timeInMillis > event.start) { addEvent = false}
                 }
                 if (!binding.endDateButton.text.toString().equals("end date")) {
                     val endDate = Calendar.getInstance()
                     endDate.clear()
                     endDate.set(binding.endDatePicker.year, binding.endDatePicker.month,
                             binding.endDatePicker.dayOfMonth)
-                    if (endDate < event.start) { addEvent = false}
+                    if (endDate.timeInMillis < event.start) { addEvent = false}
                 }
 
                 // format filter (if only one box is checked)
@@ -176,14 +190,15 @@ class EventTabsFragment() : Fragment() {
                     if (!event.audience.equals("Campus-wide")) { addEvent = false }
                 }
                 else if (!binding.campusWideBox.isChecked and binding.duncaroosBox.isChecked) {
-                    if (event.audience.equals("Campus-wide")) { addEvent = false }
+                    if (!event.audience.equals("Duncaroos-only")) { addEvent = false }
                 }
 
                 if (addEvent) { eventsList.add(event) }
             }
         }
 
-        val adapter = EventsItemAdapter(eventsList)
+        /* Update recycler view contents */
+        val adapter = EventsItemAdapter(eventsList.sortedBy { it.start })
         binding.eventTabList.adapter = adapter
     }
 
