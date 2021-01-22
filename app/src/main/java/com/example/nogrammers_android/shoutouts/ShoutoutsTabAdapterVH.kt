@@ -77,21 +77,43 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
                 }
 
                 val likesBtn = binding.likesImg
+                val lovesBtn = binding.lovesImg
+                val hahasBtn = binding.hahasImg
+                val surprisesBtn = binding.surprisedImg
+                val sadsBtn = binding.sadsImg
+                val angrysBtn = binding.angryImg
 
-//                val uuid = binding.
-                likesBtn.setOnClickListener {
-                    if (binding.isLiked.text.toString() == "true") {
-//                        var current : List<String> = database.child(binding.shoutoutUUIDInvisible.text.toString()).child("likes").
-//                        Log.d("test list current", current[0] + " " + current[1])
-                        database.child(binding.shoutoutUUIDInvisible.text.toString()).child("likes").child(netID).removeValue()
-                    } else {
-                        database.child(binding.shoutoutUUIDInvisible.text.toString()).child("likes").child(netID).setValue(netID)
-                    }
-                    database.child(binding.shoutoutUUIDInvisible.text.toString()).child("likes")
-                    Toast.makeText(parent.context, netID + position + binding.isLiked.text.toString(), Toast.LENGTH_SHORT).show()
-                }
+                likesBtn.setOnClickListener { toggleReaction(binding, database, 1, binding.isLiked.text.toString() == "true", netID) }
+
+                lovesBtn.setOnClickListener { toggleReaction(binding, database, 2, binding.isLoved.text.toString() == "true", netID) }
+
+                hahasBtn.setOnClickListener { toggleReaction(binding, database, 3, binding.isHahad.text.toString() == "true", netID) }
+
+                surprisesBtn.setOnClickListener { toggleReaction(binding, database, 4, binding.isSurprised.text.toString() == "true", netID) }
+
+                sadsBtn.setOnClickListener { toggleReaction(binding, database, 5, binding.isSaded.text.toString() == "true", netID) }
+
+                angrysBtn.setOnClickListener { toggleReaction(binding, database, 6, binding.isAngryd.text.toString() == "true", netID) }
 
                 return ShoutoutViewHolder(binding)
+            }
+
+            fun toggleReaction(binding: ShoutoutItemBinding, database: DatabaseReference, type: Int, isReacted: Boolean, netID: String) {
+                // Should never be empty
+                var pathString: String = ""
+                when (type) {
+                    1 -> pathString = "likes"
+                    2 -> pathString = "loves"
+                    3 -> pathString = "hahas"
+                    4 -> pathString = "surprises"
+                    5 -> pathString = "sads"
+                    6 -> pathString = "angrys"
+                }
+                if (isReacted) {
+                    database.child(binding.shoutoutUUIDInvisible.text.toString()).child(pathString).child(netID).removeValue()
+                } else {
+                    database.child(binding.shoutoutUUIDInvisible.text.toString()).child(pathString).child(netID).setValue(netID)
+                }
             }
         }
     }

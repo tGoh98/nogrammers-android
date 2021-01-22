@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:likes="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.likes.containsValue(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.likes.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="16sp" />
 
             <Space
@@ -113,8 +113,9 @@
                 android:id="@+id/lovesImg"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
                 android:background="@drawable/iconfinder_love_1325176" />
 
             <TextView
@@ -122,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:loves="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.loves.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.loves.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="16sp" />
 
             <Space
@@ -134,8 +135,9 @@
                 android:id="@+id/hahasImg"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
                 android:background="@drawable/iconfinder_happy_1325173" />
 
             <TextView
@@ -143,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:hahas="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.hahas.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.hahas.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="16sp" />
 
             <Space
@@ -155,8 +157,9 @@
                 android:id="@+id/surprisedImg"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
                 android:background="@drawable/iconfinder_surprise_1325174" />
 
             <TextView
@@ -164,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:surprises="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.surprises.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.surprises.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="16sp" />
 
             <Space
@@ -176,8 +179,9 @@
                 android:id="@+id/sadsImg"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
                 android:background="@drawable/iconfinder_sad_1325172" />
 
             <TextView
@@ -185,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:sads="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.sads.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.sads.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="16sp" />
 
             <Space
@@ -197,8 +201,9 @@
                 android:id="@+id/angryImg"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
                 android:background="@drawable/iconfinder_angry_1325170" />
 
             <TextView
@@ -206,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:angrys="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.angrys.contains(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.angrys.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
                 android:textSize="16sp" />
 
 <!--            <Space-->
@@ -234,6 +239,41 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:isLiked="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isLoved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isLoved="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isHahad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isHahad="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isSurprised"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isSurprised="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isSaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isSaded="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isAngryd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isAngryd="@{shoutout}" />
 
         </LinearLayout>
 

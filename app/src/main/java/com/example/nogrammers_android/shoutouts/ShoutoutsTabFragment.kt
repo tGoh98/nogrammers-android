@@ -104,7 +104,6 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
                     Log.d("NETID ", netID)
                     authors.clear()
                     for (ds : DataSnapshot in dataSnapshot.children) {
-                        val data = ds.getValue<Any>()
                         val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
                         val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
                         newShoutout.likes = so.likes
@@ -130,6 +129,20 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
             }
         }
         database.addValueEventListener(updateListener)
+
+        val usersDB = Firebase.database.reference.child("users").child(netID)
+        val nameListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                createShoutouts.setName(snapshot.child("name").value.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("ERROR ON CANCELLED", " FOR nameListener in ShoutoutsTabFragment")
+            }
+
+        }
+
+        usersDB.addValueEventListener(nameListener)
 
         binding.shoutoutsView.adapter = adapter
 
@@ -178,8 +191,6 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
             }
             model.createMode.value = true
         }
-
-        val cancelBtn = binding.cancelButton
 
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
 

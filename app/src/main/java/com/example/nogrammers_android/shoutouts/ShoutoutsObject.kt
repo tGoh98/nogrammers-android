@@ -9,15 +9,15 @@ class ShoutoutsObject {
     var msg: String = "test"
     var likes: HashMap<String, String> = HashMap()
     var isLiked: Boolean = false
-    var loves: List<String> = listOf()
+    var loves: HashMap<String, String> = HashMap()
     var isLoved: Boolean = false
-    var hahas: List<String> = listOf()
+    var hahas: HashMap<String, String> = HashMap()
     var isHahad: Boolean = false
-    var surprises: List<String> = listOf()
+    var surprises: HashMap<String, String> = HashMap()
     var isSurprised: Boolean = false
-    var sads: List<String> = listOf()
+    var sads: HashMap<String, String> = HashMap()
     var isSaded: Boolean = false
-    var angrys: List<String> = listOf()
+    var angrys: HashMap<String, String> = HashMap()
     var isAngried: Boolean = false
     var uuid: String = ""
 }

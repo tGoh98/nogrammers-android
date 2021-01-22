@@ -84,7 +84,52 @@ fun TextView.setUUID(item: Shoutout) {
 
 @BindingAdapter("isLiked")
 fun TextView.setIsLiked(item: Shoutout) {
-    if (item.likes.contains(item.netID)) {
+    if (item.likes.containsKey(item.netID)) {
+        text = "true"
+    } else {
+        text = "false"
+    }
+}
+
+@BindingAdapter("isLoved")
+fun TextView.setIsLoved(item: Shoutout) {
+    if (item.loves.containsKey(item.netID)) {
+        text = "true"
+    } else {
+        text = "false"
+    }
+}
+
+@BindingAdapter("isHahad")
+fun TextView.setIsHahad(item: Shoutout) {
+    if (item.hahas.containsKey(item.netID)) {
+        text = "true"
+    } else {
+        text = "false"
+    }
+}
+
+@BindingAdapter("isSurprised")
+fun TextView.setIsSurprised(item: Shoutout) {
+    if (item.surprises.containsKey(item.netID)) {
+        text = "true"
+    } else {
+        text = "false"
+    }
+}
+
+@BindingAdapter("isSaded")
+fun TextView.setIsSaded(item: Shoutout) {
+    if (item.sads.containsKey(item.netID)) {
+        text = "true"
+    } else {
+        text = "false"
+    }
+}
+
+@BindingAdapter("isAngryd")
+fun TextView.setIsAngryd(item: Shoutout) {
+    if (item.angrys.containsKey(item.netID)) {
         text = "true"
     } else {
         text = "false"

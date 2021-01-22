@@ -30,6 +30,7 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
     /* Shared view model */
     private val model: ShoutoutsViewModel by activityViewModels()
     private lateinit var db: DatabaseReference
+    private var name: String = netID
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -56,17 +57,11 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
 
         /* Listener for post announcements */
         binding.postNewShoutoutBtn.setOnClickListener {
-            val name = binding.newShoutoutTitle.text.toString()
             val msg = binding.newShoutoutTxt.text.toString()
-            var num = 0
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val so = dataSnapshot.getValue<ArrayList<HashMap<String, Any>>>()
-                    if (so != null) {
-                        num = so.size
-                    }
                     val newShoutout = ShoutoutsDBObject()
-                    newShoutout.author = netID
+                    newShoutout.author = name
                     newShoutout.msg = msg
                     newShoutout.date = Calendar.getInstance().timeInMillis.toString()
                     db.child(newShoutout.uuid).setValue(
@@ -96,6 +91,10 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
         anTitle.text.clear()
         anTxt.text.clear()
+    }
+
+    fun setName(newName: String) {
+        name = newName
     }
 
 }
