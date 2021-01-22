@@ -52,7 +52,7 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
         /* Add listener for cancel button */
         binding.cancelShoutoutBtn.setOnClickListener {
             Log.d("cancel", "CANECLE")
-            closeTab(binding.newShoutoutTitle, binding.newShoutoutTxt)
+            closeTab(binding.newShoutoutTxt)
         }
 
         /* Listener for post announcements */
@@ -76,20 +76,19 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
             }
             db.addListenerForSingleValueEvent(postListener)
 
-            closeTab(binding.newShoutoutTitle, binding.newShoutoutTxt)
+            closeTab(binding.newShoutoutTxt)
         }
 
         return binding.root
     }
 
-    private fun closeTab(anTitle: EditText, anTxt: EditText) {
+    private fun closeTab(anTxt: EditText) {
         /* Update create mode */
         model.createMode.value = false
 
         /* Hide keyboard */
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-        anTitle.text.clear()
         anTxt.text.clear()
     }
 
