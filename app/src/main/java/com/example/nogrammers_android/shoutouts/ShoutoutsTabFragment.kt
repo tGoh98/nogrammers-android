@@ -91,13 +91,13 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
             "tim"
         ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
         authors = authors.toMutableList()
-        val adapter = ShoutoutsTabAdapterVH(authors)
+        val adapter = ShoutoutsTabAdapterVH(authors, netID, position)
         if (position.equals(0)) {
             database = Firebase.database.reference.child("shoutouts")
         } else {
             database = Firebase.database.reference.child("sds")
         }
-        val createShoutouts = ShoutoutsCreateFragment(position)
+        val createShoutouts = ShoutoutsCreateFragment(position, netID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
@@ -114,6 +114,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
                         newShoutout.sads = so.sads
                         newShoutout.surprises = so.surprises
                         newShoutout.netID = netID
+                        newShoutout.uuid = so.uuid
                         authors.add(newShoutout)
                     }
                     authors.sortByDescending { it.date }

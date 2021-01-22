@@ -7,7 +7,7 @@ class ShoutoutsObject {
     var author: String = "author"
     var date: String = "0"
     var msg: String = "test"
-    var likes: List<String> = listOf()
+    var likes: HashMap<String, String> = HashMap()
     var isLiked: Boolean = false
     var loves: List<String> = listOf()
     var isLoved: Boolean = false
@@ -19,4 +19,5 @@ class ShoutoutsObject {
     var isSaded: Boolean = false
     var angrys: List<String> = listOf()
     var isAngried: Boolean = false
+    var uuid: String = ""
 }

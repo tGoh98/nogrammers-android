@@ -25,7 +25,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ShoutoutsCreateFragment(val position: Int) : Fragment() {
+class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment() {
 
     /* Shared view model */
     private val model: ShoutoutsViewModel by activityViewModels()
@@ -61,16 +61,16 @@ class ShoutoutsCreateFragment(val position: Int) : Fragment() {
             var num = 0
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val so = dataSnapshot.getValue<ArrayList<HashMap<String, String>>>()
+                    val so = dataSnapshot.getValue<ArrayList<HashMap<String, Any>>>()
                     if (so != null) {
                         num = so.size
                     }
-                    db.child(num.toString()).setValue(
-                            Shoutout(
-                                    name,
-                                    msg,
-                                    Calendar.getInstance().timeInMillis.toString()
-                            )
+                    val newShoutout = ShoutoutsDBObject()
+                    newShoutout.author = netID
+                    newShoutout.msg = msg
+                    newShoutout.date = Calendar.getInstance().timeInMillis.toString()
+                    db.child(newShoutout.uuid).setValue(
+                            newShoutout
                     )
                 }
 
