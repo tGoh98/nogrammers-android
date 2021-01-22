@@ -40,6 +40,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     lateinit var database: DatabaseReference
+    var showShoutoutRanking = false
     var userData: MutableList<User> = mutableListOf()
     var showProfileEditIcon = false
     private lateinit var shoutoutsFrag: ShoutoutsFragment
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         database.addValueEventListener(updateListener)
 
         /* Declare fragments */
-        shoutoutsFrag = ShoutoutsFragment()
+        shoutoutsFrag = ShoutoutsFragment(userNetID, 1)
         eventsFrag = EventsFragment()
         announcementsFrag = AnnouncementsFragment()
         resourcesFrag = ResourcesFragment()
@@ -156,7 +157,8 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
-        menu?.getItem(0)?.isVisible = showProfileEditIcon
+        menu?.getItem(0)?.isVisible = showShoutoutRanking
+        menu?.getItem(1)?.isVisible = showProfileEditIcon
         return true
     }
 
@@ -178,6 +180,7 @@ class MainActivity : AppCompatActivity() {
         /* Only show search bar stuff for profile page */
         invalidateOptionsMenu()
         supportActionBar?.title = tabTitle
+        showShoutoutRanking = fragment is ShoutoutsFragment
         showProfileEditIcon =
             fragment is ProfileFragment && fragment.showEditIcon //shortcircuit eval ftw
         val searchBarLayout = findViewById<ConstraintLayout>(R.id.searchBarLayout)

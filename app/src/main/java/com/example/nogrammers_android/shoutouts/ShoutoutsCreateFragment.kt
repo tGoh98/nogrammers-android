@@ -25,11 +25,12 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ShoutoutsCreateFragment(val position: Int) : Fragment() {
+class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment() {
 
     /* Shared view model */
     private val model: ShoutoutsViewModel by activityViewModels()
     private lateinit var db: DatabaseReference
+    private var name: String = netID
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -51,26 +52,20 @@ class ShoutoutsCreateFragment(val position: Int) : Fragment() {
         /* Add listener for cancel button */
         binding.cancelShoutoutBtn.setOnClickListener {
             Log.d("cancel", "CANECLE")
-            closeTab(binding.newShoutoutTitle, binding.newShoutoutTxt)
+            closeTab(binding.newShoutoutTxt)
         }
 
         /* Listener for post announcements */
         binding.postNewShoutoutBtn.setOnClickListener {
-            val name = binding.newShoutoutTitle.text.toString()
             val msg = binding.newShoutoutTxt.text.toString()
-            var num = 0
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val so = dataSnapshot.getValue<ArrayList<HashMap<String, String>>>()
-                    if (so != null) {
-                        num = so.size
-                    }
-                    db.child(num.toString()).setValue(
-                            Shoutout(
-                                    name,
-                                    msg,
-                                    Calendar.getInstance().timeInMillis.toString()
-                            )
+                    val newShoutout = ShoutoutsDBObject()
+                    newShoutout.author = name
+                    newShoutout.msg = msg
+                    newShoutout.date = Calendar.getInstance().timeInMillis.toString()
+                    db.child(newShoutout.uuid).setValue(
+                            newShoutout
                     )
                 }
 
@@ -81,21 +76,24 @@ class ShoutoutsCreateFragment(val position: Int) : Fragment() {
             }
             db.addListenerForSingleValueEvent(postListener)
 
-            closeTab(binding.newShoutoutTitle, binding.newShoutoutTxt)
+            closeTab(binding.newShoutoutTxt)
         }
 
         return binding.root
     }
 
-    private fun closeTab(anTitle: EditText, anTxt: EditText) {
+    private fun closeTab(anTxt: EditText) {
         /* Update create mode */
         model.createMode.value = false
 
         /* Hide keyboard */
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-        anTitle.text.clear()
         anTxt.text.clear()
+    }
+
+    fun setName(newName: String) {
+        name = newName
     }
 
 }

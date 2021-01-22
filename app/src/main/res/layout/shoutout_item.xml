@@ -8,20 +8,22 @@
         <variable
             name="shoutout"
             type="com.example.nogrammers_android.shoutouts.Shoutout" />
+        <import type="android.graphics.Typeface" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/rounded_bg_shoutouts">
 
         <ImageView
             android:id="@+id/pfp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:pfp="@{shoutout}"
@@ -32,14 +34,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:author="@{shoutout}"
-            app:layout_constraintBottom_toTopOf="@id/pfp"
             app:layout_constraintStart_toEndOf="@id/pfp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pfp"
             tools:text="Kanga" />
 
         <TextView
@@ -49,6 +49,7 @@
             android:layout_marginEnd="16dp"
             android:paddingStart="10dp"
             android:paddingEnd="0dp"
+            android:textSize="16sp"
             app:date="@{shoutout}"
             app:layout_constraintBottom_toBottomOf="@+id/author"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,19 +60,222 @@
             android:id="@+id/msg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_bg"
-            android:paddingStart="10dp"
-            android:paddingTop="3dp"
+            android:paddingTop="5dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="3dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/pfp"
-            app:layout_constraintTop_toTopOf="@+id/pfp"
+            android:paddingBottom="5dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/date"
+            app:layout_constraintStart_toStartOf="@+id/pfp"
+            app:layout_constraintTop_toBottomOf="@+id/pfp"
             app:msg="@{shoutout}"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique interdum nibh sit amet aliquam" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/msg"
+            app:layout_constraintStart_toStartOf="@+id/msg"
+            app:layout_constraintTop_toBottomOf="@+id/msg">
+
+            <ImageButton
+                android:id="@+id/likesImg"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
+                android:background="@drawable/km1"
+                android:scaleType="centerInside"
+                app:layout_constraintStart_toStartOf="@+id/msg"
+                app:layout_constraintTop_toBottomOf="@+id/msg"
+                app:srcCompat="@drawable/km1" />
+
+            <TextView
+                android:id="@+id/likesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:likes="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.likes.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/lovesImg"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
+                android:background="@drawable/iconfinder_love_1325176" />
+
+            <TextView
+                android:id="@+id/lovesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:loves="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.loves.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/hahasImg"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
+                android:background="@drawable/iconfinder_happy_1325173" />
+
+            <TextView
+                android:id="@+id/hahasCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:hahas="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.hahas.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/surprisedImg"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
+                android:background="@drawable/iconfinder_surprise_1325174" />
+
+            <TextView
+                android:id="@+id/surprisesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:surprises="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.surprises.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/sadsImg"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
+                android:background="@drawable/iconfinder_sad_1325172" />
+
+            <TextView
+                android:id="@+id/sadsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:sads="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.sads.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/angryImg"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                app:increaseTouch="@{3}"
+                android:background="@drawable/iconfinder_angry_1325170" />
+
+            <TextView
+                android:id="@+id/angryCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:angrys="@{shoutout}"
+                android:typeface="@{Typeface.defaultFromStyle(shoutout.angrys.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                android:textSize="16sp" />
+
+<!--            <Space-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_weight="1" />-->
+
+            <TextView
+                android:id="@+id/userNetIDInvisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:userNetID="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/shoutoutUUIDInvisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:shoutoutUUID="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isLiked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isLiked="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isLoved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isLoved="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isHahad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isHahad="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isSurprised"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isSurprised="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isSaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isSaded="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isAngryd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isAngryd="@{shoutout}" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
