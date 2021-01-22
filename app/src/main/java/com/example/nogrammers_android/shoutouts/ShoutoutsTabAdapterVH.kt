@@ -118,9 +118,9 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
         }
     }
 }
-class ShoutoutsTabAdapter(activity: AppCompatActivity, val itemsCount: Int, val netID: String) :
+class ShoutoutsTabAdapter(activity: AppCompatActivity, val itemsCount: Int, val netID: String, val sortBy: Int) :
         FragmentStateAdapter(activity) {
     override fun getItemCount() = itemsCount
 
-    override fun createFragment(position: Int): Fragment = ShoutoutsTabFragment.getInstance(position, netID)
+    override fun createFragment(position: Int): Fragment = ShoutoutsTabFragment.getInstance(position, netID, sortBy)
 }

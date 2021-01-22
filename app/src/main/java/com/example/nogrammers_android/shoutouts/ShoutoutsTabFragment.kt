@@ -28,7 +28,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
+class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int) : Fragment() {
     private lateinit var database: DatabaseReference
     private val model: ShoutoutsViewModel by activityViewModels()
     private var shortAnimationDuration: Int = 0
@@ -40,8 +40,8 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
     companion object {
         const val ARG_POSITION = "position"
 
-        fun getInstance(position: Int, netID: String): Fragment {
-            val shoutoutsTabFragment = ShoutoutsTabFragment(position, netID)
+        fun getInstance(position: Int, netID: String, sortBy: Int): Fragment {
+            val shoutoutsTabFragment = ShoutoutsTabFragment(position, netID, sortBy)
             val bundle = Bundle()
             bundle.putInt(ARG_POSITION, position)
             shoutoutsTabFragment.arguments = bundle
@@ -116,7 +116,11 @@ class ShoutoutsTabFragment(val position: Int, val netID: String) : Fragment() {
                         newShoutout.uuid = so.uuid
                         authors.add(newShoutout)
                     }
-                    authors.sortByDescending { it.date }
+                    if (sortBy == 1) {
+                        authors.sortByDescending { it.date }
+                    } else {
+                        authors.sortByDescending { (it.likes.size + it.loves.size + it.sads.size + it.surprises.size + it.angrys.size + it.hahas.size) }
+                    }
                     adapter.notifyDataSetChanged()
                 }
                 Log.d("TAG", dataSnapshot.toString())

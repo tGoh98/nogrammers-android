@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         database.addValueEventListener(updateListener)
 
         /* Declare fragments */
-        shoutoutsFrag = ShoutoutsFragment(userNetID)
+        shoutoutsFrag = ShoutoutsFragment(userNetID, 1)
         eventsFrag = EventsFragment()
         announcementsFrag = AnnouncementsFragment()
         resourcesFrag = ResourcesFragment()

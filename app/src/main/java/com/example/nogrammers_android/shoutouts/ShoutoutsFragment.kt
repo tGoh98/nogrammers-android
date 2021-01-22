@@ -11,7 +11,7 @@ import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentShoutoutsBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ShoutoutsFragment(private val netID: String) : Fragment() {
+class ShoutoutsFragment(private val netID: String, val sortBy: Int) : Fragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +23,7 @@ class ShoutoutsFragment(private val netID: String) : Fragment() {
                 R.layout.fragment_shoutouts, container, false
         )
         /* Create and set tabs adapter */
-        binding.shoutoutsTabsPager.adapter = ShoutoutsTabAdapter(activity as AppCompatActivity, 2, netID)
+        binding.shoutoutsTabsPager.adapter = ShoutoutsTabAdapter(activity as AppCompatActivity, 2, netID, sortBy)
 
         /* Tab layout mediator to connect tab labels to ViewPager */
         TabLayoutMediator(binding.shoutoutsTabLayout, binding.shoutoutsTabsPager) { tab, pos ->
