@@ -205,13 +205,11 @@ class MainActivity : AppCompatActivity() {
         var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             res ->
             if (res.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = res.data
-                Log.e("TAG", data.toString())
+                val uri = res.data!!.data
+                findViewById<ImageView>(R.id.imgView).setImageURI(uri)
             }
         }
         resultLauncher.launch(intent)
-//        startActivityForResult(intent, 100)
-
     }
 
 
