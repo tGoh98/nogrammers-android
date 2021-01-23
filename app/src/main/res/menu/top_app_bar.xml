@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/app_bar_switch"
+        android:checkable="true"
+        android:title="Switch"
+        app:actionLayout="@layout/switch_layout"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/editProfileIcon"
         android:icon="@drawable/ic_baseline_create_24_olive"
         app:showAsAction="always"

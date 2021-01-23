@@ -28,7 +28,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-class ShoutoutsTabFragment(val position: Int) : Fragment() {
+class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int) : Fragment() {
     private lateinit var database: DatabaseReference
     private val model: ShoutoutsViewModel by activityViewModels()
     private var shortAnimationDuration: Int = 0
@@ -40,8 +40,8 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
     companion object {
         const val ARG_POSITION = "position"
 
-        fun getInstance(position: Int): Fragment {
-            val shoutoutsTabFragment = ShoutoutsTabFragment(position)
+        fun getInstance(position: Int, netID: String, sortBy: Int): Fragment {
+            val shoutoutsTabFragment = ShoutoutsTabFragment(position, netID, sortBy)
             val bundle = Bundle()
             bundle.putInt(ARG_POSITION, position)
             shoutoutsTabFragment.arguments = bundle
@@ -91,23 +91,36 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
             "tim"
         ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
         authors = authors.toMutableList()
-        val adapter = ShoutoutsTabAdapterVH(authors)
+        val adapter = ShoutoutsTabAdapterVH(authors, netID, position)
         if (position.equals(0)) {
             database = Firebase.database.reference.child("shoutouts")
         } else {
             database = Firebase.database.reference.child("sds")
         }
-        val createShoutouts = ShoutoutsCreateFragment(position)
+        val createShoutouts = ShoutoutsCreateFragment(position, netID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
+                    Log.d("NETID ", netID)
                     authors.clear()
                     for (ds : DataSnapshot in dataSnapshot.children) {
                         val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
                         val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
+                        newShoutout.likes = so.likes
+                        newShoutout.angrys = so.angrys
+                        newShoutout.loves = so.loves
+                        newShoutout.hahas = so.hahas
+                        newShoutout.sads = so.sads
+                        newShoutout.surprises = so.surprises
+                        newShoutout.netID = netID
+                        newShoutout.uuid = so.uuid
                         authors.add(newShoutout)
                     }
-                    authors.sortByDescending { it.date }
+                    if (sortBy == 1) {
+                        authors.sortByDescending { it.date }
+                    } else {
+                        authors.sortByDescending { (it.likes.size + it.loves.size + it.sads.size + it.surprises.size + it.angrys.size + it.hahas.size) }
+                    }
                     adapter.notifyDataSetChanged()
                 }
                 Log.d("TAG", dataSnapshot.toString())
@@ -120,6 +133,20 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
             }
         }
         database.addValueEventListener(updateListener)
+
+        val usersDB = Firebase.database.reference.child("users").child(netID)
+        val nameListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                createShoutouts.setName(snapshot.child("name").value.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("ERROR ON CANCELLED", " FOR nameListener in ShoutoutsTabFragment")
+            }
+
+        }
+
+        usersDB.addValueEventListener(nameListener)
 
         binding.shoutoutsView.adapter = adapter
 
@@ -168,8 +195,6 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
             }
             model.createMode.value = true
         }
-
-        val cancelBtn = binding.cancelButton
 
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
 
