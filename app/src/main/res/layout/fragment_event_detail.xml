@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp">
+
+                <ImageView
+                    android:id="@+id/eventImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/eventTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/eventImage" />
+
+
+                <TextView
+                    android:id="@+id/eventDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/date"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/eventTitle" />
+
+                <TextView
+                    android:id="@+id/eventLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/location"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/eventDate" />
+
+                <CheckBox
+                    android:id="@+id/remoteBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remote"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:clickable="false"
+                    app:layout_constraintTop_toBottomOf="@id/eventLocation" />
+
+                <TextView
+                    android:id="@+id/eventDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/description"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/remoteBox" />
+
+                <CheckBox
+                    android:id="@+id/campusWideBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Campus_wide"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:clickable="false"
+                    app:layout_constraintTop_toBottomOf="@id/eventDescription" />
+
+                <CheckBox
+                    android:id="@+id/duncaroosBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/Duncaroos_only"
+                    app:layout_constraintStart_toEndOf="@id/campusWideBox"
+                    android:clickable="false"
+                    app:layout_constraintTop_toBottomOf="@id/eventDescription" />
+
+                <TextView
+                    android:id="@+id/tagsHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/tags"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/campusWideBox" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tagGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tagsHeader">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/foodTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/food"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/alcoholTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/alcohol"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toEndOf="@id/foodTag"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/healthTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/health"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toEndOf="@id/alcoholTag"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/artTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/arts"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toEndOf="@id/healthTag"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/discussionTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/discussion"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toEndOf="@id/artTag"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/forumTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/forums"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toEndOf="@id/discussionTag"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/competitionTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:onClick="handleTag"
+                        android:text="@string/competition"
+                        android:textColor="@color/greyText"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:layout_constraintStart_toEndOf="@id/discussionTag"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </com.google.android.material.chip.ChipGroup>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

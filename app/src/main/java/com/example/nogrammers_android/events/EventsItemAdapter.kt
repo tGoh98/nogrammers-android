@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.databinding.EventItemBinding
 
-class EventsItemAdapter(private val data: List<Event>) :
+class EventsItemAdapter(private val data: List<Event>, val clickListener: EventsItemListener) :
         RecyclerView.Adapter<EventsItemAdapter.EventViewHolder>() {
 
     // TODO: instead of passing in static data, consider managing list contents with https://developer.android.com/codelabs/kotlin-android-training-diffutil-databinding/#3
@@ -21,7 +21,7 @@ class EventsItemAdapter(private val data: List<Event>) :
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 
     override fun getItemCount() = data.size
@@ -29,9 +29,10 @@ class EventsItemAdapter(private val data: List<Event>) :
     class EventViewHolder private constructor(val binding: EventItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Event) {
+        fun bind(item: Event, clickListener: EventsItemListener) {
             binding.event = item
             binding.executePendingBindings()
+            binding.clickListener = clickListener
         }
 
         companion object : AdapterView.OnItemSelectedListener {
@@ -59,4 +60,8 @@ class EventsItemAdapter(private val data: List<Event>) :
             }
         }
     }
+}
+
+class EventsItemListener(val clickListener: (event: Event) -> Unit) {
+    fun onClick(event : Event) = clickListener(event)
 }

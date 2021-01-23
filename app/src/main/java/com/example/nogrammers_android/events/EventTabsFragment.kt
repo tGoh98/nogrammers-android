@@ -11,6 +11,9 @@ import androidx.core.graphics.alpha
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentEventTabBinding
 import com.google.firebase.database.DataSnapshot
@@ -198,7 +201,15 @@ class EventTabsFragment() : Fragment() {
         }
 
         /* Update recycler view contents */
-        val adapter = EventsItemAdapter(eventsList.sortedBy { it.start })
+        val adapter = EventsItemAdapter(eventsList.sortedBy { it.start },
+                EventsItemListener { event ->
+                    parentFragmentManager.beginTransaction().apply{
+                        val fragment = EventDetailFragment(event)
+                        replace(R.id.fl_fragment, fragment)
+                        setReorderingAllowed(true)
+                        addToBackStack("event detail") // name can be null
+                        commit()
+                    }})
         binding.eventTabList.adapter = adapter
     }
 

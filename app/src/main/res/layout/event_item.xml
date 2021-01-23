@@ -8,6 +8,9 @@
         <variable
             name="event"
             type="com.example.nogrammers_android.events.Event" />
+        <variable
+            name="clickListener"
+            type="com.example.nogrammers_android.events.EventsItemListener"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +19,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
-        android:background="@color/olive">
+        android:background="@color/olive"
+        android:clickable="true"
+        android:onClick="@{() -> clickListener.onClick(event)}">
 
         <ImageView
             android:layout_width="match_parent"
