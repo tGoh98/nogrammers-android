@@ -32,6 +32,8 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
     private lateinit var database: DatabaseReference
     private val model: ShoutoutsViewModel by activityViewModels()
     private var shortAnimationDuration: Int = 0
+    private lateinit var authors: MutableList<Shoutout>
+    private lateinit var adapter: ShoutoutsTabAdapterVH
 
     private var clicked: Int = -1
 
@@ -58,40 +60,40 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
             R.layout.fragment_shoutouts_tabs, container, false
         )
 
-        var authors = listOf(
-            "adrienne",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim"
-        ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
+        authors = listOf(
+                "adrienne",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim"
+        ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") } as MutableList<Shoutout>
         authors = authors.toMutableList()
-        val adapter = ShoutoutsTabAdapterVH(authors, netID, position)
+        adapter = ShoutoutsTabAdapterVH(authors, netID, position)
         if (position.equals(0)) {
             database = Firebase.database.reference.child("shoutouts")
         } else {
@@ -272,5 +274,13 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
     @SuppressLint("ClickableViewAccessibility")
     private fun disableRV(rv: RecyclerView) {
         rv.setOnTouchListener { _, _ -> true }
+    }
+
+    fun toggleSorting(type: Int) {
+        when (type) {
+            1 -> authors.sortByDescending { it.date }
+            -1 -> authors.sortByDescending { (it.likes.size + it.loves.size + it.sads.size + it.surprises.size + it.angrys.size + it.hahas.size) }
+        }
+        adapter.notifyDataSetChanged()
     }
 }

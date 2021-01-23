@@ -120,7 +120,20 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
 }
 class ShoutoutsTabAdapter(activity: AppCompatActivity, val itemsCount: Int, val netID: String, val sortBy: Int) :
         FragmentStateAdapter(activity) {
+    private var fragmentMutableList = mutableListOf<Fragment>()
+
     override fun getItemCount() = itemsCount
 
-    override fun createFragment(position: Int): Fragment = ShoutoutsTabFragment.getInstance(position, netID, sortBy)
+    override fun createFragment(position: Int): Fragment {
+        fragmentMutableList.add(ShoutoutsTabFragment.getInstance(0, netID, sortBy))
+        fragmentMutableList.add(ShoutoutsTabFragment.getInstance(1, netID, sortBy))
+        return fragmentMutableList.get(position)
+    }
+
+    fun remakeFragment(newSort: Int) {
+        (fragmentMutableList.get(0) as ShoutoutsTabFragment).toggleSorting(newSort)
+        if (fragmentMutableList.size > 1) {
+            (fragmentMutableList.get(1) as ShoutoutsTabFragment).toggleSorting(newSort)
+        }
+    }
 }

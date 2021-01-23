@@ -8,8 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
@@ -43,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     var showShoutoutRanking = false
     var userData: MutableList<User> = mutableListOf()
     var showProfileEditIcon = false
+    lateinit var netId: String
     private lateinit var shoutoutsFrag: ShoutoutsFragment
     private lateinit var eventsFrag: EventsFragment
     private lateinit var announcementsFrag: AnnouncementsFragment
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Create user obj in firebase if it doesn't exist already */
         val userNetID = intent.getStringExtra(NETID_MESSAGE) ?: return
+        netId = userNetID
         database = Firebase.database.reference.child("users")
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -159,6 +160,18 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.top_app_bar, menu)
         menu?.getItem(0)?.isVisible = showShoutoutRanking
         menu?.getItem(1)?.isVisible = showProfileEditIcon
+
+        val menuItem = menu?.findItem(R.id.app_bar_switch)
+        val view = menuItem?.actionView
+        val switchLayout = view?.findViewById<RelativeLayout>(R.id.switchRelativeLayout)
+        switchLayout?.findViewById<Switch>(R.id.switchAB)?.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                shoutoutsFrag.forceUpdate(-1)
+            } else {
+                shoutoutsFrag.forceUpdate(1)
+            }
+        }
+
         return true
     }
 
