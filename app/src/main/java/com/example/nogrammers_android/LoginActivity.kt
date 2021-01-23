@@ -6,15 +6,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.NetworkResponse
-import com.android.volley.ParseError
-import com.android.volley.Request
-import com.android.volley.Response
+import com.android.volley.*
 import com.android.volley.toolbox.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
-
+import java.net.CookieHandler
+import java.net.CookieManager
+import java.net.CookieStore
 
 const val NETID_MESSAGE = "com.example.nogrammers_android.NETID_MESSAGE"
 
@@ -29,16 +28,23 @@ class LoginActivity : AppCompatActivity() {
     private var versionCount = 1
     private var currentTicket: String = ""
     private var validated = false
-    private val queue = Volley.newRequestQueue(this)
+    private lateinit var queue: RequestQueue
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        CookieHandler.setDefault(CookieManager()) // supposedly lets session cookies persist s
+
+        queue = Volley.newRequestQueue(this)
+
         executionCount = 1
         versionCount = 1
+
         // GET request to obtain login url-encoded form
         obtainLoginForm()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
 
         /* Set button listener */
         findViewById<Button>(R.id.loginBtn).setOnClickListener {
@@ -69,7 +75,6 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 } else {
                     executionCount += 1
-                    versionCount += 1
                 }
             }
         }
@@ -86,9 +91,10 @@ class LoginActivity : AppCompatActivity() {
                 Response.Listener<String> { response ->
                     run {
                         var position = response.indexOf("execution=")
+                        // TODO: check for -1 in position
                         var eAndS = response.substring(position + 11, position + 15)
-                        executionCount = eAndS[1].toInt()
-                        versionCount = eAndS[3].toInt()
+                        executionCount = eAndS[0].toString().toInt()
+                        versionCount = eAndS[2].toString().toInt()
                     }
                 },
                 Response.ErrorListener { })
@@ -143,53 +149,89 @@ class LoginActivity : AppCompatActivity() {
     // After we get the form, we need to POST with execution info to get service ticket
     private fun obtainTicketAndValidate() {
 
-        // if no ticket, then send POST to get it
-        if (currentTicket == "") {
-            try {
-                val signInReq = object:StringRequest(
-                    Request.Method.POST,
-                    "$loginFormLink?execution="+"e"+executionCount.toString()+"s"+versionCount.toString(),
-                    Response.Listener<String> { response ->
-                            findTicket(JSONObject(response))
-                    },
-                    Response.ErrorListener{  }){
-                    override fun getBodyContentType(): String? {
-                        var map : Map<String, String> = hashMapOf("Content-Type" to "application/x-www-form-urlencoded")
-                        return "application/x-www-form-urlencoded"
-                    }
-                    override fun getParams(): MutableMap<String, String>? {
-                        val netID = findViewById<EditText>(R.id.editTextNetID).text.toString().trim()
-                        val pwd = findViewById<EditText>(R.id.editTextPassword).text.toString()
-                        return hashMapOf("j_username" to netID,
-                            "j_password" to pwd, "_eventId_proceed" to "")
-                    }
-                }
-                queue.add(signInReq)
+        if (!validated) {
 
-            // TODO: If this fails we probably need to reload the form again, and grab new execution param
-            } catch (e:Exception) {
-                e.printStackTrace()
-            }
-            // If we have a ticket, validate with CAS serviceValidate endpoint
-        } else {
-            val validateReq = object:StringRequest(
-                Request.Method.GET,
-                "$validateLink&ticket=$currentTicket",
-                Response.Listener<String> { response ->
-                    run{
-                        if (response.contains("student") || response.contains("success")) // TODO: make this better
-                            validated = true
+            // if no ticket, then send POST to get it
+            if (currentTicket == "") {
+                try {
+                    val signInReq = object : StringRequest(
+                        Request.Method.POST,
+                        "$loginFormLink?execution=" + "e" + executionCount.toString() + "s" + versionCount.toString(),
+                        Response.Listener<String> { response ->
+                            run {
+                                try {
+                                    findTicket(JSONObject(response))
+                                    if (currentTicket != "") {
+                                        validateTicket()
+                                    }
+
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        },
+                        Response.ErrorListener { }) {
+                        override fun getBodyContentType(): String? {
+                            var map: Map<String, String> =
+                                hashMapOf("Content-Type" to "application/x-www-form-urlencoded")
+                            return "application/x-www-form-urlencoded"
+                        }
+
+                        override fun getParams(): MutableMap<String, String>? {
+                            val netID =
+                                findViewById<EditText>(R.id.editTextNetID).text.toString().trim()
+                            val pwd = findViewById<EditText>(R.id.editTextPassword).text.toString()
+                            return hashMapOf(
+                                "j_username" to netID,
+                                "j_password" to pwd, "_eventId_proceed" to ""
+                            )
+                        }
+
+//                        override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
+//                            try {
+//                                var ticketStr = response!!.headers.get("Location")
+//                                var ticket = ticketStr!!.substringAfter("ticket=")
+//                                if (ticket.length > 1)
+//                                    currentTicket = ticket
+//                            } catch (e: UnsupportedEncodingException) {
+//                                Response.error<JSONObject>(ParseError(e))
+//                            } catch (je: JSONException) {
+//                                Response.error<JSONObject>(ParseError(je))
+//                            } catch (e:Exception) {
+//                                return super.parseNetworkResponse(response)
+//                            }
+//                            return super.parseNetworkResponse(response)
+//                        }
                     }
-                },
-                Response.ErrorListener{  }){
-                override fun getBodyContentType(): String? {
-                    return "text/html;charset=utf-8"
+                    queue.add(signInReq)
+
+                    // TODO: If this fails we probably need to reload the form again, and grab new execution param
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
+                // If we have a ticket, validate with CAS serviceValidate endpoint
+            } else {
+               validateTicket()
             }
-            queue.add(validateReq)
         }
+    }
 
-
+    private fun validateTicket() {
+        val validateReq = object : StringRequest(
+            Request.Method.GET,
+            "$validateLink&ticket=$currentTicket",
+            Response.Listener<String> { response ->
+                run {
+                    if (response.contains("student") || response.contains("success")) // TODO: make this better
+                        validated = true
+                }
+            },
+            Response.ErrorListener { }) {
+            override fun getBodyContentType(): String? {
+                return "text/html;charset=utf-8"
+            }
+        }
+        queue.add(validateReq)
     }
 
 }
