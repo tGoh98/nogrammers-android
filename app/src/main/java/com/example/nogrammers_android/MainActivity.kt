@@ -1,8 +1,12 @@
 package com.example.nogrammers_android
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
@@ -12,6 +16,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
@@ -71,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             /* Two possible forms: Timothy Goh (tmg5) or tmg5 */
             var selectedNetId = data
             if (data.contains("(")) selectedNetId =
-                data.substring(data.indexOf("(") + 1, data.indexOf((")")))
+                    data.substring(data.indexOf("(") + 1, data.indexOf((")")))
             /* Navigate to it */
             setCurrentFragment(ProfileFragment(selectedNetId, dbRefUsers, false), "Profile")
             loseSearchBarFocus()
@@ -101,14 +107,14 @@ class MainActivity : AppCompatActivity() {
                 for (child in dataSnapshot.children) {
                     val childUser = child.getValue(UserObject::class.java) as UserObject
                     userData.add(
-                        User(
-                            childUser.netID,
-                            childUser.gradYr,
-                            childUser.name,
-                            childUser.bio,
-                            childUser.tags,
-                            childUser.admin
-                        )
+                            User(
+                                    childUser.netID,
+                                    childUser.gradYr,
+                                    childUser.name,
+                                    childUser.bio,
+                                    childUser.tags,
+                                    childUser.admin
+                            )
                     )
                 }
                 /* Update user name */
@@ -169,12 +175,45 @@ class MainActivity : AppCompatActivity() {
             val queryStr = searchBarTxt.text.toString()
             /* Show tags by starts with then contains */
             tagSearchFrag.updateTagResults(
-                listOf(
-                    allTags.filter { it.startsWith(queryStr, true) },
-                    allTags.filter { it.contains(queryStr) }).flatten().toSet().toList()
+                    listOf(
+                            allTags.filter { it.startsWith(queryStr, true) },
+                            allTags.filter { it.contains(queryStr) }).flatten().toSet().toList()
             )
         }
+
+        /* Pick image */
+
+        val requestPermissionLauncher =
+                registerForActivityResult(ActivityResultContracts.RequestPermission()
+                ) { isGranted: Boolean ->
+                    if (isGranted) {
+                        // Permission is granted. Continue the action or workflow in your
+                        // app.
+                        Toast.makeText(applicationContext, "Granted permission!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Explain to the user that the feature is unavailable because the
+                        // features requires a permission that the user has denied. At the
+                        // same time, respect the user's decision. Don't link to system
+                        // settings in an effort to convince the user to change their
+                        // decision.
+                        Toast.makeText(applicationContext, "Denied :(", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            res ->
+            if (res.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = res.data
+                Log.e("TAG", data.toString())
+            }
+        }
+        resultLauncher.launch(intent)
+//        startActivityForResult(intent, 100)
+
     }
+
 
     /**
      * Needed to show the toolbar icons
@@ -204,7 +243,7 @@ class MainActivity : AppCompatActivity() {
         invalidateOptionsMenu()
         supportActionBar?.title = tabTitle
         showProfileEditIcon =
-            fragment is ProfileFragment && fragment.showEditIcon //shortcircuit eval ftw
+                fragment is ProfileFragment && fragment.showEditIcon //shortcircuit eval ftw
         val searchBarLayout = findViewById<ConstraintLayout>(R.id.searchBarLayout)
         val searchBarBackground = findViewById<ImageView>(R.id.searchBarBackground)
 
@@ -272,9 +311,9 @@ class MainActivity : AppCompatActivity() {
         /* Show matching users */
         tagSearchFrag.updateTagResults(userData.filter {
             it.tags.contains(
-                UserTags.textToUserTag(
-                    selectedTag
-                )
+                    UserTags.textToUserTag(
+                            selectedTag
+                    )
             )
         }.map { if (it.name != "Add your name here!") "${it.name} (${it.netID})" else it.netID })
     }
@@ -321,7 +360,7 @@ class MainActivity : AppCompatActivity() {
      * Utility function to convert dp -> px
      */
     private fun dpToPx(dp: Float): Int =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
 
     /**
      * Causes all EditText's to lose focus on touching outside the field
