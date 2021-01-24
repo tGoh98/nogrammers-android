@@ -6,12 +6,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.iterator
@@ -40,7 +42,8 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
     lateinit var binding: FragmentEditProfileBinding
     lateinit var userObj: User
-    var pfpUpdated = false
+    private var pfpUpdated: Boolean = false
+    private val ONE_MEGABYTE: Long = 1024 * 1024
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +52,8 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         /* Inflate the layout for this fragment */
         binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
+
+        pfpUpdated = false
 
         /* Populate with user information */
         val database = dbUserRef.child(userNetID)
@@ -133,6 +138,7 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
             /* Upload pfp image to firebase if it changed */
             if (pfpUpdated) {
+                freezeView()
                 val storageRef = Firebase.storage.reference.child("profilePics").child(userNetID)
                 // Get the data from an ImageView as bytes
                 //        imageView.isDrawingCacheEnabled = true <-- these two lines were deprecated but everything still seems to work ok
@@ -146,10 +152,12 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
                 uploadTask.addOnFailureListener {
                     // Handle unsuccessful uploads
                     Log.d("TAG", "profile upload failed")
+                    unfreezeView()
                 }.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
                     Log.d("TAG", "Profile upload succeeded. $taskSnapshot")
+                    unfreezeView()
                     closeEditProfile()
                 }
             } else closeEditProfile()
@@ -164,29 +172,41 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         /* Create launcher for choosing an image */
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
             if (res.resultCode == Activity.RESULT_OK) {
-                /* Update view with chosen image */
-                val uri = res.data!!.data
-                binding.editProfilePfp.setImageURI(uri)
-                pfpUpdated = true
+                /* Compute file size */
+                val uri: Uri = res.data!!.data!!
+                binding.calcImgSize.setImageURI(uri)
+                val bitmap = (binding.calcImgSize.drawable as BitmapDrawable).bitmap
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val size = baos.size()
+                if (size > ONE_MEGABYTE) {
+                    /* Constrain image to <1mb */
+                    Toast.makeText(context, "Please upload an image smaller than 1mb", Toast.LENGTH_SHORT).show()
+                    binding.calcImgSize.setImageURI(null)
+                } else {
+                    /* Update pfp */
+                    binding.editProfilePfp.setImageURI(uri)
+                    pfpUpdated = true
+                }
             }
         }
         /* Create launcher for getting permission to photo gallery */
         val requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    /* Permission is granted, let user choose image */
-                    val imageChooserIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
-                    resultLauncher.launch(imageChooserIntent)
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // features requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-                    Toast.makeText(context, "Please enable photos permission to change your profile picture :(", Toast.LENGTH_SHORT).show()
+                registerForActivityResult(ActivityResultContracts.RequestPermission()
+                ) { isGranted: Boolean ->
+                    if (isGranted) {
+                        /* Permission is granted, let user choose image */
+                        val imageChooserIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
+                        resultLauncher.launch(imageChooserIntent)
+                    } else {
+                        // Explain to the user that the feature is unavailable because the
+                        // features requires a permission that the user has denied. At the
+                        // same time, respect the user's decision. Don't link to system
+                        // settings in an effort to convince the user to change their
+                        // decision.
+                        Toast.makeText(context, "Please enable photos permission to change your profile picture :(", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
         /* Set listeners */
         val editPfpListener = View.OnClickListener {
             requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -210,7 +230,6 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
         /* Pfp */
         val storageRef = Firebase.storage.reference.child("profilePics").child(userNetID)
-        val ONE_MEGABYTE: Long = 1024 * 1024
         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
             /* Found pfp, set it */
             val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
@@ -244,4 +263,14 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         binding.editProfileBioField.text.clear()
         (activity as MainActivity).setProfileFragAdapter()
     }
+
+    private fun freezeView() {
+        activity?.window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun unfreezeView() {
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+    }
+
 }
