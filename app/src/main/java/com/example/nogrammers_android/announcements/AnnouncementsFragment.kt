@@ -12,8 +12,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAnnouncementsBinding
+import com.example.nogrammers_android.user.UserTags
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -79,7 +81,7 @@ class AnnouncementsFragment(private val dbRef: DatabaseReference) : Fragment() {
         announceDbRef.addValueEventListener(updateListener)
 
         /* Populate adapter with data */
-        adapter = context?.let { AnnouncementsAdapter(it) }!!
+        adapter = context?.let { AnnouncementsAdapter(it, (activity as MainActivity).curUser.tags.contains(UserTags.Admin), announceDbRef) }!!
         binding.announcementsView.adapter = adapter
 
         /* Create view model */
@@ -129,6 +131,8 @@ class AnnouncementsFragment(private val dbRef: DatabaseReference) : Fragment() {
         createBtn.setOnClickListener {
             model.createMode.value = true
         }
+
+        /* Delete icon */
 
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
 
