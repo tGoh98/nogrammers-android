@@ -3,9 +3,9 @@ package com.example.nogrammers_android.events
 import java.util.*
 
 data class Event(
-        val author: String, val title: String, val desc: String,
-        val start: Long, val end: Long, val tags: List<String>, val location: String,
-        val audience: String, val pic: String = "", val remote: Boolean = false,
+        val author: String, var title: String, var desc: String,
+        var start: Long, var end: Long, var tags: List<String>, var location: String,
+        var audience: String, val pic: String = "", var remote: Boolean = false,
         val interestedUsers: MutableList<String> = mutableListOf(),
         val goingUsers: MutableList<String> = mutableListOf(), var key: String = "") {
 
@@ -47,6 +47,13 @@ data class Event(
      */
     fun removeUserFromGoing(netId: String) : Boolean {
         return goingUsers.remove(netId)
+    }
+
+    /**
+     * remove all tags from the event
+     */
+    fun clearTags() {
+        tags = mutableListOf()
     }
 
 }

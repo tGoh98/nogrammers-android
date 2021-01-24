@@ -202,7 +202,7 @@ class EventTabsFragment() : Fragment() {
         val adapter = EventsItemAdapter(eventsList.sortedBy { it.start }, getNetId(),
                 EventsItemListener { event ->
                     parentFragmentManager.beginTransaction().apply{
-                        val fragment = EventDetailFragment(event)
+                        val fragment = EventDetailFragment(event, getNetId())
                         replace(R.id.fl_fragment, fragment)
                         setReorderingAllowed(true)
                         addToBackStack("event detail") // name can be null

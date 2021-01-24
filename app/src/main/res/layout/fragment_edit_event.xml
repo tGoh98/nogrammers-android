@@ -63,13 +63,13 @@
                     android:padding="0dp"/>
 
                 <TextView
-                android:id="@+id/dash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dash"
-                app:layout_constraintStart_toEndOf="@id/startTimePickerButton"
-                app:layout_constraintTop_toTopOf="@id/startTimePickerButton"
-                app:layout_constraintBottom_toBottomOf="@id/startTimePickerButton" />
+                    android:id="@+id/dash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dash"
+                    app:layout_constraintStart_toEndOf="@id/startTimePickerButton"
+                    app:layout_constraintTop_toTopOf="@id/startTimePickerButton"
+                    app:layout_constraintBottom_toBottomOf="@id/startTimePickerButton" />
                 <Button
                     android:id="@+id/startTimePickerButton"
                     android:layout_width="wrap_content"
@@ -311,10 +311,10 @@
                     android:text="@string/send_to_listserv"/>
 
                 <Button
-                    android:id="@+id/postButton"
+                    android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/post_event"
+                    android:text="@string/save_event"
                     app:layout_constraintTop_toBottomOf="@id/eventImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="50dp"

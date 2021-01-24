@@ -12,14 +12,21 @@ import androidx.databinding.DataBindingUtil
 import com.example.nogrammers_android.databinding.FragmentEventDetailBinding
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R
+import com.example.nogrammers_android.user.User
+import com.example.nogrammers_android.user.UserObject
+import com.example.nogrammers_android.user.UserTags
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 /**
  * Fragment for seeing an event's details
  */
-class EventDetailFragment(val event: Event) : Fragment() {
+class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
 
     lateinit var binding : FragmentEventDetailBinding
 
@@ -33,6 +40,7 @@ class EventDetailFragment(val event: Event) : Fragment() {
                 R.layout.fragment_event_detail, container, false
         )
 
+        checkAdmin()
         binding.eventTitle.text = event.title
         binding.eventDate.text = DateTimeUtil.getStringFromDateinMillis(event.start) + "\n" +
                 DateTimeUtil.getStringFromTimeinMillis(event.start) +
@@ -50,6 +58,13 @@ class EventDetailFragment(val event: Event) : Fragment() {
             }
             else if (child is Button) {
                 child.visibility = View.GONE
+            }
+        }
+        binding.adminButton.setOnClickListener {
+            childFragmentManager.let {
+                AdminBottomSheetFragment.newInstance(Bundle(), event).apply {
+                    show(it, tag)
+                }
             }
         }
 
@@ -85,4 +100,34 @@ class EventDetailFragment(val event: Event) : Fragment() {
         this.activity?.findViewById<BottomNavigationItemView>(R.id.events_icon)?.performClick()
         return super.onOptionsItemSelected(item)
     }
+
+    fun checkAdmin() {
+        val database = Firebase.database.reference.child("users").child(netid)
+        val updateListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // TODO: add fail check
+                val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
+                val userObj = User(
+                        userObjTemp.netID,
+                        userObjTemp.gradYr,
+                        userObjTemp.name,
+                        userObjTemp.bio,
+                        userObjTemp.tags,
+                        userObjTemp.interestedEvents,
+                        userObjTemp.goingEvents
+                )
+
+                if (userObj.tags.contains(UserTags.Admin)) {
+                    binding.adminButton.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.addListenerForSingleValueEvent(updateListener)
+    }
+
 }

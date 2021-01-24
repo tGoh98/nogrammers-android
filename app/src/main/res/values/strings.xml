@@ -77,4 +77,7 @@
     <string name="show_more"><u>Show more</u></string>
     <string name="show_less"><u>Show less</u></string>
     <string name="urgent">Urgent</string>
+    <string name="delete_event">Delete Event</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="save_event">Save Event</string>
 </resources>

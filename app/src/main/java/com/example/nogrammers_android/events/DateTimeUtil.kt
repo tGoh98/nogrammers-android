@@ -60,6 +60,13 @@ object DateTimeUtil {
         return cal
     }
 
+    fun getCalendarFromTimeInMillis (timeLong: Long) : Calendar {
+        val cal = Calendar.getInstance()
+        cal.clear()
+        cal.timeInMillis = timeLong
+        return cal
+    }
+
     fun getStringFromTimeinMillis (timeLong : Long) : String {
         val time = Calendar.getInstance()
         time.clear()
