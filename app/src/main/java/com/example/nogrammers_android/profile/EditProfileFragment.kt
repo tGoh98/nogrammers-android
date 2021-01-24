@@ -40,6 +40,7 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
     lateinit var binding: FragmentEditProfileBinding
     lateinit var userObj: User
+    var pfpUpdated = false
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -130,29 +131,28 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             /* Write to firebase */
             dbUserRef.child(userNetID).setValue(updatedUserObj)
 
-            /* Update user's name in app */
-            (activity as MainActivity).userName = newName
+            /* Upload pfp image to firebase if it changed */
+            if (pfpUpdated) {
+                val storageRef = Firebase.storage.reference.child("profilePics").child(userNetID)
+                // Get the data from an ImageView as bytes
+                //        imageView.isDrawingCacheEnabled = true <-- these two lines were deprecated but everything still seems to work ok
+                //        imageView.buildDrawingCache()          <-- these two lines were deprecated but everything still seems to work ok
+                val bitmap = (binding.editProfilePfp.drawable as BitmapDrawable).bitmap
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val imgData = baos.toByteArray()
 
-            /* Upload pfp image to firebase */
-            val storageRef = Firebase.storage.reference.child("profilePics").child(userNetID)
-            // Get the data from an ImageView as bytes
-            //        imageView.isDrawingCacheEnabled = true <-- these two lines were deprecated but everything still seems to work ok
-            //        imageView.buildDrawingCache()          <-- these two lines were deprecated but everything still seems to work ok
-            val bitmap = (binding.editProfilePfp.drawable as BitmapDrawable).bitmap
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val imgData = baos.toByteArray()
-
-            val uploadTask = storageRef.putBytes(imgData)
-            uploadTask.addOnFailureListener {
-                // Handle unsuccessful uploads
-                Log.d("TAG", "profile upload failed")
-            }.addOnSuccessListener { taskSnapshot ->
-                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                // ...
-                Log.d("TAG", "Profile upload succeeded. Details: $taskSnapshot")
-                closeEditProfile()
-            }
+                val uploadTask = storageRef.putBytes(imgData)
+                uploadTask.addOnFailureListener {
+                    // Handle unsuccessful uploads
+                    Log.d("TAG", "profile upload failed")
+                }.addOnSuccessListener { taskSnapshot ->
+                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                    // ...
+                    Log.d("TAG", "Profile upload succeeded. $taskSnapshot")
+                    closeEditProfile()
+                }
+            } else closeEditProfile()
         }
 
         /* Cancel button */
@@ -167,6 +167,7 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
                 /* Update view with chosen image */
                 val uri = res.data!!.data
                 binding.editProfilePfp.setImageURI(uri)
+                pfpUpdated = true
             }
         }
         /* Create launcher for getting permission to photo gallery */
