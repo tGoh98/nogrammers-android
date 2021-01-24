@@ -24,5 +24,4 @@ fun TextView.setContent(item: Announcement) {
 @BindingAdapter("date")
 fun TextView.setDate(item: Announcement) {
     text = java.util.Date(item.date.toLong()).toString()
-
 }

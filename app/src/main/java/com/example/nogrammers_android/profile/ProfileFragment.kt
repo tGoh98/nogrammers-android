@@ -1,5 +1,7 @@
 package com.example.nogrammers_android.profile
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +20,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 // View pager tutorial: https://www.raywenderlich.com/8192680-viewpager2-in-android-getting-started
 
@@ -77,8 +81,7 @@ class ProfileFragment(
                     userObjTemp.gradYr,
                     userObjTemp.name,
                     userObjTemp.bio,
-                    userObjTemp.tags,
-                    userObjTemp.admin
+                    userObjTemp.tags
                 )
 
                 updateUI(userObj)
@@ -108,6 +111,19 @@ class ProfileFragment(
             // Note: crashes with NPE error if firebase tag array doesn't start with index 0
             chip.text = tag.toString()
             chipGroup.addView(chip)
+        }
+
+        /* Pfp */
+        val storageRef = Firebase.storage.reference.child("profilePics").child(netID)
+        val ONE_MEGABYTE: Long = 1024 * 1024
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+            /* Found pfp, set it */
+            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+            val pfpView = binding.pfpImgProfileSrc
+            pfpView.setImageBitmap(Bitmap.createScaledBitmap(bmp, pfpView.width, pfpView.height, false))
+        }.addOnFailureListener {
+            /* Not found/error, use default */
+            Log.e("TAG", "Could not find profile pic, using default image")
         }
     }
 }
