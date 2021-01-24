@@ -18,16 +18,31 @@
         android:layout_marginVertical="10dp"
         android:background="@drawable/rounded_bg_shoutouts">
 
-        <ImageView
-            android:id="@+id/pfp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/shoutoutsPfpCard"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:pfp="@{shoutout}"
-            tools:srcCompat="@drawable/km1" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/pfp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:pfp="@{shoutout}"
+                tools:srcCompat="@drawable/km1" />
+
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/author"
@@ -38,8 +53,8 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:author="@{shoutout}"
-            app:layout_constraintStart_toEndOf="@id/pfp"
-            app:layout_constraintTop_toTopOf="@+id/pfp"
+            app:layout_constraintStart_toEndOf="@id/shoutoutsPfpCard"
+            app:layout_constraintTop_toTopOf="@+id/shoutoutsPfpCard"
             tools:text="Kanga" />
 
         <TextView
@@ -66,8 +81,8 @@
             android:paddingBottom="5dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/date"
-            app:layout_constraintStart_toStartOf="@+id/pfp"
-            app:layout_constraintTop_toBottomOf="@+id/pfp"
+            app:layout_constraintStart_toStartOf="@+id/shoutoutsPfpCard"
+            app:layout_constraintTop_toBottomOf="@+id/shoutoutsPfpCard"
             app:msg="@{shoutout}"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique interdum nibh sit amet aliquam" />
 
@@ -83,138 +98,213 @@
             app:layout_constraintStart_toStartOf="@+id/msg"
             app:layout_constraintTop_toBottomOf="@+id/msg">
 
-            <ImageButton
-                android:id="@+id/likesImg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="3dp"
-                app:increaseTouch="@{3}"
-                android:background="@drawable/km1"
-                android:scaleType="centerInside"
-                app:layout_constraintStart_toStartOf="@+id/msg"
-                app:layout_constraintTop_toBottomOf="@+id/msg"
-                app:srcCompat="@drawable/km1" />
-
-            <TextView
-                android:id="@+id/likesCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:likes="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.likes.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
-                android:textSize="16sp" />
+                android:background="@{shoutout.likes.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+                >
+                <ImageButton
+                    android:id="@+id/likesImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    android:background="@drawable/kangaroo_emojis_01_like"
+                    android:scaleType="centerInside"
+                    app:increaseTouch="@{3}"
+                    app:layout_constraintStart_toStartOf="@+id/msg"
+                    app:layout_constraintTop_toBottomOf="@+id/msg" />
+
+                <TextView
+                    android:id="@+id/likesCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:likes="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.likes.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/lovesImg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="3dp"
-                app:increaseTouch="@{3}"
-                android:background="@drawable/iconfinder_love_1325176" />
-
-            <TextView
-                android:id="@+id/lovesCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:loves="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.loves.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
-                android:textSize="16sp" />
+                android:background="@{shoutout.loves.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+            >
+                <ImageButton
+                    android:id="@+id/lovesImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    app:increaseTouch="@{3}"
+                    android:background="@drawable/kangaroo_emojis_03_love" />
+
+                <TextView
+                    android:id="@+id/lovesCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:loves="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.loves.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@{shoutout.hahas.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+                >
+                <ImageButton
+                    android:id="@+id/hahasImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    app:increaseTouch="@{3}"
+                    android:background="@drawable/kangaroo_emojis_02_haha" />
+
+                <TextView
+                    android:id="@+id/hahasCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:hahas="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.hahas.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/hahasImg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="3dp"
-                app:increaseTouch="@{3}"
-                android:background="@drawable/iconfinder_happy_1325173" />
-
-            <TextView
-                android:id="@+id/hahasCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:hahas="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.hahas.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
-                android:textSize="16sp" />
+                android:background="@{shoutout.surprises.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+                >
+                <ImageButton
+                    android:id="@+id/surprisedImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    app:increaseTouch="@{3}"
+                    android:background="@drawable/kangaroo_emojis_04_surprise" />
+
+                <TextView
+                    android:id="@+id/surprisesCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:surprises="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.surprises.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/surprisedImg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="3dp"
-                app:increaseTouch="@{3}"
-                android:background="@drawable/iconfinder_surprise_1325174" />
-
-            <TextView
-                android:id="@+id/surprisesCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:surprises="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.surprises.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
-                android:textSize="16sp" />
+                android:background="@{shoutout.sads.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+                >
+
+                <ImageButton
+                    android:id="@+id/sadsImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    app:increaseTouch="@{3}"
+                    android:background="@drawable/kangaroo_emojis_05_sad" />
+
+                <TextView
+                    android:id="@+id/sadsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:sads="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.sads.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/sadsImg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="3dp"
-                app:increaseTouch="@{3}"
-                android:background="@drawable/iconfinder_sad_1325172" />
-
-            <TextView
-                android:id="@+id/sadsCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:sads="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.sads.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
-                android:textSize="16sp" />
+                android:background="@{shoutout.horrors.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+                >
+                <ImageButton
+                    android:id="@+id/horrorsImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    app:increaseTouch="@{3}"
+                    android:background="@drawable/kangaroo_emojis_06_horror" />
+
+                <TextView
+                    android:id="@+id/horrorsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:horrors="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.horrors.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/angryImg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="3dp"
-                app:increaseTouch="@{3}"
-                android:background="@drawable/iconfinder_angry_1325170" />
-
-            <TextView
-                android:id="@+id/angryCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:angrys="@{shoutout}"
-                android:typeface="@{Typeface.defaultFromStyle(shoutout.angrys.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
-                android:textSize="16sp" />
+                android:background="@{shoutout.angrys.containsKey(shoutout.netID) ? @drawable/clicked_reaction_text_bg : @drawable/transparent_bg}"
+                >
+                <ImageButton
+                    android:id="@+id/angryImg"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="3dp"
+                    app:increaseTouch="@{3}"
+                    android:background="@drawable/kangaroo_emojis_07_angry" />
 
-<!--            <Space-->
+                <TextView
+                    android:id="@+id/angryCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:angrys="@{shoutout}"
+                    android:paddingRight="5dp"
+                    android:typeface="@{Typeface.defaultFromStyle(shoutout.angrys.containsKey(shoutout.netID) ? Typeface.BOLD : Typeface.NORMAL)}"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <!--            <Space-->
 <!--                android:layout_width="0dp"-->
 <!--                android:layout_height="1dp"-->
 <!--                android:layout_weight="1" />-->
@@ -274,6 +364,13 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:isAngryd="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/isHorrored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isHorrored="@{shoutout}" />
 
         </LinearLayout>
 

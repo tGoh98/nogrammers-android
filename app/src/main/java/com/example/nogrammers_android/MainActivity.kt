@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -192,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         val menuItem = menu?.findItem(R.id.app_bar_switch)
         val view = menuItem?.actionView
         val switchLayout = view?.findViewById<RelativeLayout>(R.id.switchRelativeLayout)
-        switchLayout?.findViewById<Switch>(R.id.switchAB)?.setOnCheckedChangeListener { compoundButton, isChecked ->
+        switchLayout?.findViewById<SwitchCompat>(R.id.switchAB)?.setOnCheckedChangeListener { compoundButton, isChecked ->
             if (isChecked) {
                 shoutoutsFrag.forceUpdate(-1)
             } else {

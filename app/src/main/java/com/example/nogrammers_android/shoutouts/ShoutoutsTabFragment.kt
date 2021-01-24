@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -105,6 +107,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                 if (dataSnapshot.hasChildren()) {
                     Log.d("NETID ", netID)
                     authors.clear()
+                    authors.add(Shoutout())
                     for (ds : DataSnapshot in dataSnapshot.children) {
                         val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
                         val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
@@ -114,10 +117,15 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                         newShoutout.hahas = so.hahas
                         newShoutout.sads = so.sads
                         newShoutout.surprises = so.surprises
+                        // TODO fix these definitions, netID is the current user's netID, pfp is the
+                        // netID of the shoutout creator
                         newShoutout.netID = netID
+                        newShoutout.pfp = so.netID
                         newShoutout.uuid = so.uuid
+                        newShoutout.horrors = so.horrors
                         authors.add(newShoutout)
                     }
+                    authors.removeAt(0)
                     if (sortBy == 1) {
                         authors.sortByDescending { it.date }
                     } else {
