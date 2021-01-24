@@ -34,11 +34,13 @@ class EventTabsFragment() : Fragment() {
 
     companion object {
         const val ARG_POSITION = "position"
+        const val NET_ID = "netid"
 
-        fun getInstance(position: Int): EventTabsFragment {
+        fun getInstance(position: Int, netId: String): EventTabsFragment {
             val eventTabsFrag = EventTabsFragment()
             val bundle = Bundle()
             bundle.putInt(ARG_POSITION, position)
+            bundle.putString(NET_ID, netId)
             eventTabsFrag.arguments = bundle
             return eventTabsFrag
         }
@@ -109,7 +111,12 @@ class EventTabsFragment() : Fragment() {
                                 eventObj.get("location") as String,
                                 eventObj.get("audience") as String,
                                 eventObj.get("pic") as String,
-                                eventObj.get("remote") as Boolean
+                                eventObj.get("remote") as Boolean,
+                                if (eventObj.get("interestedUsers") == null) {
+                                    mutableListOf<String>()} else {eventObj.get("interestedUsers") as MutableList<String>},
+                                if (eventObj.get("goingUsers") == null) {
+                                    mutableListOf<String>()} else {eventObj.get("goingUsers") as MutableList<String>},
+                                child.key!!
                             )
                         )
                     }
@@ -138,10 +145,22 @@ class EventTabsFragment() : Fragment() {
         return requireArguments().getInt(ARG_POSITION)
     }
 
+    fun getNetId(): String {
+        return requireArguments().getString(NET_ID)!!
+    }
+
     fun popEvents(position: Int, filter: Boolean) {
-        var eventsList = allEventsList
+        var tabEventsList = allEventsList
         // if on my events tab, filter events marked interested or going
-//        if (position == 1)
+        if (position == 1) {
+            tabEventsList = mutableListOf()
+            for (event in allEventsList) {
+                if (event.goingUsers.contains(getNetId()) || event.interestedUsers.contains(getNetId())) {
+                    tabEventsList.add(event)
+                }
+            }
+        }
+        var eventsList = tabEventsList
 
         // if filter, apply all filters
         if (filter) {
@@ -155,7 +174,7 @@ class EventTabsFragment() : Fragment() {
                 }
             }
 
-            for (event in allEventsList) {
+            for (event in tabEventsList) {
                 var addEvent = true
                // tags filter (if event has any of the applied tags, or if the tags list is empty
                 if (tags.size > 0) {
@@ -201,7 +220,7 @@ class EventTabsFragment() : Fragment() {
         }
 
         /* Update recycler view contents */
-        val adapter = EventsItemAdapter(eventsList.sortedBy { it.start },
+        val adapter = EventsItemAdapter(eventsList.sortedBy { it.start }, getNetId(),
                 EventsItemListener { event ->
                     parentFragmentManager.beginTransaction().apply{
                         val fragment = EventDetailFragment(event)

@@ -9,14 +9,23 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.databinding.EventItemBinding
+import com.example.nogrammers_android.user.User
+import com.example.nogrammers_android.user.UserObject
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
+import java.util.ArrayList
 
-class EventsItemAdapter(private val data: List<Event>, val clickListener: EventsItemListener) :
+class EventsItemAdapter(private val data: List<Event>, val netid: String, val clickListener: EventsItemListener) :
         RecyclerView.Adapter<EventsItemAdapter.EventViewHolder>() {
 
     // TODO: instead of passing in static data, consider managing list contents with https://developer.android.com/codelabs/kotlin-android-training-diffutil-databinding/#3
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-        return EventViewHolder.from(parent)
+        return EventViewHolder.from(parent, netid)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
@@ -26,18 +35,76 @@ class EventsItemAdapter(private val data: List<Event>, val clickListener: Events
 
     override fun getItemCount() = data.size
 
-    class EventViewHolder private constructor(val binding: EventItemBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+    class EventViewHolder private constructor(val binding: EventItemBinding, val netid: String) :
+            RecyclerView.ViewHolder(binding.root), AdapterView.OnItemSelectedListener {
 
         fun bind(item: Event, clickListener: EventsItemListener) {
             binding.event = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
+            if (item.interestedUsers.contains(netid)) {
+                binding.markAs.setSelection(1)
+            }
+            else if (item.goingUsers.contains(netid)) {
+                binding.markAs.setSelection(2)
+            }
+            binding.markAs.onItemSelectedListener = this
         }
 
-        companion object : AdapterView.OnItemSelectedListener {
-            fun from(parent: ViewGroup): EventViewHolder {
-                val binding = EventItemBinding.inflate(
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            Log.d("Tag", "on item selected called " + position.toString() + " " +
+                    binding.event.toString())
+            val event = binding.event
+            if (parent != null && event != null) {
+                    if (position != 1) {
+                        // remove user from events interested list
+                        event.removeUserFromInterested(netid)
+                        // remove event from user's interested list
+                        Firebase.database.reference.child("users").child(netid).
+                            child("interestedEvents").child(event.key).removeValue()
+                    }
+                    if (position != 2) {
+                        // remove user from events going list
+                        event.removeUserFromGoing(netid)
+                        // remove event from user's going list
+                        Firebase.database.reference.child("users").child(netid).
+                            child("goingEvents").child(event.key).removeValue()
+                    }
+                    if (position == 1) {
+                        // add user to events interested list and add event to user's interested events
+                        event.addUserToInterested(netid)
+                        // add event to user's interested list
+                        updateUser(event.key, "interestedEvents")
+                    }
+                    else if (position == 2) {
+                        // add user to events going list
+                        event.addUserToGoing(netid)
+                        // add event to user's going list
+                        updateUser(event.key, "goingEvents")
+                    }
+                    postEventToFirebase(event)
+            }
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            Log.d("Tag","nothing selected")
+        }
+
+        private fun postEventToFirebase (event: Event) {
+            val database = Firebase.database.reference.child("events").child(event.key)
+            database.setValue(event)
+        }
+
+        private fun updateUser (key: String, field: String) {
+            val database = Firebase.database.reference.child("users").child(netid).child(field)
+            database.child(key).setValue(0)
+        }
+
+        companion object {
+            lateinit var binding: EventItemBinding
+
+            fun from(parent: ViewGroup, netid: String): EventViewHolder {
+                binding = EventItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -45,18 +112,7 @@ class EventsItemAdapter(private val data: List<Event>, val clickListener: Events
                 val markAsOptions = listOf("Mark as", "Interested",
                         "Going")
                 binding.markAs.adapter = ArrayAdapter(parent.context, R.layout.simple_spinner_item, markAsOptions)
-                binding.markAs.onItemSelectedListener = this
-                return EventViewHolder(binding)
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (parent != null) {
-                    Log.d("Tag",parent.getItemAtPosition(position).toString())
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Log.d("Tag","nothing selected")
+                return EventViewHolder(binding, netid)
             }
         }
     }

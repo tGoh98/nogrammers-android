@@ -22,11 +22,12 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.options
 import java.util.*
+import java.util.function.IntToLongFunction
 
 /**
  * Fragment for creating new events
  */
-class AddEventFragment : Fragment() {
+class AddEventFragment(val netId: String) : Fragment() {
 
     lateinit var binding : FragmentAddEventBinding
     lateinit var startTime : MutableList<Int>
@@ -158,7 +159,7 @@ class AddEventFragment : Fragment() {
 
     fun createEvent() : Event {
         // get current user for author
-        val author = ""
+        val author = netId
 
         val title = binding.eventTitle.text.toString()
 
@@ -176,7 +177,8 @@ class AddEventFragment : Fragment() {
         val location = binding.eventLocation.text.toString()
         val description = binding.eventDescription.text.toString()
         val audience = if (binding.campusWideBox.isChecked) { "Campus-wide" }
-                        else {"Duncaroos-only"}
+                        else if (binding.duncaroosBox.isChecked) {"Duncaroos-only"}
+                        else {""}
         val tags = mutableListOf<String>()
         for(child in binding.tagGroup.children) {
             if (child is Button && child.currentTextColor == Color.parseColor("#FFFFFFFF")) {
@@ -190,19 +192,9 @@ class AddEventFragment : Fragment() {
 
     fun postEventToFirebase (event : Event) {
         val database = Firebase.database.reference.child("events")
-        var num = 0
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val so = dataSnapshot.getValue<ArrayList<Map<String, Any>>>()
-                if (so != null) {
-                    num = so.size
-                }
-                database.child(num.toString()).setValue(event)
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
-            }
+        val ref = database.push().key
+        if (ref != null) {
+            database.child(ref).setValue(event)
         }
-        database.addListenerForSingleValueEvent(postListener)
     }
 }

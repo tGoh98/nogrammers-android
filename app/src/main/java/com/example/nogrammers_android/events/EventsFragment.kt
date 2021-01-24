@@ -21,7 +21,7 @@ import java.util.*
 /**
  * Events tab
  */
-class EventsFragment : Fragment() {
+class EventsFragment(val netId : String) : Fragment() {
     lateinit var binding: FragmentEventsBinding
 
     override fun onCreateView(
@@ -35,7 +35,8 @@ class EventsFragment : Fragment() {
         )
 
         /* Create and set tabs adapter */
-        binding.eventTabsPager.adapter = EventsTabAdapter(activity as AppCompatActivity, 2)
+        binding.eventTabsPager.adapter =
+            EventsTabAdapter(activity as AppCompatActivity, 2, netId)
 
         /* Tab layout mediator to connect tab labels to ViewPager */
         TabLayoutMediator(binding.eventTabLayout, binding.eventTabsPager) { tab, pos ->

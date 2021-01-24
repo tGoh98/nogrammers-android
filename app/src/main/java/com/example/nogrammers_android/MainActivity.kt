@@ -114,6 +114,8 @@ class MainActivity : AppCompatActivity() {
                                     childUser.name,
                                     childUser.bio,
                                     childUser.tags,
+                                    childUser.interestedEvents,
+                                    childUser.goingEvents
                             )
                     )
                 }
@@ -131,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Declare fragments */
         shoutoutsFrag = ShoutoutsFragment(userNetID, 1)
-        eventsFrag = EventsFragment()
+        eventsFrag = EventsFragment(userNetID)
         announcementsFrag = AnnouncementsFragment(database)
         resourcesFrag = ResourcesFragment()
         blmFrag = BlmFragment()
@@ -282,7 +284,7 @@ class MainActivity : AppCompatActivity() {
 
     fun addEvent(view: View) {
         // Create new fragment
-        setCurrentFragment(AddEventFragment(), "New Event")
+        setCurrentFragment(AddEventFragment(curUser.netID), "New Event")
     }
 
     /**
