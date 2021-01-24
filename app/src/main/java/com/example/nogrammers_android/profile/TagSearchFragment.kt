@@ -59,8 +59,8 @@ class TagSearchFragment(var clickListener: CellClickListener) : Fragment() {
     /**
      * So that main activity can update the click listener for displaying users
      */
-    fun updateClickListener(clickListener: CellClickListener) {
-        removeSuggestedLabel()
+    fun updateClickListener(newCL: CellClickListener) {
+        clickListener = newCL
         adapter = TagItemAdapter(clickListener)
         binding.tagSearchListView.adapter = adapter
     }

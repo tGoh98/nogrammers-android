@@ -9,5 +9,4 @@ class UserObject {
     var name: String = ""
     var bio: String = ""
     var tags: MutableList<UserTags> = mutableListOf()
-    val admin: Boolean = false
 }

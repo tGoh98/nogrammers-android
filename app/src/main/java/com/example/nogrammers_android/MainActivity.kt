@@ -1,11 +1,13 @@
 package com.example.nogrammers_android
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -39,7 +41,10 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var dbRefUsers: DatabaseReference
     lateinit var database: DatabaseReference
+    lateinit var userNetID: String
+    var userName = "Add your name here!"
     var showShoutoutRanking = false
     var userData: MutableList<User> = mutableListOf()
     var showProfileEditIcon = false
@@ -55,6 +60,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var socialFrag: SocialFragment
     private lateinit var backArrow: ImageView
 
+    /* Singleton click handler objects for tag search results */
+    private val showMatchingTagUsersListener = object : CellClickListener {
+        override fun onCellClickListener(data: String) {
+            /* When a tag is selected, show matching users */
+            showTaggedUsers(data)
+        }
+    }
+    private val showSelectedTagUserListener = object : CellClickListener {
+        override fun onCellClickListener(data: String) {
+            /* Two possible forms: Timothy Goh (tmg5) or tmg5 */
+            var selectedNetId = data
+            if (data.contains("(")) selectedNetId =
+                    data.substring(data.indexOf("(") + 1, data.indexOf((")")))
+            /* Navigate to it */
+            setCurrentFragment(ProfileFragment(selectedNetId, dbRefUsers, false), "Profile")
+            loseSearchBarFocus()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -65,27 +89,31 @@ class MainActivity : AppCompatActivity() {
         invalidateOptionsMenu()
 
         /* Create user obj in firebase if it doesn't exist already */
-        val userNetID = intent.getStringExtra(NETID_MESSAGE) ?: return
-        database = Firebase.database.reference.child("users")
+        userNetID = intent.getStringExtra(NETID_MESSAGE) ?: return
+        database = Firebase.database.reference
+        dbRefUsers = database.child("users")
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 userData.clear()
+                /* Create new user if not exist */
                 if (!dataSnapshot.hasChild(userNetID)) {
-                    database.child(userNetID).setValue(User(userNetID))
+                    dbRefUsers.child(userNetID).setValue(User(userNetID))
+                    userData.add(User(userNetID))
                 }
                 for (child in dataSnapshot.children) {
                     val childUser = child.getValue(UserObject::class.java) as UserObject
                     userData.add(
-                        User(
-                            childUser.netID,
-                            childUser.gradYr,
-                            childUser.name,
-                            childUser.bio,
-                            childUser.tags,
-                            childUser.admin
-                        )
+                            User(
+                                    childUser.netID,
+                                    childUser.gradYr,
+                                    childUser.name,
+                                    childUser.bio,
+                                    childUser.tags,
+                            )
                     )
                 }
+                /* Update user name */
+                userName = userData.filter { it.netID == userNetID }[0].name
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -93,24 +121,19 @@ class MainActivity : AppCompatActivity() {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        database.addValueEventListener(updateListener)
+        dbRefUsers.addValueEventListener(updateListener)
 
         /* Declare fragments */
         shoutoutsFrag = ShoutoutsFragment(userNetID, 1)
         eventsFrag = EventsFragment()
-        announcementsFrag = AnnouncementsFragment()
+        announcementsFrag = AnnouncementsFragment(database)
         resourcesFrag = ResourcesFragment()
         blmFrag = BlmFragment()
         formsFrag = FormsFragment()
         socialFrag = SocialFragment()
-        profileFrag = ProfileFragment(userNetID, database, true)
-        editProfileFrag = EditProfileFragment(userNetID, database)
-        tagSearchFrag = TagSearchFragment(object : CellClickListener {
-            override fun onCellClickListener(data: String) {
-                /* When a tag is selected, show matching users */
-                showTaggedUsers(data)
-            }
-        })
+        profileFrag = ProfileFragment(userNetID, dbRefUsers, true)
+        editProfileFrag = EditProfileFragment(userNetID, dbRefUsers)
+        tagSearchFrag = TagSearchFragment(showMatchingTagUsersListener)
 
         /* Initialize backArrow, listeners are set later */
         backArrow = findViewById(R.id.tagSearchBackArrow)
@@ -132,10 +155,12 @@ class MainActivity : AppCompatActivity() {
         val searchBarTxt = findViewById<EditText>(R.id.searchBarEditText)
         /* Bring up tag res frag on focus */
         searchBarTxt.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) setCurrentFragment(
-                tagSearchFrag,
-                ""
-            )
+            if (hasFocus) {
+                /* Update fragment */
+                setCurrentFragment(tagSearchFrag, "")
+                /* Reset click listener - case where user sees results and searches again */
+                resetTagSearchListener()
+            }
         }
         /* Update tag search results */
         val allTags = UserTags.values().map { it.toString() }.sortedBy { it }
@@ -145,12 +170,13 @@ class MainActivity : AppCompatActivity() {
             val queryStr = searchBarTxt.text.toString()
             /* Show tags by starts with then contains */
             tagSearchFrag.updateTagResults(
-                listOf(
-                    allTags.filter { it.startsWith(queryStr, true) },
-                    allTags.filter { it.contains(queryStr) }).flatten().toSet().toList()
+                    listOf(
+                            allTags.filter { it.startsWith(queryStr, true) },
+                            allTags.filter { it.contains(queryStr) }).flatten().toSet().toList()
             )
         }
     }
+
 
     /**
      * Needed to show the toolbar icons
@@ -182,33 +208,44 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = tabTitle
         showShoutoutRanking = fragment is ShoutoutsFragment
         showProfileEditIcon =
-            fragment is ProfileFragment && fragment.showEditIcon //shortcircuit eval ftw
+                fragment is ProfileFragment && fragment.showEditIcon //shortcircuit eval ftw
         val searchBarLayout = findViewById<ConstraintLayout>(R.id.searchBarLayout)
         val searchBarBackground = findViewById<ImageView>(R.id.searchBarBackground)
 
-        if (fragment is ProfileFragment || fragment is TagSearchFragment) {
-            searchBarLayout.visibility = View.VISIBLE
-            searchBarBackground.layoutParams.width = dpToPx(200f)
-        } else searchBarLayout.visibility = View.GONE
-
         /* Show backArrow only for certain pages */
         backArrow.visibility = View.GONE
-        if (fragment is TagSearchFragment) {
-            searchBarBackground.layoutParams.width = dpToPx(300f)
-            backArrow.visibility = View.VISIBLE
-            backArrow.setOnClickListener {
-                /* Hide keyboard and clear search */
-                loseSearchBarFocus()
 
-                /* Replace fragment */
-                setCurrentFragment(profileFrag, "Profile")
+        when (fragment) {
+            is ProfileFragment -> {
+                /* Show small search bar */
+                searchBarLayout.visibility = View.VISIBLE
+                searchBarBackground.layoutParams.width = dpToPx(200f)
+                searchBarBackground.requestLayout()
             }
+            is TagSearchFragment -> {
+                /* Show big search bar */
+                searchBarLayout.visibility = View.VISIBLE
+                searchBarBackground.layoutParams.width = dpToPx(300f)
+
+                /* And back arrow */
+                backArrow.visibility = View.VISIBLE
+                backArrow.setOnClickListener {
+                    /* Hide keyboard and clear search */
+                    loseSearchBarFocus()
+
+                    /* Replace fragment */
+                    setCurrentFragment(profileFrag, "Profile")
+                }
+            }
+            else -> searchBarLayout.visibility = View.GONE // Nothing
         }
+
+        /* Back arrow listener */
         if (fragment is BlmFragment || fragment is FormsFragment || fragment is SocialFragment) {
             backArrow.visibility = View.VISIBLE
             backArrow.setOnClickListener {
                 /* Replace fragment */
-                setCurrentFragment(resourcesFrag, "Resources")
+                setCurrentFragment(resourcesFrag, "Resources") // Go back to res page
             }
         }
 
@@ -231,26 +268,26 @@ class MainActivity : AppCompatActivity() {
      */
     private fun showTaggedUsers(selectedTag: String) {
         /* Update click listener to handle a selected user */
-        tagSearchFrag.updateClickListener(object : CellClickListener {
-            override fun onCellClickListener(data: String) {
-                /* Two possible forms: Timothy Goh (tmg5) or tmg5 */
-                var selectedNetId = data
-                if (data.contains("(")) selectedNetId =
-                    data.substring(data.indexOf("(") + 1, data.indexOf((")")))
-                /* Navigate to it */
-                setCurrentFragment(ProfileFragment(selectedNetId, database, false), "Profile")
-                loseSearchBarFocus()
-            }
-        })
+        tagSearchFrag.updateClickListener(showSelectedTagUserListener)
+
+        /* Remove suggested tags */
+        tagSearchFrag.removeSuggestedLabel()
 
         /* Show matching users */
         tagSearchFrag.updateTagResults(userData.filter {
             it.tags.contains(
-                UserTags.textToUserTag(
-                    selectedTag
-                )
+                    UserTags.textToUserTag(
+                            selectedTag
+                    )
             )
         }.map { if (it.name != "Add your name here!") "${it.name} (${it.netID})" else it.netID })
+    }
+
+    /**
+     * Resets click listener to show tagged user results
+     */
+    private fun resetTagSearchListener() {
+        if (tagSearchFrag.clickListener == showSelectedTagUserListener) tagSearchFrag.updateClickListener(showMatchingTagUsersListener)
     }
 
     /**
@@ -288,5 +325,24 @@ class MainActivity : AppCompatActivity() {
      * Utility function to convert dp -> px
      */
     private fun dpToPx(dp: Float): Int =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
+
+    /**
+     * Causes all EditText's to lose focus on touching outside the field
+     */
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
 }
