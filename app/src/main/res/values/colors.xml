@@ -15,4 +15,5 @@
     <color name="greyOverlay">#66808080</color>
     <color name="greyButton">#C4C4C4</color>
     <color name="greySearchBar">#E5E5E5</color>
+    <color name="urgentRed">#D83C3C</color>
 </resources>

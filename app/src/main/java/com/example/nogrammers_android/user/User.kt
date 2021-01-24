@@ -5,8 +5,7 @@ data class User(
         var gradYr: Int = -1,
         var name: String = "Add your name here!",
         var bio: String = "Add your bio here!",
-        var tags: MutableList<UserTags> = mutableListOf(),
-        val admin: Boolean = false
+        var tags: MutableList<UserTags> = mutableListOf()
 )
 
 /*
