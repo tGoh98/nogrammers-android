@@ -1,12 +1,8 @@
 package com.example.nogrammers_android
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
@@ -16,8 +12,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
@@ -103,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                 /* Create new user if not exist */
                 if (!dataSnapshot.hasChild(userNetID)) {
                     dbRefUsers.child(userNetID).setValue(User(userNetID))
+                    userData.add(User(userNetID))
                 }
                 for (child in dataSnapshot.children) {
                     val childUser = child.getValue(UserObject::class.java) as UserObject
@@ -113,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                                     childUser.name,
                                     childUser.bio,
                                     childUser.tags,
-                                    childUser.admin
                             )
                     )
                 }
@@ -180,36 +174,6 @@ class MainActivity : AppCompatActivity() {
                             allTags.filter { it.contains(queryStr) }).flatten().toSet().toList()
             )
         }
-
-        /* Pick image */
-
-        val requestPermissionLauncher =
-                registerForActivityResult(ActivityResultContracts.RequestPermission()
-                ) { isGranted: Boolean ->
-                    if (isGranted) {
-                        // Permission is granted. Continue the action or workflow in your
-                        // app.
-                        Toast.makeText(applicationContext, "Granted permission!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        // Explain to the user that the feature is unavailable because the
-                        // features requires a permission that the user has denied. At the
-                        // same time, respect the user's decision. Don't link to system
-                        // settings in an effort to convince the user to change their
-                        // decision.
-                        Toast.makeText(applicationContext, "Denied :(", Toast.LENGTH_SHORT).show()
-                    }
-                }
-        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
-        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            res ->
-            if (res.resultCode == Activity.RESULT_OK) {
-                val uri = res.data!!.data
-                findViewById<ImageView>(R.id.imgView).setImageURI(uri)
-            }
-        }
-        resultLauncher.launch(intent)
     }
 
 
