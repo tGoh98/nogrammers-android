@@ -13,8 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:checked="false"
         android:background="@color/white"
-        app:track="@drawable/switch_track"
-        android:thumb="@drawable/my_switch_toggle" />
+        android:checked="false"
+        android:scaleX=".5"
+        android:scaleY=".5"
+        android:thumb="@drawable/my_switch_toggle"
+        android:translationX="16dp"
+        app:track="@drawable/switch_track" />
 </RelativeLayout>
