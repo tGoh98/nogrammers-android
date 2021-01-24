@@ -62,6 +62,12 @@ class EventTabsFragment() : Fragment() {
             binding.addEventButton.visibility = View.VISIBLE
         }
 
+        binding.swiperefresh.setOnRefreshListener {
+            retrieveEvents()
+            clearFilters()
+            binding.swiperefresh.isRefreshing = false
+        }
+
         /**
          * Set up datepickers
          */
@@ -103,46 +109,7 @@ class EventTabsFragment() : Fragment() {
             binding.endDateButton.text = DateTimeUtil.getStringFromDate(month, dayOfMonth)
         }
 
-        // connect to Firebase
-        val database = Firebase.database.reference.child("events")
-        val updateListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                allEventsList.clear()
-                for (child in dataSnapshot.children) {
-                    val eventObj = child.getValue<Map<String, Any>>()
-                    if (eventObj != null) {
-                        allEventsList.add(
-                            Event(
-                                eventObj.get("author") as String,
-                                eventObj.get("title") as String,
-                                eventObj.get("desc") as String,
-                                eventObj.get("start") as Long,
-                                eventObj.get("end") as Long,
-                                if (eventObj.get("tags") == null) {
-                                    mutableListOf<String>()} else {eventObj.get("tags") as List<String>},
-                                eventObj.get("location") as String,
-                                eventObj.get("audience") as String,
-                                eventObj.get("pic") as String,
-                                eventObj.get("remote") as Boolean,
-                                if (eventObj.get("interestedUsers") == null) {
-                                    mutableListOf<String>()} else {eventObj.get("interestedUsers") as MutableList<String>},
-                                if (eventObj.get("goingUsers") == null) {
-                                    mutableListOf<String>()} else {eventObj.get("goingUsers") as MutableList<String>},
-                                child.key!!
-                            )
-                        )
-                    }
-                }
-               popEvents(getPosition(), false)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.addValueEventListener(updateListener)
-
+        retrieveEvents()
         return binding.root
     }
 
@@ -255,6 +222,75 @@ class EventTabsFragment() : Fragment() {
             binding.filterLayout.visibility = View.GONE
             binding.addEventButton.visibility = View.VISIBLE
         }
+    }
+
+    /**
+     * retrieve events from firebase
+     */
+    fun retrieveEvents() {
+        val database = Firebase.database.reference.child("events")
+        val updateListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                allEventsList.clear()
+                for (child in dataSnapshot.children) {
+                    val eventObj = child.getValue<Map<String, Any>>()
+                    if (eventObj != null) {
+                        allEventsList.add(
+                            Event(
+                                eventObj.get("author") as String,
+                                eventObj.get("title") as String,
+                                eventObj.get("desc") as String,
+                                eventObj.get("start") as Long,
+                                eventObj.get("end") as Long,
+                                if (eventObj.get("tags") == null) {
+                                    mutableListOf<String>()} else {eventObj.get("tags") as List<String>},
+                                eventObj.get("location") as String,
+                                eventObj.get("audience") as String,
+                                eventObj.get("pic") as String,
+                                eventObj.get("remote") as Boolean,
+                                if (eventObj.get("interestedUsers") == null) {
+                                    mutableListOf<String>()} else {eventObj.get("interestedUsers") as MutableList<String>},
+                                if (eventObj.get("goingUsers") == null) {
+                                    mutableListOf<String>()} else {eventObj.get("goingUsers") as MutableList<String>},
+                                child.key!!
+                            )
+                        )
+                    }
+                }
+                popEvents(getPosition(), false)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.addListenerForSingleValueEvent(updateListener)
+    }
+
+    /**
+     * clear all filters
+     */
+    fun clearFilters() {
+        // clear all tags
+        for(child in binding.filterButtonsLayout.children) {
+            if (child is Button && child.currentTextColor == Color.parseColor("#FFFFFFFF")) {
+                child.performClick()
+            }
+        }
+        // clear dates
+        val cal = Calendar.getInstance()
+        binding.startDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH))
+        binding.endDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH))
+        binding.startDateButton.setText(context?.resources?.getString(R.string.start_date))
+        binding.endDateButton.setText(context?.resources?.getString(R.string.end_date))
+        // clear checkboxes
+        binding.campusWideBox.isChecked = false
+        binding.duncaroosBox.isChecked = false
+        binding.remoteBox.isChecked = false
+        binding.inPersonBox.isChecked = false
     }
 
 }
