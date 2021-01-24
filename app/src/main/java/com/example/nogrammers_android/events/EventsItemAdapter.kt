@@ -1,6 +1,8 @@
 package com.example.nogrammers_android.events
 
 import android.R
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import java.util.ArrayList
 
 class EventsItemAdapter(private val data: List<Event>, val netid: String, val clickListener: EventsItemListener) :
@@ -49,11 +52,21 @@ class EventsItemAdapter(private val data: List<Event>, val netid: String, val cl
                 binding.markAs.setSelection(2)
             }
             binding.markAs.onItemSelectedListener = this
+            /* Set custom image */
+            val storageRef = Firebase.storage.reference.child("eventPics").child(item.key)
+            val ONE_MEGABYTE: Long = 1024 * 1024 * 5
+            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+                /* Found pic, set it */
+                val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                val eventImgView = binding.eventImage
+                eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, eventImgView.height, false))
+            }.addOnFailureListener {
+                /* Not found/error, use default */
+                Log.e("TAG", "Could not find event pic, using default image " + item.key)
+            }
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            Log.d("Tag", "on item selected called " + position.toString() + " " +
-                    binding.event.toString())
             val event = binding.event
             if (parent != null && event != null) {
                     if (position != 1) {

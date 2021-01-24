@@ -24,6 +24,7 @@
         android:onClick="@{() -> clickListener.onClick(event)}">
 
         <ImageView
+            android:id="@+id/eventImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -34,8 +35,8 @@
             android:layout_height="match_parent"
             app:tint="@color/olive"
             android:scaleType="centerCrop"
-            app:backgroundPic="@{event}"
-            android:alpha="0.7"/>
+            android:alpha="0.7"
+            android:src="@drawable/blank"/>
 
         <TextView
             android:id="@+id/title"

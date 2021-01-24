@@ -295,10 +295,11 @@
 
                 <ImageView
                     android:id="@+id/eventImage"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxWidth="300dp"
-                    android:maxHeight="300dp"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constraintHeight_max="200dp"
+                    android:scaleType="centerCrop"
                     app:layout_constraintTop_toBottomOf="@id/addImageButton"
                     app:layout_constraintStart_toStartOf="parent"/>
 
@@ -316,7 +317,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/post_event"
-                    app:layout_constraintTop_toBottomOf="@id/addImageButton"
+                    app:layout_constraintTop_toBottomOf="@id/eventImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="50dp"
                     android:textSize="19sp" />

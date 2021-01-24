@@ -1,13 +1,20 @@
 package com.example.nogrammers_android.events
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,6 +28,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.options
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.function.IntToLongFunction
 
@@ -56,7 +65,34 @@ class AddEventFragment(val netId: String) : Fragment() {
 
         binding.eventLocation.setOnFocusChangeListener(hideKeyboardListener)
 
-        binding.addImageButton.setOnClickListener { showImageSelector() }
+        /* Create launcher for choosing an image */
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+            if (res.resultCode == Activity.RESULT_OK) {
+                /* Update view with chosen image */
+                val uri = res.data!!.data
+                binding.eventImage.setImageURI(uri)
+            }
+        }
+        /* Create launcher for getting permission to photo gallery */
+        val requestPermissionLauncher =
+                registerForActivityResult(ActivityResultContracts.RequestPermission()
+                ) { isGranted: Boolean ->
+                    if (isGranted) {
+                        /* Permission is granted, let user choose image */
+                        val imageChooserIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
+                        resultLauncher.launch(imageChooserIntent)
+                    } else {
+                        // Explain to the user that the feature is unavailable because the
+                        // features requires a permission that the user has denied. At the
+                        // same time, respect the user's decision. Don't link to system
+                        // settings in an effort to convince the user to change their
+                        // decision.
+                        Toast.makeText(context, "Please enable photos permission to add an event picture :(", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        binding.addImageButton.setOnClickListener {
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
 
         binding.postButton.setOnClickListener {
             // populate image if listserv checkbox is selected
@@ -159,10 +195,6 @@ class AddEventFragment(val netId: String) : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun showImageSelector(){
-        Log.d("Tag","upload image")
-    }
-
     fun composeEmail() {
         val text = binding.eventTitle.text.toString() + "\nDate: " + binding.datePickerButton.text.toString() +
                 " Time:" + binding.startTimePickerButton.text.toString() + " - " +
@@ -215,7 +247,32 @@ class AddEventFragment(val netId: String) : Fragment() {
         val database = Firebase.database.reference.child("events")
         val ref = database.push().key
         if (ref != null) {
+            event.key = ref
             database.child(ref).setValue(event)
+            if (binding.eventImage.height > 0) {
+                saveImage(event)
+            }
+        }
+    }
+
+    fun saveImage (event: Event) {
+        val storageRef = Firebase.storage.reference.child("eventPics").child(event.key)
+        // Get the data from an ImageView as bytes
+        //        imageView.isDrawingCacheEnabled = true <-- these two lines were deprecated but everything still seems to work ok
+        //        imageView.buildDrawingCache()          <-- these two lines were deprecated but everything still seems to work ok
+        val bitmap = (binding.eventImage.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imgData = baos.toByteArray()
+
+        val uploadTask = storageRef.putBytes(imgData)
+        uploadTask.addOnFailureListener {
+            // Handle unsuccessful uploads
+            Log.d("TAG", "profile upload failed")
+        }.addOnSuccessListener { taskSnapshot ->
+            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+            // ...
+            Log.d("TAG", "Profile upload succeeded. $taskSnapshot")
         }
     }
 }

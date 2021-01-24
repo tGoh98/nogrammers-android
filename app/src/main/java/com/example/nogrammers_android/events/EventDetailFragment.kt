@@ -1,6 +1,9 @@
 package com.example.nogrammers_android.events
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import androidx.core.content.ContextCompat.getColor
@@ -10,6 +13,8 @@ import com.example.nogrammers_android.databinding.FragmentEventDetailBinding
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 /**
  * Fragment for seeing an event's details
@@ -28,7 +33,6 @@ class EventDetailFragment(val event: Event) : Fragment() {
                 R.layout.fragment_event_detail, container, false
         )
 
-        binding.eventImage.setImageResource(R.drawable.testimg)
         binding.eventTitle.text = event.title
         binding.eventDate.text = DateTimeUtil.getStringFromDateinMillis(event.start) + "\n" +
                 DateTimeUtil.getStringFromTimeinMillis(event.start) +
@@ -47,6 +51,20 @@ class EventDetailFragment(val event: Event) : Fragment() {
             else if (child is Button) {
                 child.visibility = View.GONE
             }
+        }
+
+        /* Set custom image */
+        val storageRef = Firebase.storage.reference.child("eventPics").child(event.key)
+        val ONE_MEGABYTE: Long = 1024 * 1024 * 5
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+            /* Found pic, set it */
+            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+            val eventImgView = binding.eventImage
+            eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, eventImgView.height, false))
+        }.addOnFailureListener {
+            /* Not found/error, use default */
+            Log.e("TAG", "Could not find event pic, using default image " + event.key)
+            binding.eventImage.setImageResource(R.drawable.testimg)
         }
 
         setHasOptionsMenu(true)

@@ -1,9 +1,14 @@
 package com.example.nogrammers_android.events
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.nogrammers_android.R
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import java.util.*
 
 /**
@@ -28,6 +33,5 @@ fun TextView.setDate(item: Event) {
 
 @BindingAdapter("backgroundPic")
 fun ImageView.setBackground(item: Event) {
-    if (item.pic == "") setImageResource(R.drawable.testimg)
-    else TODO("need to implement custom images")
+    setImageResource(R.drawable.testimg)
 }
