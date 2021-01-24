@@ -82,6 +82,7 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
                 val surprisesBtn = binding.surprisedImg
                 val sadsBtn = binding.sadsImg
                 val angrysBtn = binding.angryImg
+                val horrorsBtn = binding.horrorsImg
 
                 likesBtn.setOnClickListener { toggleReaction(binding, database, 1, binding.isLiked.text.toString() == "true", netID) }
 
@@ -94,6 +95,8 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
                 sadsBtn.setOnClickListener { toggleReaction(binding, database, 5, binding.isSaded.text.toString() == "true", netID) }
 
                 angrysBtn.setOnClickListener { toggleReaction(binding, database, 6, binding.isAngryd.text.toString() == "true", netID) }
+
+                horrorsBtn.setOnClickListener { toggleReaction(binding, database, 7, binding.isHorrored.text.toString() == "true", netID) }
 
                 return ShoutoutViewHolder(binding)
             }
@@ -108,6 +111,7 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
                     4 -> pathString = "surprises"
                     5 -> pathString = "sads"
                     6 -> pathString = "angrys"
+                    7 -> pathString = "horrors"
                 }
                 if (isReacted) {
                     database.child(binding.shoutoutUUIDInvisible.text.toString()).child(pathString).child(netID).removeValue()
@@ -120,7 +124,22 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
 }
 class ShoutoutsTabAdapter(activity: AppCompatActivity, val itemsCount: Int, val netID: String, val sortBy: Int) :
         FragmentStateAdapter(activity) {
+    private var fragmentMutableList = mutableListOf<Fragment>()
+    private var counter = 0
+
     override fun getItemCount() = itemsCount
 
-    override fun createFragment(position: Int): Fragment = ShoutoutsTabFragment.getInstance(position, netID, sortBy)
+    override fun createFragment(position: Int): Fragment {
+        fragmentMutableList.add(ShoutoutsTabFragment.getInstance(0, netID, sortBy))
+        fragmentMutableList.add(ShoutoutsTabFragment.getInstance(1, netID, sortBy))
+        counter++
+        return fragmentMutableList.get(position)
+    }
+
+    fun remakeFragment(newSort: Int) {
+        (fragmentMutableList.get(0) as ShoutoutsTabFragment).toggleSorting(newSort)
+        if (fragmentMutableList.size > 1 && counter > 1) {
+            (fragmentMutableList.get(1) as ShoutoutsTabFragment).toggleSorting(newSort)
+        }
+    }
 }

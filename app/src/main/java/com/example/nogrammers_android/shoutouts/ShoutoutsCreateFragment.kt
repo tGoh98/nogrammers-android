@@ -63,6 +63,7 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
                     val newShoutout = ShoutoutsDBObject()
                     newShoutout.author = name
                     newShoutout.msg = msg
+                    newShoutout.netID = netID
                     newShoutout.date = Calendar.getInstance().timeInMillis.toString()
                     db.child(newShoutout.uuid).setValue(
                             newShoutout
