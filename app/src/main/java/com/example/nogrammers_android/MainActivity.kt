@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var dbRefUsers: DatabaseReference
     lateinit var database: DatabaseReference
-    lateinit var userNetID: String
-    var userName = "Add your name here!"
+    lateinit var curUser: User
     var showShoutoutRanking = false
     var userData: MutableList<User> = mutableListOf()
     var showProfileEditIcon = false
@@ -59,6 +58,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var formsFrag: FormsFragment
     private lateinit var socialFrag: SocialFragment
     private lateinit var backArrow: ImageView
+    private lateinit var selectedNetId: String
 
     /* Singleton click handler objects for tag search results */
     private val showMatchingTagUsersListener = object : CellClickListener {
@@ -70,11 +70,12 @@ class MainActivity : AppCompatActivity() {
     private val showSelectedTagUserListener = object : CellClickListener {
         override fun onCellClickListener(data: String) {
             /* Two possible forms: Timothy Goh (tmg5) or tmg5 */
-            var selectedNetId = data
+            selectedNetId = data
             if (data.contains("(")) selectedNetId =
                     data.substring(data.indexOf("(") + 1, data.indexOf((")")))
             /* Navigate to it */
-            setCurrentFragment(ProfileFragment(selectedNetId, dbRefUsers, false), "Profile")
+            val showEditIcon = curUser.tags.contains(UserTags.Admin)
+            setCurrentFragment(ProfileFragment(selectedNetId, dbRefUsers, showEditIcon), "Profile")
             loseSearchBarFocus()
         }
     }
@@ -88,8 +89,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         invalidateOptionsMenu()
 
-        /* Create user obj in firebase if it doesn't exist already */
-        userNetID = intent.getStringExtra(NETID_MESSAGE) ?: return
+        /* Get data from firebase */
+        val userNetID = intent.getStringExtra(NETID_MESSAGE) ?: return
         database = Firebase.database.reference
         dbRefUsers = database.child("users")
         val updateListener = object : ValueEventListener {
@@ -112,8 +113,9 @@ class MainActivity : AppCompatActivity() {
                             )
                     )
                 }
-                /* Update user name */
-                userName = userData.filter { it.netID == userNetID }[0].name
+                /* Set user */
+                curUser = userData.filter { it.netID == userNetID }[0]
+                selectedNetId = curUser.netID // Default selectedNetId to current user's
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -193,7 +195,10 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.editProfileIcon -> setCurrentFragment(editProfileFrag, "Edit Profile")
+            R.id.editProfileIcon -> {
+                if (selectedNetId == curUser.netID) setCurrentFragment(editProfileFrag, "Edit Profile")
+                else setCurrentFragment(EditProfileFragment(selectedNetId, dbRefUsers), "Edit Profile")
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -260,7 +265,8 @@ class MainActivity : AppCompatActivity() {
      * Adapter to reset current fragment
      */
     fun setProfileFragAdapter() {
-        setCurrentFragment(profileFrag, "Profile")
+        if (selectedNetId == curUser.netID) setCurrentFragment(profileFrag, "Profile")
+        else setCurrentFragment(ProfileFragment(selectedNetId, dbRefUsers, curUser.tags.contains(UserTags.Admin)), "Profile")
     }
 
     /**

@@ -45,8 +45,8 @@ class CreateAnnouncementFragment(private val announceDbRef: DatabaseReference, p
         binding.postNewAnnouncementBtn.setOnClickListener {
             /* Get author from app data */
             val author: String
-            val name = (activity as MainActivity).userName
-            val netID = (activity as MainActivity).userNetID
+            val name = (activity as MainActivity).curUser.name
+            val netID = (activity as MainActivity).curUser.netID
             author = if (name != "Add your name here!") name else netID
 
             /* Get other stuff */

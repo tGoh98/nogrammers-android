@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
@@ -21,10 +25,10 @@ class SplashScreen : AppCompatActivity() {
         // we used the postDelayed(Runnable, time) method
         // to send a message with a delayed time.
         Handler().postDelayed({
-//            val intent = Intent(this, MainActivity::class.java).apply {
-//                putExtra(NETID_MESSAGE, "jdh16")
-//            }
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(NETID_MESSAGE, "tmg5")
+            }
+//            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }, 1500) // the delayed time in milliseconds.
