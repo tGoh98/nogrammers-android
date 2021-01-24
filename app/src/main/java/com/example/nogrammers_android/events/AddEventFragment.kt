@@ -79,8 +79,15 @@ class AddEventFragment(val netId: String) : Fragment() {
         binding.datePickerButton.setOnClickListener {
             if (binding.datePicker.visibility.equals(View.GONE)) {
                 binding.datePicker.visibility = View.VISIBLE
+                binding.datePicker.requestFocus()
             }
             else {
+                binding.datePicker.visibility = View.GONE
+            }
+        }
+
+        binding.datePicker.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
                 binding.datePicker.visibility = View.GONE
             }
         }
@@ -88,8 +95,15 @@ class AddEventFragment(val netId: String) : Fragment() {
         binding.startTimePickerButton.setOnClickListener {
             if (binding.startTimePicker.visibility.equals(View.GONE)) {
                 binding.startTimePicker.visibility = View.VISIBLE
+                binding.startTimePicker.requestFocus()
             }
             else {
+                binding.startTimePicker.visibility = View.GONE
+            }
+        }
+
+        binding.startTimePicker.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
                 binding.startTimePicker.visibility = View.GONE
             }
         }
@@ -97,8 +111,15 @@ class AddEventFragment(val netId: String) : Fragment() {
         binding.endTimePickerButton.setOnClickListener {
             if (binding.endTimePicker.visibility.equals(View.GONE)) {
                 binding.endTimePicker.visibility = View.VISIBLE
+                binding.endTimePicker.requestFocus()
             }
             else {
+                binding.endTimePicker.visibility = View.GONE
+            }
+        }
+
+        binding.endTimePicker.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
                 binding.endTimePicker.visibility = View.GONE
             }
         }

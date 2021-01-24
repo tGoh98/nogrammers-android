@@ -328,7 +328,8 @@
                     android:visibility="gone"
                     android:background="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/datePickerButton" />
+                    app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
+                    android:focusableInTouchMode="true" />
 
                 <TimePicker
                     android:id="@+id/startTimePicker"
@@ -339,7 +340,8 @@
                     android:background="@color/white"
                     app:layout_constraintEnd_toEndOf="@id/startTimePickerButton"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/startTimePickerButton" />
+                    app:layout_constraintTop_toBottomOf="@id/startTimePickerButton"
+                    android:focusableInTouchMode="true" />
 
                 <TimePicker
                     android:id="@+id/endTimePicker"
@@ -349,7 +351,8 @@
                     android:background="@color/white"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/endTimePickerButton"
-                    app:layout_constraintTop_toBottomOf="@id/endTimePickerButton" />
+                    app:layout_constraintTop_toBottomOf="@id/endTimePickerButton"
+                    android:focusableInTouchMode="true" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

@@ -69,16 +69,28 @@ class EventTabsFragment() : Fragment() {
         binding.startDateButton.setOnClickListener {
             if (binding.startDatePicker.visibility.equals(View.GONE)) {
                 binding.startDatePicker.visibility = View.VISIBLE
+                binding.startDatePicker.requestFocus()
             }
             else {
+                binding.startDatePicker.visibility = View.GONE
+            }
+        }
+        binding.startDatePicker.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
                 binding.startDatePicker.visibility = View.GONE
             }
         }
         binding.endDateButton.setOnClickListener {
             if (binding.endDatePicker.visibility.equals(View.GONE)) {
                 binding.endDatePicker.visibility = View.VISIBLE
+                binding.endDatePicker.requestFocus()
             }
             else {
+                binding.endDatePicker.visibility = View.GONE
+            }
+        }
+        binding.endDatePicker.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
                 binding.endDatePicker.visibility = View.GONE
             }
         }
