@@ -38,6 +38,7 @@ class EditEventFragment(val event: Event) : Fragment() {
     lateinit var startTime : MutableList<Int>
     lateinit var endTime : MutableList<Int>
     var imageChanged = false
+    private val ONE_MEGABYTE: Long = 1024 * 1024
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +50,7 @@ class EditEventFragment(val event: Event) : Fragment() {
                 R.layout.fragment_edit_event, container, false
         )
 
-//        setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
 
         // hide soft keyboard when clicking outside of edittext
         val hideKeyboardListener = View.OnFocusChangeListener { v, hasFocus ->  if (!hasFocus) {
@@ -65,10 +66,20 @@ class EditEventFragment(val event: Event) : Fragment() {
         /* Create launcher for choosing an image */
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
             if (res.resultCode == Activity.RESULT_OK) {
-                /* Update view with chosen image */
+                /* Compute file size */
                 val uri = res.data!!.data
-                binding.eventImage.setImageURI(uri)
-                imageChanged = true
+                binding.testView.setImageURI(uri)
+                val bitmap = (binding.testView.drawable as BitmapDrawable).bitmap
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val size = baos.size()
+                if (size > ONE_MEGABYTE) {
+                    Toast.makeText(context, "Please upload an image smaller than 1mb", Toast.LENGTH_SHORT).show()
+                    binding.testView.setImageURI(null)
+                } else {
+                    /* Update view with chosen image */
+                    binding.eventImage.setImageURI(uri)
+                }
             }
         }
         /* Create launcher for getting permission to photo gallery */
@@ -264,11 +275,11 @@ class EditEventFragment(val event: Event) : Fragment() {
         val uploadTask = storageRef.putBytes(imgData)
         uploadTask.addOnFailureListener {
             // Handle unsuccessful uploads
-            Log.d("TAG", "profile upload failed")
+            Log.d("TAG", "event image upload failed")
         }.addOnSuccessListener { taskSnapshot ->
             // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
             // ...
-            Log.d("TAG", "Profile upload succeeded. $taskSnapshot")
+            Log.d("TAG", "event image upload succeeded. $taskSnapshot")
         }
     }
 

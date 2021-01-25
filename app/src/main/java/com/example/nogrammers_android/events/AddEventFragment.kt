@@ -21,17 +21,11 @@ import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentAddEventBinding
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.options
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.util.*
-import java.util.function.IntToLongFunction
 
 /**
  * Fragment for creating new events
@@ -41,6 +35,7 @@ class AddEventFragment(val netId: String) : Fragment() {
     lateinit var binding : FragmentAddEventBinding
     lateinit var startTime : MutableList<Int>
     lateinit var endTime : MutableList<Int>
+    private val ONE_MEGABYTE: Long = 1024 * 1024
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -68,9 +63,20 @@ class AddEventFragment(val netId: String) : Fragment() {
         /* Create launcher for choosing an image */
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
             if (res.resultCode == Activity.RESULT_OK) {
-                /* Update view with chosen image */
+                /* Compute file size */
                 val uri = res.data!!.data
-                binding.eventImage.setImageURI(uri)
+                binding.testView.setImageURI(uri)
+                val bitmap = (binding.testView.drawable as BitmapDrawable).bitmap
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val size = baos.size()
+                if (size > ONE_MEGABYTE) {
+                    Toast.makeText(context, "Please upload an image smaller than 1mb", Toast.LENGTH_SHORT).show()
+                    binding.testView.setImageURI(null)
+                } else {
+                    /* Update view with chosen image */
+                    binding.eventImage.setImageURI(uri)
+                }
             }
         }
         /* Create launcher for getting permission to photo gallery */
@@ -268,11 +274,11 @@ class AddEventFragment(val netId: String) : Fragment() {
         val uploadTask = storageRef.putBytes(imgData)
         uploadTask.addOnFailureListener {
             // Handle unsuccessful uploads
-            Log.d("TAG", "profile upload failed")
+            Log.d("TAG", "event image failed")
         }.addOnSuccessListener { taskSnapshot ->
             // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
             // ...
-            Log.d("TAG", "Profile upload succeeded. $taskSnapshot")
+            Log.d("TAG", "event image upload succeeded. $taskSnapshot")
         }
     }
 }

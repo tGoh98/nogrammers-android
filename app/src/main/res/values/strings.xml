@@ -80,4 +80,5 @@
     <string name="delete_event">Delete Event</string>
     <string name="edit_event">Edit Event</string>
     <string name="save_event">Save Event</string>
+    <string name="users_attending">Users Attending</string>
 </resources>

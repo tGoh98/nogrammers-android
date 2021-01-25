@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.Toolbar
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import com.example.nogrammers_android.databinding.FragmentEventDetailBinding
 import androidx.fragment.app.Fragment
+import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.user.User
 import com.example.nogrammers_android.user.UserObject
@@ -41,7 +43,13 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
         )
 
         checkAdmin()
-        binding.eventTitle.text = event.title
+        if (activity is MainActivity) {
+            (activity as MainActivity).supportActionBar?.setTitle(event.title)
+        }
+
+        binding.usersAttending.text = event.interestedUsers.size.toString() + " Interested, " +
+                event.goingUsers.size.toString() + " Going"
+        setAuthorFields()
         binding.eventDate.text = DateTimeUtil.getStringFromDateinMillis(event.start) + "\n" +
                 DateTimeUtil.getStringFromTimeinMillis(event.start) +
                 " to " + DateTimeUtil.getStringFromTimeinMillis(event.end)
@@ -128,6 +136,45 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
             }
         }
         database.addListenerForSingleValueEvent(updateListener)
+    }
+
+    fun setAuthorFields() {
+        val database = Firebase.database.reference.child("users").child(event.author)
+        val updateListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // TODO: add fail check
+                val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
+                val userObj = User(
+                        userObjTemp.netID,
+                        userObjTemp.gradYr,
+                        userObjTemp.name,
+                        userObjTemp.bio,
+                        userObjTemp.tags,
+                        userObjTemp.interestedEvents,
+                        userObjTemp.goingEvents
+                )
+                binding.author.text = "Posted by " + userObj.name
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.addListenerForSingleValueEvent(updateListener)
+
+        val storageRef = Firebase.storage.reference.child("profilePics").child(event.author)
+        val ONE_MEGABYTE: Long = 1024 * 1024 * 5
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+            /* Found pic, set it */
+            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+            val eventImgView = binding.pfpImgProfileSrc
+            eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, eventImgView.height, false))
+        }.addOnFailureListener {
+            /* Not found/error, use default */
+            Log.e("TAG", "Could not find event pic, using default image " + event.key)
+            binding.pfpImgProfileSrc.setImageResource(R.drawable.testimg)
+        }
     }
 
 }
