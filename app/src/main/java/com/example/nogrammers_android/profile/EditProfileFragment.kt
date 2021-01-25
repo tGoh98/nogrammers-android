@@ -59,7 +59,6 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         val database = dbUserRef.child(userNetID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // TODO: add fail check
                 val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
                 userObj = User(
                         userObjTemp.netID,
@@ -110,7 +109,10 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
         /* Save button */
         binding.editProfileSaveBtn.setOnClickListener {
-            // TODO: Add validation/constraints (e.g. name cannot have special characters like parentheses)
+            if (binding.editProfileNameField.text.toString().contains(Regex("[()]"))) {
+                Toast.makeText(context, "Name cannot contain \"(\" or \")\"", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             /* Update user obj */
             val updatedUserObj = User(userNetID)
             val newName = binding.editProfileNameField.text.toString()

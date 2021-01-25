@@ -74,7 +74,6 @@ class ProfileFragment(
         val database = dbUserRef.child(netID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // TODO: add fail check
                 val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
                 val userObj = User(
                     userObjTemp.netID,
