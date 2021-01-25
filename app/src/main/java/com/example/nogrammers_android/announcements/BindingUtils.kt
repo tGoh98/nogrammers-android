@@ -25,3 +25,8 @@ fun TextView.setContent(item: Announcement) {
 fun TextView.setDate(item: Announcement) {
     text = java.util.Date(item.date.toLong()).toString()
 }
+
+@BindingAdapter("hiddenKey")
+fun TextView.setHiddenKey(item: Announcement) {
+    text = item.author.filter { !it.isWhitespace() }.plus(item.date)
+}

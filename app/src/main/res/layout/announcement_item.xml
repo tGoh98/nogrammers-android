@@ -44,9 +44,20 @@
                 android:text="@string/urgent"
                 android:textSize="14sp"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/deleteAnnouncementIcon"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:targetApi="lollipop"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/deleteAnnouncementIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/ic_baseline_close_24"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
 
             <TextView
@@ -94,6 +105,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/announcement_content"
                 tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/firebaseKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:hiddenKey="@{announcement}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

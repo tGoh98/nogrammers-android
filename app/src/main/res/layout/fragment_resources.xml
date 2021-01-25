@@ -121,29 +121,28 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/resourceSocialCell"
-            android:layout_width="0dp"
+            android:id="@+id/resourceHashtagCell"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/resource_cell"
             android:clickable="true"
             android:clipToPadding="true"
             android:focusable="true"
-            android:orientation="horizontal"
-            android:paddingHorizontal="20dp"
-            app:layout_constraintEnd_toEndOf="@id/resourceFormsCell"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="10dp"
             app:layout_constraintStart_toStartOf="@id/resourceWebsiteCell"
             app:layout_constraintTop_toBottomOf="@id/resourceWebsiteCell">
 
             <TextView
-                android:id="@+id/SocialTxt"
+                android:id="@+id/HashtagTxt"
                 style="@style/ResourceCell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Social Media"
-                app:layout_constraintBottom_toBottomOf="@id/socialImg"
+                android:layout_marginTop="10dp"
+                android:text="#Duncan"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/socialImg" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/socialImg"
@@ -151,9 +150,44 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/social_media_resource"
                 android:contentDescription="Duncan social media graphic"
-                app:layout_constraintEnd_toEndOf="@id/resourceSocialCell"
-                app:layout_constraintStart_toEndOf="@id/SocialTxt"
+                app:layout_constraintStart_toStartOf="@id/HashtagTxt"
+                app:layout_constraintTop_toBottomOf="@id/HashtagTxt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resourceDuncCell"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="20dp"
+            android:paddingHorizontal="12dp"
+            android:background="@drawable/resource_cell"
+            android:clickable="true"
+            android:clipToPadding="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/resourceHashtagCell"
+            app:layout_constraintTop_toTopOf="@id/resourceHashtagCell">
+
+            <TextView
+                android:id="@+id/DuncTxt"
+                style="@style/ResourceCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="DuncSquad"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dunc_squad"
+                android:contentDescription="Duncan forms graphic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/DuncTxt" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
@@ -165,11 +199,11 @@
 
         <ImageView
             android:id="@+id/joeyImg"
-            android:clickable="true"
-            android:focusable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/joey_kanga"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

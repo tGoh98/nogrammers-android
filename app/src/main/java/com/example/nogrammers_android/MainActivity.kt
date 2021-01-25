@@ -363,7 +363,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Adapter to navigate to forms fragment
      */
-    fun setSocialFragAdapter() {
+    fun setHashtagFragAdapter() {
         setCurrentFragment(socialFrag, "")
     }
 
