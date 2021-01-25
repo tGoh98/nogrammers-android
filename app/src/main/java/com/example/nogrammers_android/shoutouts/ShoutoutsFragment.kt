@@ -12,13 +12,14 @@ import com.example.nogrammers_android.databinding.FragmentShoutoutsBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 class ShoutoutsFragment(private val netID: String, val sortBy: Int) : Fragment() {
+    lateinit var binding: FragmentShoutoutsBinding
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         /* Inflate the layout for this fragment */
-        val binding = DataBindingUtil.inflate<FragmentShoutoutsBinding>(
+        binding = DataBindingUtil.inflate<FragmentShoutoutsBinding>(
                 inflater,
                 R.layout.fragment_shoutouts, container, false
         )
@@ -34,5 +35,9 @@ class ShoutoutsFragment(private val netID: String, val sortBy: Int) : Fragment()
         }.attach()
 
         return binding.root
+    }
+
+    fun forceUpdate(newSort: Int) {
+        (binding.shoutoutsTabsPager.adapter as ShoutoutsTabAdapter).remakeFragment(newSort)
     }
 }

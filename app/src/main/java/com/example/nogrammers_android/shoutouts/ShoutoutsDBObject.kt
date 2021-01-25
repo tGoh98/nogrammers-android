@@ -15,6 +15,7 @@ data class ShoutoutsDBObject(
         var surprises: HashMap<String, String> = hashMapOf("ignore" to "ignore"),
         var sads: HashMap<String, String> = hashMapOf("ignore" to "ignore"),
         var angrys: HashMap<String, String> = hashMapOf("ignore" to "ignore"),
+        var horrors: HashMap<String, String> = hashMapOf("ignore" to "ignore"),
         var netID: String = "",
         var uuid: String = UUID.randomUUID().toString()
 )
