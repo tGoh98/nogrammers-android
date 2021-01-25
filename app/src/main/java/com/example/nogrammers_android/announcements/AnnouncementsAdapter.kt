@@ -3,6 +3,7 @@ package com.example.nogrammers_android.announcements
 import android.content.Context
 import android.graphics.Paint
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,19 +12,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.AnnouncementItemBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.database.DatabaseReference
 
-class AnnouncementsAdapter(private val context: Context) :
+class AnnouncementsAdapter(private val context: Context, private val isAdmin: Boolean, private val announceDbRef: DatabaseReference) :
     ListAdapter<Announcement, AnnouncementsAdapter.AnnouncementViewHolder>(AnnouncementItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnnouncementViewHolder {
-        return AnnouncementViewHolder.from(parent, context)
+        return AnnouncementViewHolder.from(parent, context, isAdmin, announceDbRef)
     }
 
     override fun onBindViewHolder(holder: AnnouncementViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class AnnouncementViewHolder private constructor(val binding: AnnouncementItemBinding, val context: Context) :
+    class AnnouncementViewHolder private constructor(val binding: AnnouncementItemBinding, val context: Context, private val isAdmin: Boolean, private val announceDbRef: DatabaseReference) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Announcement) {
@@ -44,6 +47,25 @@ class AnnouncementsAdapter(private val context: Context) :
                         /* Show more */
                         undoEllipsizeContent()
                     }
+                }
+            }
+            /* Delete icon */
+            if (isAdmin) {
+                binding.deleteAnnouncementIcon.visibility = View.VISIBLE
+                binding.deleteAnnouncementIcon.setOnClickListener {
+                    MaterialAlertDialogBuilder(context)
+                            .setTitle("Are you sure you want to delete announcement \"${binding.announcementTitle.text}?\"")
+                            .setMessage("THIS ACTION CANNOT BE UNDONE")
+                            .setNeutralButton("Cancel") { _, _ ->
+                                /* Respond to neutral button press - do nothing */
+                            }
+                            .setPositiveButton("Delete") { _, _ ->
+                                /* Respond to positive button press - delete from firebase and refresh view */
+                                val key = binding.firebaseKey.text.toString()
+                                Log.d("TAG", key)
+                                announceDbRef.child(key).removeValue()
+                            }
+                            .show()
                 }
             }
         }
@@ -69,13 +91,13 @@ class AnnouncementsAdapter(private val context: Context) :
         }
 
         companion object {
-            fun from(parent: ViewGroup, context: Context): AnnouncementViewHolder {
+            fun from(parent: ViewGroup, context: Context, isAdmin: Boolean, announceDbRef: DatabaseReference): AnnouncementViewHolder {
                 val binding = AnnouncementItemBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                return AnnouncementViewHolder(binding, context)
+                return AnnouncementViewHolder(binding, context, isAdmin, announceDbRef)
             }
         }
     }

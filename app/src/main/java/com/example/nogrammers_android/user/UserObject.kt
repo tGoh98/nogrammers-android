@@ -9,4 +9,6 @@ class UserObject {
     var name: String = ""
     var bio: String = ""
     var tags: MutableList<UserTags> = mutableListOf()
+    var interestedEvents: MutableMap<String, Int> = mutableMapOf<String, Int>()
+    var goingEvents: MutableMap<String, Int> = mutableMapOf<String, Int>()
 }

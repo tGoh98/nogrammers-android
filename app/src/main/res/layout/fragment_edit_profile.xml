@@ -70,6 +70,15 @@
 
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/calcImgSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
+            />
+
         <TextView
             android:id="@+id/editProfileNameLabel"
             android:layout_width="match_parent"

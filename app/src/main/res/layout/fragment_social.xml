@@ -19,11 +19,11 @@
             android:textColor="@color/olive"
             android:textAlignment="center"
             android:textSize="30sp"
-            android:text="Social Media" />
+            android:text="#Duncan" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/resourceFacebookCell"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_width="350dp"
             android:layout_height="110dp"
             android:background="@drawable/resource_cell"
@@ -70,7 +70,7 @@
             android:clipToPadding="true"
             android:focusable="true"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/resourceEmailCell"
+            app:layout_constraintBottom_toTopOf="@+id/resourceHistorianCell"
             app:layout_constraintEnd_toEndOf="@id/resourceFacebookCell"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@id/resourceFacebookCell"
@@ -101,8 +101,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/resourceEmailCell"
-            android:layout_marginBottom="0dp"
+            android:id="@+id/resourceHistorianCell"
+            android:layout_marginBottom="200dp"
             android:layout_width="350dp"
             android:layout_height="110dp"
             android:background="@drawable/resource_cell"
@@ -110,7 +110,7 @@
             android:clipToPadding="true"
             android:focusable="true"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/resourceSubImg"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,12 +118,12 @@
             app:layout_constraintVertical_chainStyle="spread_inside">
 
             <TextView
-                android:id="@+id/emailTxt"
+                android:id="@+id/historianTxt"
                 style="@style/ResourceCell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="Email"
+                android:text="Historian"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -131,23 +131,31 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/email_img"
+                android:background="@drawable/historian_img"
                 android:contentDescription="@string/duncan_website_graphic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/emailTxt"
+                app:layout_constraintStart_toEndOf="@id/historianTxt"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/resource_mountain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/joeyImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/resourceSubImg"
-            android:background="@drawable/sub_img"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:background="@drawable/joey_kanga"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

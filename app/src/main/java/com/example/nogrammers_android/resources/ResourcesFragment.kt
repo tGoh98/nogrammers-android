@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.MainActivity
@@ -47,12 +46,20 @@ class ResourcesFragment : Fragment() {
         binding.resourceFormsCell.setOnClickListener {
             (activity as MainActivity).setFormsFragAdapter()
         }
-        binding.resourceSocialCell.setOnClickListener {
-            (activity as MainActivity).setSocialFragAdapter()
+        binding.resourceHashtagCell.setOnClickListener {
+            (activity as MainActivity).setHashtagFragAdapter()
+        }
+        binding.resourceDuncCell.setOnClickListener {
+            startActivity(
+                    Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://riceduncan.github.io/people/duncsquad")
+                    )
+            )
         }
 
         binding.joeyImg.setOnClickListener {
-            Toast.makeText(context, "Joey clicked!", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Joey clicked!", Toast.LENGTH_SHORT).show()
         }
 
         return binding.root

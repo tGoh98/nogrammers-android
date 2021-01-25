@@ -14,6 +14,7 @@ import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentCreateAnnouncementBinding
 import com.google.firebase.database.DatabaseReference
+import java.util.*
 
 /**
  * Fragment for creating a new announcement
@@ -55,12 +56,12 @@ class CreateAnnouncementFragment(private val announceDbRef: DatabaseReference, p
             val urgent = binding.markAsUrgentChckbx.isChecked
             val postToFb = binding.postToFb.isChecked
             val sendToListserv = binding.sendToListserv.isChecked
+            val curTime = Calendar.getInstance().timeInMillis.toString()
 
             /* Update db */
-            announceDbRef.child(dataSize.toString()).setValue(Announcement(anTitle, anMsg, author, urgent))
-
-            /* Update list adapter */
-
+            // Key is author.concat(date)
+            val key = author.filter { !it.isWhitespace() }.plus(curTime)
+            announceDbRef.child(key).setValue(Announcement(anTitle, anMsg, author, urgent, curTime))
 
             closeTab(binding.newAnnouncementTitle, binding.newAnnouncementTxt)
         }
