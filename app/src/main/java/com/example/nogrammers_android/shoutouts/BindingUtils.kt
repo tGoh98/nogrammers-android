@@ -1,7 +1,10 @@
 package com.example.nogrammers_android.shoutouts
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.util.Log
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
@@ -11,8 +14,10 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
+import com.google.firebase.storage.ktx.storage
 
 /**
  * Binding adapters for ShoutoutsViewHolder
@@ -39,7 +44,18 @@ fun TextView.setDate(item: Shoutout) {
 @BindingAdapter("pfp")
 fun ImageView.setPfp(item: Shoutout) {
     if (item.pfp == "") setImageResource(R.drawable.km1)
-    else TODO("need to implement custom images")
+    else {
+        val storageRef = Firebase.storage.reference.child("profilePics").child(item.pfp)
+        val ONE_MEGABYTE: Long = 1024 * 1024
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+            /* Found pfp, set it */
+            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+            setImageBitmap(bmp)
+        }.addOnFailureListener {
+            /* Not found/error, use default */
+            Log.e("TAG", "Could not find profile pic, using default image")
+        }
+    }
 }
 
 @BindingAdapter("likes")
@@ -70,6 +86,11 @@ fun TextView.setSads(item: Shoutout) {
 @BindingAdapter("surprises")
 fun TextView.setSurprises(item: Shoutout) {
     text = (item.surprises.size - 1).toString()
+}
+
+@BindingAdapter("horrors")
+fun TextView.setHorrors(item: Shoutout) {
+    text = (item.horrors.size - 1).toString()
 }
 
 @BindingAdapter("userNetID")
@@ -130,6 +151,15 @@ fun TextView.setIsSaded(item: Shoutout) {
 @BindingAdapter("isAngryd")
 fun TextView.setIsAngryd(item: Shoutout) {
     if (item.angrys.containsKey(item.netID)) {
+        text = "true"
+    } else {
+        text = "false"
+    }
+}
+
+@BindingAdapter("isHorrored")
+fun TextView.setIsHorrored(item: Shoutout) {
+    if (item.horrors.containsKey(item.netID)) {
         text = "true"
     } else {
         text = "false"

@@ -1,8 +1,10 @@
 package com.example.nogrammers_android
 
+import android.graphics.Color
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.widget.ScrollView
 import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
@@ -10,13 +12,14 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.announcements.AnnouncementsFragment
+import com.example.nogrammers_android.events.AddEventFragment
 import com.example.nogrammers_android.events.EventsFragment
 import com.example.nogrammers_android.profile.CellClickListener
 import com.example.nogrammers_android.profile.EditProfileFragment
@@ -31,6 +34,7 @@ import com.example.nogrammers_android.user.User
 import com.example.nogrammers_android.user.UserObject
 import com.example.nogrammers_android.user.UserTags
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -47,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     var showShoutoutRanking = false
     var userData: MutableList<User> = mutableListOf()
     var showProfileEditIcon = false
+    lateinit var netId: String
     private lateinit var shoutoutsFrag: ShoutoutsFragment
     private lateinit var eventsFrag: EventsFragment
     private lateinit var announcementsFrag: AnnouncementsFragment
@@ -91,6 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Get data from firebase */
         val userNetID = intent.getStringExtra(NETID_MESSAGE) ?: return
+        netId = userNetID
         database = Firebase.database.reference
         dbRefUsers = database.child("users")
         val updateListener = object : ValueEventListener {
@@ -110,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                                     childUser.name,
                                     childUser.bio,
                                     childUser.tags,
+                                    childUser.interestedEvents,
+                                    childUser.goingEvents
                             )
                     )
                 }
@@ -127,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Declare fragments */
         shoutoutsFrag = ShoutoutsFragment(userNetID, 1)
-        eventsFrag = EventsFragment()
+        eventsFrag = EventsFragment(userNetID)
         announcementsFrag = AnnouncementsFragment(database)
         resourcesFrag = ResourcesFragment()
         blmFrag = BlmFragment()
@@ -187,6 +195,18 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.top_app_bar, menu)
         menu?.getItem(0)?.isVisible = showShoutoutRanking
         menu?.getItem(1)?.isVisible = showProfileEditIcon
+
+        val menuItem = menu?.findItem(R.id.app_bar_switch)
+        val view = menuItem?.actionView
+        val switchLayout = view?.findViewById<RelativeLayout>(R.id.switchRelativeLayout)
+        switchLayout?.findViewById<SwitchCompat>(R.id.switchAB)?.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                shoutoutsFrag.forceUpdate(-1)
+            } else {
+                shoutoutsFrag.forceUpdate(1)
+            }
+        }
+
         return true
     }
 
@@ -259,6 +279,26 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fl_fragment, fragment)
             commit()
         }
+    }
+
+    /**
+     * Listeners for events tab
+     */
+    fun handleTag(view: View) {
+        val button = findViewById<MaterialButton>(view.id)
+        if (button.currentTextColor == Color.parseColor("#757575")) {
+            button.setTextColor(Color.parseColor("#FFFFFFFF"))
+            button.setBackgroundColor(Color.parseColor("#313d23"))
+        }
+        else {
+            button.setTextColor(Color.parseColor("#757575"))
+            button.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
+        }
+    }
+
+    fun addEvent(view: View) {
+        // Create new fragment
+        setCurrentFragment(AddEventFragment(curUser.netID), "New Event")
     }
 
     /**
