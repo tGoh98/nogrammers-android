@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/editButton"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/delete_event"
+        android:background="@color/white"
+        android:textColor="@color/urgentRed"
+        android:id="@+id/deleteButton"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/cancelButton"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/edit_event"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:id="@+id/editButton"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/cancel"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:id="@+id/cancelButton"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

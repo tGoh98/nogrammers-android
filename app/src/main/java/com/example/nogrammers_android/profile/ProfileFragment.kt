@@ -81,7 +81,9 @@ class ProfileFragment(
                     userObjTemp.gradYr,
                     userObjTemp.name,
                     userObjTemp.bio,
-                    userObjTemp.tags
+                    userObjTemp.tags,
+                    userObjTemp.interestedEvents,
+                    userObjTemp.goingEvents
                 )
 
                 updateUI(userObj)
