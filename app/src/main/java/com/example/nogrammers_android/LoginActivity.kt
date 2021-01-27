@@ -85,7 +85,6 @@ class LoginActivity : AppCompatActivity() {
                 val handler = Handler()
                 handler.postDelayed(Runnable {
                     checkValidation(intent)
-                    // Actions to do after 10 seconds
                 }, 2300)
 
             }
@@ -118,13 +117,11 @@ class LoginActivity : AppCompatActivity() {
                     run {
                         try {
                             var position = response.indexOf("execution=")
-                            // TODO: check for -1 in position, which indicates staleness
                             var eAndS = response.substring(position + 11, position + 15)
-                            System.out.println(eAndS)
                             executionCount = eAndS[0].toString().toInt()
                             versionCount = eAndS[2].toString().toInt()
                         } catch (e:NumberFormatException) {
-                            println("new ticket coming")
+                            println("Requesting ticket from already logged in response")
                             var potentialTicket = response.substringAfter("ticket=", "")
                             if (potentialTicket.length > 1)
                                 currentTicket = potentialTicket
@@ -201,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
                                         validateTicket(netID)
                                     }
                                 } catch (e: Exception) {
-                                    System.out.println("obtaining login again 1")
+                                    System.out.println("obtaining login form again because no ticket found in response")
                                     obtainLoginForm()
                                     e.printStackTrace()
                                 }
@@ -224,28 +221,11 @@ class LoginActivity : AppCompatActivity() {
                             )
                         }
 
-//                        override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
-//                            try {
-//                                var ticketStr = response!!.headers.get("Location")
-//                                var ticket = ticketStr!!.substringAfter("ticket=")
-//                                if (ticket.length > 1)
-//                                    currentTicket = ticket
-//                            } catch (e: UnsupportedEncodingException) {
-//                                Response.error<JSONObject>(ParseError(e))
-//                            } catch (je: JSONException) {
-//                                Response.error<JSONObject>(ParseError(je))
-//                            } catch (e:Exception) {
-//                                return super.parseNetworkResponse(response)
-//                            }
-//                            return super.parseNetworkResponse(response)
-//                        }
                     }
                     queue.add(signInReq)
-
-                    // TODO: If this fails we probably need to reload the form again, and grab new execution param
                 } catch (e: Exception) {
                     obtainLoginForm()
-                    System.out.println("obtaining login again 2")
+                    System.out.println("obtaining login form again because submitting the form with credentials failed")
                     Toast.makeText(
                         applicationContext,
                         "Invalid credentials, please try again!",
@@ -262,7 +242,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validateTicket(netID: String) {
         System.out.printf("Validating Service Ticket with Rice CAS Authentication Service %s", currentTicket)
-        // TRYING asyncThread
+
+        /**TRYING asyncThread stuff that hasn't worked, for some reason, RequestFutures dont work, even on separate thread
 //        var threadA = ThreadA(applicationContext, currentTicket, moveOnIntent, netID)
 //        var a =  threadA.execute().get()
 //        if (a == "true")
@@ -275,6 +256,7 @@ class LoginActivity : AppCompatActivity() {
 //                "Invalid credentials, please try again!",
 //                Toast.LENGTH_SHORT
 //            ).show()
+        **/
 
         val validateReq = StringRequest(
             Request.Method.GET,
@@ -301,11 +283,8 @@ class LoginActivity : AppCompatActivity() {
                 }
             }, Response.ErrorListener {  })
         queue.add(validateReq)
-//
-//
 
     }
-
 
 
     }
