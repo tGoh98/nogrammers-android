@@ -1,10 +1,9 @@
 package com.example.nogrammers_android
 
-import android.graphics.Color
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.widget.ScrollView
 import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
@@ -12,7 +11,9 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.announcements.AnnouncementsFragment
 import com.example.nogrammers_android.events.AddEventFragment
 import com.example.nogrammers_android.events.EventsFragment
+import com.example.nogrammers_android.login.NETID_MESSAGE
 import com.example.nogrammers_android.profile.CellClickListener
 import com.example.nogrammers_android.profile.EditProfileFragment
 import com.example.nogrammers_android.profile.ProfileFragment
@@ -370,7 +372,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Utility function to convert dp -> px
      */
-    private fun dpToPx(dp: Float): Int =
+    fun dpToPx(dp: Float): Int =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
 
     /**

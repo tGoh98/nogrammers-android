@@ -1,4 +1,4 @@
-package com.example.nogrammers_android
+package com.example.nogrammers_android.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,13 +12,15 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.nogrammers_android.MainActivity
+import com.example.nogrammers_android.R
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 import java.net.CookieHandler
 import java.net.CookieManager
 
-const val NETID_MESSAGE = "com.example.nogrammers_android.NETID_MESSAGE"
+const val NETID_MESSAGE = "com.example.nogrammers_android.login.NETID_MESSAGE"
 
 
 /**

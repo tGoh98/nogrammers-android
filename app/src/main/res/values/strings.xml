@@ -79,4 +79,5 @@
     <string name="edit_event">Edit Event</string>
     <string name="save_event">Save Event</string>
     <string name="users_attending">Users Attending</string>
+    <string name="admin_password">Admin password</string>
 </resources>

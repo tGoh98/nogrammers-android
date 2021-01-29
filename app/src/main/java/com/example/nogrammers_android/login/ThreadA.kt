@@ -1,11 +1,8 @@
-package com.example.nogrammers_android
+package com.example.nogrammers_android.login
 
-import android.R
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.AsyncTask
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.android.volley.Request
@@ -13,7 +10,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import java.lang.ref.WeakReference
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
