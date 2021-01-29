@@ -45,6 +45,21 @@
         <item name="android:fontWeight" tools:targetApi="o">700</item>
     </style>
 
+    <style name="ResourceCell" parent="@android:style/TextAppearance">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/olive</item>
+        <item name="android:fontFamily">@font/acarisans_bold</item>
+        <item name="fontFamily">@font/acarisans_bold</item>
+        <item name="android:fontWeight" tools:targetApi="o">700</item>
+    </style>
+
+    <style name="ResourceCellFlat" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/acarisans_bold</item>
+        <item name="fontFamily">@font/acarisans_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontWeight" tools:targetApi="o">700</item>
+    </style>
+
     <style name="RegularTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textSize">19sp</item>
         <item name="android:fontFamily">@font/acarisans_regular</item>
@@ -74,12 +89,25 @@
         <item name="chipBackgroundColor">@color/olive</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/ChipText</item>
+        <item name="closeIconTint">@color/white</item>
     </style>
 
     <style name="ChipText" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/acarisans_regular</item>
         <item name="fontFamily">@font/acarisans_regular</item>
         <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="Widget.App.ChipUrgent" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@color/urgentRed</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">@style/ChipTextUrgent</item>
+    </style>
+
+    <style name="ChipTextUrgent" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/acarisans_regular</item>
+        <item name="fontFamily">@font/acarisans_regular</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <!-- Tab layout styling -->

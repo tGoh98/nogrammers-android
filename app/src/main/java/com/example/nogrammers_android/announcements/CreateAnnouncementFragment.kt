@@ -10,14 +10,16 @@ import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentCreateAnnouncementBinding
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseReference
+import java.util.*
 
 /**
  * Fragment for creating a new announcement
  */
-class CreateAnnouncementFragment : Fragment() {
+class CreateAnnouncementFragment(private val announceDbRef: DatabaseReference, private val dataSize: Int) : Fragment() {
 
     /* Shared view model */
     private val model: AnnouncementsViewModel by activityViewModels()
@@ -42,19 +44,24 @@ class CreateAnnouncementFragment : Fragment() {
 
         /* Listener for post announcements */
         binding.postNewAnnouncementBtn.setOnClickListener {
+            /* Get author from app data */
+            val author: String
+            val name = (activity as MainActivity).curUser.name
+            val netID = (activity as MainActivity).curUser.netID
+            author = if (name != "Add your name here!") name else netID
+
+            /* Get other stuff */
             val anTitle = binding.newAnnouncementTitle.text.toString()
             val anMsg = binding.newAnnouncementTxt.text.toString()
-            val pinToTop = binding.pinAnnouncment.isChecked
+            val urgent = binding.markAsUrgentChckbx.isChecked
             val postToFb = binding.postToFb.isChecked
             val sendToListserv = binding.sendToListserv.isChecked
+            val curTime = Calendar.getInstance().timeInMillis.toString()
 
-            Snackbar.make(binding.root, "$anTitle\n$anMsg", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
-//            Snackbar.make(binding.root, "pinToTop: $pinToTop postToFb: $postToFb sendToListserv: $sendToListserv", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .show()
-            // TODO: update database
+            /* Update db */
+            // Key is author.concat(date)
+            val key = author.filter { !it.isWhitespace() }.plus(curTime)
+            announceDbRef.child(key).setValue(Announcement(anTitle, anMsg, author, urgent, curTime))
 
             closeTab(binding.newAnnouncementTitle, binding.newAnnouncementTxt)
         }

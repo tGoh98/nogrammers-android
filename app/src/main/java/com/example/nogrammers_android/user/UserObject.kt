@@ -8,6 +8,7 @@ class UserObject {
     var gradYr: Int = -1
     var name: String = ""
     var bio: String = ""
-    var tags: List<UserTags> = ArrayList()
-    val admin: Boolean = false
+    var tags: MutableList<UserTags> = mutableListOf()
+    var interestedEvents: MutableMap<String, Int> = mutableMapOf<String, Int>()
+    var goingEvents: MutableMap<String, Int> = mutableMapOf<String, Int>()
 }

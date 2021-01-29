@@ -12,6 +12,73 @@
         android:background="@color/greyBackground"
         tools:context=".profile.EditProfileFragment">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editProfilePfpCard"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="20dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/editProfilePfp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/splash"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editProfileCameraCard"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            app:cardBackgroundColor="@color/white"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintEnd_toEndOf="@id/editProfilePfpCard"
+            app:layout_constraintBottom_toBottomOf="@id/editProfilePfpCard"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/editProfileCamera"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginEnd="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/ic_baseline_add_a_photo_24"
+                    tools:src="@drawable/ic_baseline_add_a_photo_24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/calcImgSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
+            />
+
         <TextView
             android:id="@+id/editProfileNameLabel"
             android:layout_width="match_parent"
@@ -21,7 +88,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/editProfilePfpCard" />
 
         <EditText
             android:id="@+id/editProfileNameField"

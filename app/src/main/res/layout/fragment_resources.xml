@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".resources.ResourcesFragment">
+
+        <ImageView
+            android:id="@+id/blmBanner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/blm_banner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/blmTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="BLACK LIVES MATTER"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/blmBanner"
+            app:layout_constraintStart_toStartOf="@id/blmBanner"
+            app:layout_constraintTop_toTopOf="@id/blmBanner" />
+
+        <TextView
+            android:id="@+id/blmBannerLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/read_duncan_s_statement_of_allyship_nand_solidarity"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/blmTxt"
+            app:layout_constraintStart_toStartOf="@id/blmTxt"
+            app:layout_constraintTop_toBottomOf="@id/blmTxt" />
+
+        <ImageView
+            android:id="@+id/blmFistImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blm_fist"
+            app:layout_constraintBottom_toBottomOf="@id/blmBanner"
+            app:layout_constraintStart_toStartOf="@id/blmBanner" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resourceWebsiteCell"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/resource_cell"
+            android:clickable="true"
+            android:clipToPadding="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@id/resourceFormsCell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/resourceFormsCell">
+
+            <TextView
+                android:id="@+id/websiteTxt"
+                style="@style/ResourceCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/website"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/website_resource"
+                android:contentDescription="@string/duncan_website_graphic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/resourceWebsiteCell"
+                app:layout_constraintStart_toStartOf="@id/resourceWebsiteCell" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resourceFormsCell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/resource_cell"
+            android:clickable="true"
+            android:clipToPadding="true"
+            android:focusable="true"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/blmBanner">
+
+            <TextView
+                android:id="@+id/FormsTxt"
+                style="@style/ResourceCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Forms"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/forms_resource"
+                android:contentDescription="Duncan forms graphic"
+                app:layout_constraintEnd_toEndOf="@id/resourceFormsCell"
+                app:layout_constraintStart_toStartOf="@id/resourceFormsCell"
+                app:layout_constraintTop_toBottomOf="@id/FormsTxt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resourceHashtagCell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/resource_cell"
+            android:clickable="true"
+            android:clipToPadding="true"
+            android:focusable="true"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintStart_toStartOf="@id/resourceWebsiteCell"
+            app:layout_constraintTop_toBottomOf="@id/resourceWebsiteCell">
+
+            <TextView
+                android:id="@+id/HashtagTxt"
+                style="@style/ResourceCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="#Duncan"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/socialImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/social_media_resource"
+                android:contentDescription="Duncan social media graphic"
+                app:layout_constraintStart_toStartOf="@id/HashtagTxt"
+                app:layout_constraintTop_toBottomOf="@id/HashtagTxt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resourceDuncCell"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="20dp"
+            android:paddingHorizontal="12dp"
+            android:background="@drawable/resource_cell"
+            android:clickable="true"
+            android:clipToPadding="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/resourceHashtagCell"
+            app:layout_constraintTop_toTopOf="@id/resourceHashtagCell">
+
+            <TextView
+                android:id="@+id/DuncTxt"
+                style="@style/ResourceCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="DuncSquad"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dunc_squad"
+                android:contentDescription="Duncan forms graphic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/DuncTxt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/resource_mountain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/joeyImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/joey_kanga"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

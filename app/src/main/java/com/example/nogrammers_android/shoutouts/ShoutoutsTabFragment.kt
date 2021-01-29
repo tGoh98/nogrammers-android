@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,10 +30,12 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-class ShoutoutsTabFragment(val position: Int) : Fragment() {
+class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int) : Fragment() {
     private lateinit var database: DatabaseReference
     private val model: ShoutoutsViewModel by activityViewModels()
     private var shortAnimationDuration: Int = 0
+    private lateinit var authors: MutableList<Shoutout>
+    private lateinit var adapter: ShoutoutsTabAdapterVH
 
     private var clicked: Int = -1
 
@@ -40,8 +44,8 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
     companion object {
         const val ARG_POSITION = "position"
 
-        fun getInstance(position: Int): Fragment {
-            val shoutoutsTabFragment = ShoutoutsTabFragment(position)
+        fun getInstance(position: Int, netID: String, sortBy: Int): Fragment {
+            val shoutoutsTabFragment = ShoutoutsTabFragment(position, netID, sortBy)
             val bundle = Bundle()
             bundle.putInt(ARG_POSITION, position)
             shoutoutsTabFragment.arguments = bundle
@@ -58,56 +62,75 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
             R.layout.fragment_shoutouts_tabs, container, false
         )
 
-        var authors = listOf(
-            "adrienne",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim",
-            "julie",
-            "colin",
-            "cindy",
-            "tim"
-        ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") }
+        authors = listOf(
+                "adrienne",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim",
+                "julie",
+                "colin",
+                "cindy",
+                "tim"
+        ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") } as MutableList<Shoutout>
         authors = authors.toMutableList()
-        val adapter = ShoutoutsTabAdapterVH(authors)
+        adapter = ShoutoutsTabAdapterVH(authors, netID, position)
         if (position.equals(0)) {
             database = Firebase.database.reference.child("shoutouts")
         } else {
             database = Firebase.database.reference.child("sds")
         }
-        val createShoutouts = ShoutoutsCreateFragment(position)
+        val createShoutouts = ShoutoutsCreateFragment(position, netID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
+                    Log.d("NETID ", netID)
                     authors.clear()
+                    authors.add(Shoutout())
                     for (ds : DataSnapshot in dataSnapshot.children) {
                         val so: ShoutoutsObject = ds.getValue(ShoutoutsObject::class.java) as ShoutoutsObject
                         val newShoutout: Shoutout = Shoutout(so.author, so.msg, so.date)
+                        newShoutout.likes = so.likes
+                        newShoutout.angrys = so.angrys
+                        newShoutout.loves = so.loves
+                        newShoutout.hahas = so.hahas
+                        newShoutout.sads = so.sads
+                        newShoutout.surprises = so.surprises
+                        // TODO fix these definitions, netID is the current user's netID, pfp is the
+                        // netID of the shoutout creator
+                        newShoutout.netID = netID
+                        newShoutout.pfp = so.netID
+                        newShoutout.uuid = so.uuid
+                        newShoutout.horrors = so.horrors
                         authors.add(newShoutout)
                     }
-                    authors.sortByDescending { it.date }
+                    authors.removeAt(0)
+                    if (sortBy == 1) {
+                        authors.sortByDescending { it.date }
+                    } else {
+                        authors.sortByDescending { (it.likes.size + it.loves.size + it.sads.size + it.surprises.size + it.angrys.size + it.hahas.size) }
+                    }
                     adapter.notifyDataSetChanged()
                 }
                 Log.d("TAG", dataSnapshot.toString())
@@ -120,6 +143,20 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
             }
         }
         database.addValueEventListener(updateListener)
+
+        val usersDB = Firebase.database.reference.child("users").child(netID)
+        val nameListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                createShoutouts.setName(snapshot.child("name").value.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("ERROR ON CANCELLED", " FOR nameListener in ShoutoutsTabFragment")
+            }
+
+        }
+
+        usersDB.addValueEventListener(nameListener)
 
         binding.shoutoutsView.adapter = adapter
 
@@ -168,8 +205,6 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
             }
             model.createMode.value = true
         }
-
-        val cancelBtn = binding.cancelButton
 
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
 
@@ -247,5 +282,13 @@ class ShoutoutsTabFragment(val position: Int) : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun disableRV(rv: RecyclerView) {
         rv.setOnTouchListener { _, _ -> true }
+    }
+
+    fun toggleSorting(type: Int) {
+        when (type) {
+            1 -> authors.sortByDescending { it.date }
+            -1 -> authors.sortByDescending { (it.likes.size + it.loves.size + it.sads.size + it.surprises.size + it.angrys.size + it.hahas.size) }
+        }
+        adapter.notifyDataSetChanged()
     }
 }
