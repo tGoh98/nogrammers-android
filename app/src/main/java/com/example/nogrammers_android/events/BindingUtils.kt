@@ -1,15 +1,9 @@
 package com.example.nogrammers_android.events
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.nogrammers_android.R
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import java.util.*
 
 /**
  * Binding adapters for Events
@@ -26,12 +20,12 @@ fun TextView.setDesc(item: Event) {
 
 @BindingAdapter("date")
 fun TextView.setDate(item: Event) {
-    text = DateTimeUtil.getStringFromDateinMillis(item.start) + "\n" +
+    text = DateTimeUtil.getStringFromDateinMillis(item.start) + " CST\n" +
             DateTimeUtil.getStringFromTimeinMillis(item.start) +
-            " to " + DateTimeUtil.getStringFromTimeinMillis(item.end)
+            " to " + DateTimeUtil.getStringFromTimeinMillis(item.end) + " CST"
 }
 
 @BindingAdapter("backgroundPic")
 fun ImageView.setBackground(item: Event) {
-    setImageResource(R.drawable.testimg)
+    setImageResource(R.drawable.blank)
 }
