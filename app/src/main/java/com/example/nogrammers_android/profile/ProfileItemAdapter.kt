@@ -8,8 +8,6 @@ import com.example.nogrammers_android.databinding.ProfileItemBinding
 class ProfileItemAdapter(private val data: List<ProfileItem>) :
     RecyclerView.Adapter<ProfileItemAdapter.ProfileItemViewHolder>() {
 
-    // TODO: instead of passing in static data, consider managing list contents with https://developer.android.com/codelabs/kotlin-android-training-diffutil-databinding/#3
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileItemViewHolder {
         return ProfileItemViewHolder.from(parent)
     }

@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
@@ -38,7 +39,7 @@ import java.io.ByteArrayOutputStream
 
 
 class EditProfileFragment(private val userNetID: String, private val dbUserRef: DatabaseReference) :
-        Fragment() {
+        Fragment(), AdminConfirmationDialogFragment.AdminDialogListener {
 
     lateinit var binding: FragmentEditProfileBinding
     lateinit var userObj: User
@@ -59,7 +60,6 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
         val database = dbUserRef.child(userNetID)
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // TODO: add fail check
                 val userObjTemp = dataSnapshot.getValue(UserObject::class.java) as UserObject
                 userObj = User(
                         userObjTemp.netID,
@@ -97,8 +97,13 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
                         .setPositiveButton("Add tag") { _, _ ->
                             /* Add selected tag */
                             val newTag = UserTags.textToUserTag(availTags[chosenIndex])
-                            userObj.tags.add(newTag)
-                            addChip(newTag)
+                            /* Admins need to enter a password */
+                            if (newTag == UserTags.Admin) {
+                                AdminConfirmationDialogFragment().show(childFragmentManager, "AdminDialogFragment")
+                            } else {
+                                userObj.tags.add(newTag)
+                                addChip(newTag)
+                            }
                         }
                         .setSingleChoiceItems(availTags, initialCheckedItem) { _, which ->
                             /* Update selected item */
@@ -110,7 +115,10 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
 
         /* Save button */
         binding.editProfileSaveBtn.setOnClickListener {
-            // TODO: Add validation/constraints (e.g. name cannot have special characters like parentheses)
+            if (binding.editProfileNameField.text.toString().contains(Regex("[()]"))) {
+                Toast.makeText(context, "Name cannot contain \"(\" or \")\"", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             /* Update user obj */
             val updatedUserObj = User(userNetID)
             val newName = binding.editProfileNameField.text.toString()
@@ -271,6 +279,14 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
     private fun unfreezeView() {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
+    }
+
+    /**
+     * Adds admin tag. Called when admin password is successfully entered in the dialog
+     */
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        userObj.tags.add(UserTags.Admin)
+        addChip(UserTags.Admin)
     }
 
 }

@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">Nogrammers-android</string>
     <string name="hey_duncan">Hey Duncan!</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="post_shoutout">Post Shoutout</string>
     <string name="author">Author</string>
@@ -81,4 +79,5 @@
     <string name="edit_event">Edit Event</string>
     <string name="save_event">Save Event</string>
     <string name="users_attending">Users Attending</string>
+    <string name="admin_password">Admin password</string>
 </resources>
