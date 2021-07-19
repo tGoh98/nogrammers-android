@@ -61,6 +61,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
             inflater,
             R.layout.fragment_shoutouts_tabs, container, false
         )
+        binding.loadingSpinner.visibility = View.VISIBLE
 
         authors = listOf(
                 "adrienne",
@@ -132,6 +133,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                         authors.sortByDescending { (it.likes.size + it.loves.size + it.sads.size + it.surprises.size + it.angrys.size + it.hahas.size) }
                     }
                     adapter.notifyDataSetChanged()
+                    binding.loadingSpinner.visibility = View.GONE
                 }
                 Log.d("TAG", dataSnapshot.toString())
                 Log.d("TAG2", authors.toString())
