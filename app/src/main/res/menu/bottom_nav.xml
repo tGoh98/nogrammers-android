@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/shoutouts_icon"
-        android:icon="@drawable/ic_baseline_cake_24"
+        android:icon="@drawable/shoutouts_icon"
         android:title="Shoutouts" />
     <item
         android:id="@+id/events_icon"
@@ -12,7 +12,7 @@
         android:title="Events" />
     <item
         android:id="@+id/announcements_icon"
-        android:icon="@drawable/ic_baseline_announcement_24"
+        android:icon="@drawable/announcements_icon"
         android:title="Announcements" />
     <item
         android:id="@+id/resources_icon"

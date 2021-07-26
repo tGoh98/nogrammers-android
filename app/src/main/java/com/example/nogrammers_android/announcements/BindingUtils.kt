@@ -1,7 +1,12 @@
 package com.example.nogrammers_android.announcements
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Binding adapters for AnnouncementsViewHolder
@@ -21,9 +26,14 @@ fun TextView.setContent(item: Announcement) {
     text = item.content
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("SimpleDateFormat", "SetTextI18n")
 @BindingAdapter("date")
 fun TextView.setDate(item: Announcement) {
-    text = java.util.Date(item.date.toLong()).toString()
+    val formatter = SimpleDateFormat("E, MMM d, h:m aa")
+    formatter.timeZone = TimeZone.getTimeZone("CST")
+    val formatted = formatter.format(Date(item.date.toLong()))
+    text = "$formatted CST"
 }
 
 @BindingAdapter("hiddenKey")
