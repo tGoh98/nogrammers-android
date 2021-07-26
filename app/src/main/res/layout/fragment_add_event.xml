@@ -44,7 +44,7 @@
                     android:hint="@string/add_event_title"
                     android:imeOptions="actionDone"
                     android:singleLine="true"
-                    android:textSize="26sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/eventTitleHeader" />
 
@@ -120,7 +120,7 @@
                     android:hint="@string/location_hint"
                     android:imeOptions="actionDone"
                     android:singleLine="true"
-                    android:textSize="26sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/eventLocationHeader" />
 
@@ -149,7 +149,7 @@
                     android:hint="@string/description_hint"
                     android:imeOptions="actionDone"
                     android:singleLine="false"
-                    android:textSize="26sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/eventDescriptionHeader" />
 
