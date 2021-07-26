@@ -56,7 +56,7 @@ class SplashScreen : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-        }, 3000) // the delayed time in milliseconds.
+        }, 2000) // the delayed time in milliseconds.
     }
 
     private fun isInternetAvailable(context: Context): Boolean {

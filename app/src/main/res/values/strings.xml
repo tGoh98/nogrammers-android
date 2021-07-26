@@ -81,4 +81,5 @@
     <string name="users_attending">Users Attending</string>
     <string name="admin_password">Admin password</string>
     <string name="please_sign_in_using_your_esther_credentials">Please sign in using your ESTHER credentials</string>
+    <string name="coming_soon">Coming soon!</string>
 </resources>
