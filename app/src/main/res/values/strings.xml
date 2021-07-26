@@ -80,4 +80,6 @@
     <string name="save_event">Save Event</string>
     <string name="users_attending">Users Attending</string>
     <string name="admin_password">Admin password</string>
+    <string name="login">Log In</string>
+    <string name="login_msg">Log in with your Rice NetID and password!</string>
 </resources>
