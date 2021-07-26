@@ -20,9 +20,9 @@ fun TextView.setDesc(item: Event) {
 
 @BindingAdapter("date")
 fun TextView.setDate(item: Event) {
-    text = DateTimeUtil.getStringFromDateinMillis(item.start) + " CST\n" +
+    text = DateTimeUtil.getStringFromDateinMillis(item.start) + "\n" +
             DateTimeUtil.getStringFromTimeinMillis(item.start) +
-            " to " + DateTimeUtil.getStringFromTimeinMillis(item.end) + " CST"
+            " CST to " + DateTimeUtil.getStringFromTimeinMillis(item.end) + " CST"
 }
 
 @BindingAdapter("backgroundPic")
