@@ -1,19 +1,20 @@
 package com.example.nogrammers_android.events
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import android.widget.Toolbar
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
-import com.example.nogrammers_android.databinding.FragmentEventDetailBinding
 import androidx.fragment.app.Fragment
 import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
+import com.example.nogrammers_android.databinding.FragmentEventDetailBinding
 import com.example.nogrammers_android.user.User
 import com.example.nogrammers_android.user.UserObject
 import com.example.nogrammers_android.user.UserTags
@@ -58,6 +59,7 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
         binding.eventDescription.text = event.desc
         binding.campusWideBox.isChecked = (event.audience.equals(context?.resources?.getString(R.string.Campus_wide)))
         binding.duncaroosBox.isChecked = (event.audience.equals(context?.resources?.getString(R.string.Duncaroos_only)))
+        binding.loadingSpinner.visibility = View.VISIBLE
         for(child in binding.tagGroup.children) {
             if (child is Button && event.tags.contains(child.text.toString())) {
                 child.isClickable = false
@@ -84,14 +86,26 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
             val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
             val eventImgView = binding.eventImage
             eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, eventImgView.height, false))
+            binding.loadingSpinner.visibility = View.GONE
         }.addOnFailureListener {
             /* Not found/error, use default */
             Log.e("TAG", "Could not find event pic, using default image " + event.key)
-            binding.eventImage.setImageResource(R.drawable.testimg)
+            binding.eventImage.visibility = View.GONE
+            binding.loadingSpinner.visibility = View.GONE
         }
 
         setHasOptionsMenu(true)
 
+        binding.export.setOnClickListener {
+            val intent = Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.start)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.end)
+                .putExtra(CalendarContract.Events.TITLE, event.title)
+                .putExtra(CalendarContract.Events.DESCRIPTION, event.desc)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, event.location)
+            startActivity(intent)
+        }
         return binding.root
     }
 
@@ -173,7 +187,7 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
         }.addOnFailureListener {
             /* Not found/error, use default */
             Log.e("TAG", "Could not find event pic, using default image " + event.key)
-            binding.pfpImgProfileSrc.setImageResource(R.drawable.testimg)
+            binding.pfpImgProfileSrc.setImageResource(R.drawable.splash)
         }
     }
 
