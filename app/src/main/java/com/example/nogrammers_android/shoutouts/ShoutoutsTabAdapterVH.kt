@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -114,7 +113,6 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
                                 /* Respond to positive button press - delete from firebase and refresh view */
                                 val key = binding.firebaseKeyShoutouts.text.toString()
                                 database.child(key).removeValue()
-                                Toast.makeText(context, "It's deleted :O", Toast.LENGTH_SHORT).show()
                             }
                             .show()
                     }
