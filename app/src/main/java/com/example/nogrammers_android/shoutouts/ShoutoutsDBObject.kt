@@ -1,7 +1,6 @@
 package com.example.nogrammers_android.shoutouts
 
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * This class is used to create a new database entry for a shoutout.
@@ -17,5 +16,5 @@ data class ShoutoutsDBObject(
         var angrys: HashMap<String, String> = hashMapOf("ignore" to "ignore"),
         var horrors: HashMap<String, String> = hashMapOf("ignore" to "ignore"),
         var netID: String = "",
-        var uuid: String = UUID.randomUUID().toString()
+        var id: String = ""
 )

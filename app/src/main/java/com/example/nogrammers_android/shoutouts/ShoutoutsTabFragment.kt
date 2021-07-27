@@ -4,8 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,10 +14,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
-//import com.example.nogrammers_android.announcements.AnnouncementsViewModel
-//import com.example.nogrammers_android.announcements.TransparentFragment
 import com.example.nogrammers_android.databinding.FragmentShoutoutsTabsBinding
+import com.example.nogrammers_android.user.UserTags
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -96,7 +94,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                 "tim"
         ).map { Shoutout(it, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.") } as MutableList<Shoutout>
         authors = authors.toMutableList()
-        adapter = ShoutoutsTabAdapterVH(authors, netID, position)
+        adapter = context?.let { ShoutoutsTabAdapterVH(authors, netID, position, (activity as MainActivity).curUser.tags.contains(UserTags.Admin), it) }!!
         if (position.equals(0)) {
             database = Firebase.database.reference.child("shoutouts")
         } else {
@@ -122,7 +120,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                         // netID of the shoutout creator
                         newShoutout.netID = netID
                         newShoutout.pfp = so.netID
-                        newShoutout.uuid = so.uuid
+                        newShoutout.id = so.id
                         newShoutout.horrors = so.horrors
                         authors.add(newShoutout)
                     }

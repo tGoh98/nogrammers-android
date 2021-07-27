@@ -21,6 +21,6 @@ class ShoutoutsObject {
     var isAngried: Boolean = false
     var horrors: HashMap<String, String> = HashMap()
     var isHorrored: Boolean = false
-    var uuid: String = ""
+    var id: String = ""
     var netID: String = ""
 }

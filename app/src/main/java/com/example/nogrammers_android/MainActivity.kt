@@ -150,7 +150,9 @@ class MainActivity : AppCompatActivity() {
         /* Initialize backArrow, listeners are set later */
         backArrow = findViewById(R.id.tagSearchBackArrow)
 
-        setCurrentFragment(shoutoutsFrag, "Shoutouts") // Home fragment is shoutouts
+        // We make the default fragment resources, otherwise we get an error about curUser being uninitialized (since it takes time for firebase to populate it
+        setCurrentFragment(resourcesFrag, "Resources")
+        findViewById<BottomNavigationView>(R.id.bottomNavView).selectedItemId = R.id.resources_icon
 
         /* Fragments are controlled by the bottom nav bar */
         findViewById<BottomNavigationView>(R.id.bottomNavView).setOnNavigationItemSelectedListener {

@@ -23,7 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/resourceFacebookCell"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:layout_width="350dp"
             android:layout_height="110dp"
             android:background="@drawable/resource_cell"
@@ -102,7 +102,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/resourceHistorianCell"
-            android:layout_marginBottom="200dp"
+            android:layout_marginBottom="150dp"
             android:layout_width="350dp"
             android:layout_height="110dp"
             android:background="@drawable/resource_cell"
