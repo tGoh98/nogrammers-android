@@ -243,6 +243,22 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
             database.addListenerForSingleValueEvent(postListener)
         }
 
+        // If shoutouts/sds is empty and crashing, run the code below.
+//        val newShoutout = ShoutoutsDBObject()
+//        val curTime = Calendar.getInstance().timeInMillis.toString()
+//        // Key is author.concat(date)
+//        val name = "Timothy Goh"
+//        val msg = "DO NOT DELETE THIS"
+//        val key = name.filter { !it.isWhitespace() }.plus(curTime)
+//        newShoutout.author = name
+//        newShoutout.msg = msg
+//        newShoutout.netID = netID
+//        newShoutout.date = curTime
+//        newShoutout.id = key
+//        database.child(key).setValue(
+//            newShoutout
+//        )
+
         return binding.root
     }
 
