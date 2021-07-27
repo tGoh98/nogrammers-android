@@ -1,23 +1,19 @@
 package com.example.nogrammers_android.shoutouts
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
-import android.graphics.Typeface
 import android.util.Log
-import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import java.text.SimpleDateFormat
 import java.util.*
-import com.google.firebase.storage.ktx.storage
 
 /**
  * Binding adapters for ShoutoutsViewHolder
@@ -98,9 +94,9 @@ fun TextView.setNetID(item: Shoutout) {
     text = item.netID
 }
 
-@BindingAdapter("shoutoutUUID")
-fun TextView.setUUID(item: Shoutout) {
-    text = item.uuid
+@BindingAdapter("shoutoutID")
+fun TextView.setID(item: Shoutout) {
+    text = item.id
 }
 
 @BindingAdapter("isLiked")
@@ -180,4 +176,9 @@ fun increaseTouch(view: ImageButton, useless: Int) {
         rect.right += intValue  // increase right hit area
         parent.setTouchDelegate(TouchDelegate(rect, view));
     }
+}
+
+@BindingAdapter("hiddenKey")
+fun TextView.setHiddenKey(item: Shoutout) {
+    text = item.author.filter { !it.isWhitespace() }.plus(item.date)
 }

@@ -57,18 +57,26 @@
             app:layout_constraintTop_toTopOf="@+id/shoutoutsPfpCard"
             tools:text="Kanga" />
 
+        <ImageView
+            android:id="@+id/deleteShoutoutsIcon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ic_baseline_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"
-            android:textSize="16sp"
+            android:textSize="12sp"
             app:date="@{shoutout}"
-            app:layout_constraintBottom_toBottomOf="@+id/author"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/author"
+            app:layout_constraintTop_toBottomOf="@+id/author"
+            app:layout_constraintStart_toStartOf="@+id/author"
             tools:text="now" />
 
         <TextView
@@ -76,11 +84,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="0dp"
             android:paddingBottom="5dp"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/date"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/shoutoutsPfpCard"
             app:layout_constraintTop_toBottomOf="@+id/shoutoutsPfpCard"
             app:msg="@{shoutout}"
@@ -317,11 +326,11 @@
                 app:userNetID="@{shoutout}" />
 
             <TextView
-                android:id="@+id/shoutoutUUIDInvisible"
+                android:id="@+id/shoutoutIDInvisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:shoutoutUUID="@{shoutout}" />
+                app:shoutoutID="@{shoutout}" />
 
             <TextView
                 android:id="@+id/isLiked"
@@ -371,6 +380,15 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:isHorrored="@{shoutout}" />
+
+            <TextView
+                android:id="@+id/firebaseKeyShoutouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:hiddenKey="@{shoutout}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
 

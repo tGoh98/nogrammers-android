@@ -1,23 +1,24 @@
 package com.example.nogrammers_android.shoutouts
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.nogrammers_android.databinding.ShoutoutItemBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
 
 /**
  * Adapter for shoutouts item in recycler view
  */
-class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String, val position: Int) :
+class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String, val position: Int, val isAdmin: Boolean, val context: Context) :
     RecyclerView.Adapter<ShoutoutsTabAdapterVH.ShoutoutViewHolder>() {
 
     // TODO: instead of passing in static data, consider managing list contents with https://developer.android.com/codelabs/kotlin-android-training-diffutil-databinding/#3
@@ -26,7 +27,7 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
      * Inflates the item into the layout
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoutoutViewHolder {
-        return ShoutoutViewHolder.from(parent, netID, position)
+        return ShoutoutViewHolder.from(parent, netID, position, isAdmin, context)
     }
 
     /**
@@ -62,7 +63,7 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
          * Inflates the view from the layout resource for the ViewHolder
          */
         companion object {
-            fun from(parent: ViewGroup, netID: String, position: Int): ShoutoutViewHolder {
+            fun from(parent: ViewGroup, netID: String, position: Int, isAdmin: Boolean, context: Context): ShoutoutViewHolder {
                 val binding =
                     ShoutoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
@@ -98,6 +99,25 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
 
                 horrorsBtn.setOnClickListener { toggleReaction(binding, database, 7, binding.isHorrored.text.toString() == "true", netID) }
 
+                // Hook up delete icon
+                 if (isAdmin) {
+                    binding.deleteShoutoutsIcon.visibility = View.VISIBLE
+                    binding.deleteShoutoutsIcon.setOnClickListener {
+                        MaterialAlertDialogBuilder(context)
+                            .setTitle("Are you sure you want to delete item \"${binding.msg.text}?\"")
+                            .setMessage("THIS ACTION CANNOT BE UNDONE")
+                            .setNeutralButton("Cancel") { _, _ ->
+                                /* Respond to neutral button press - do nothing */
+                            }
+                            .setPositiveButton("Delete") { _, _ ->
+                                /* Respond to positive button press - delete from firebase and refresh view */
+                                val key = binding.firebaseKeyShoutouts.text.toString()
+                                database.child(key).removeValue()
+                            }
+                            .show()
+                    }
+                 }
+
                 return ShoutoutViewHolder(binding)
             }
 
@@ -114,9 +134,9 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
                     7 -> pathString = "horrors"
                 }
                 if (isReacted) {
-                    database.child(binding.shoutoutUUIDInvisible.text.toString()).child(pathString).child(netID).removeValue()
+                    database.child(binding.shoutoutIDInvisible.text.toString()).child(pathString).child(netID).removeValue()
                 } else {
-                    database.child(binding.shoutoutUUIDInvisible.text.toString()).child(pathString).child(netID).setValue(netID)
+                    database.child(binding.shoutoutIDInvisible.text.toString()).child(pathString).child(netID).setValue(netID)
                 }
             }
         }

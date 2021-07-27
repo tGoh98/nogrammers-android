@@ -12,16 +12,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.nogrammers_android.R
-import com.example.nogrammers_android.announcements.AnnouncementsViewModel
-import com.example.nogrammers_android.databinding.FragmentCreateAnnouncementBinding
 import com.example.nogrammers_android.databinding.FragmentCreateShoutoutBinding
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
@@ -61,11 +57,17 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
             val postListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val newShoutout = ShoutoutsDBObject()
+
+                    val curTime = Calendar.getInstance().timeInMillis.toString()
+                    // Key is author.concat(date)
+                    val key = name.filter { !it.isWhitespace() }.plus(curTime)
+
                     newShoutout.author = name
                     newShoutout.msg = msg
                     newShoutout.netID = netID
-                    newShoutout.date = Calendar.getInstance().timeInMillis.toString()
-                    db.child(newShoutout.uuid).setValue(
+                    newShoutout.date = curTime
+                    newShoutout.id = key
+                    db.child(key).setValue(
                             newShoutout
                     )
                 }
