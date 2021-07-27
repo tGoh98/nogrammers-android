@@ -1,19 +1,15 @@
 package com.example.nogrammers_android.events
 
 import android.graphics.Color
-import android.icu.text.DateTimePatternGenerator
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.ArrayAdapter
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.graphics.alpha
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
-import com.example.nogrammers_android.MainActivity
 import com.example.nogrammers_android.R
 import com.example.nogrammers_android.databinding.FragmentEventTabBinding
 import com.google.firebase.database.DataSnapshot
@@ -195,6 +191,16 @@ class EventTabsFragment() : Fragment() {
                 }
 
                 if (addEvent) { eventsList.add(event) }
+            }
+        }
+
+        // otherwise, default is to only show upcoming/recent events
+        else {
+            eventsList = mutableListOf()
+            for (event in tabEventsList) {
+                if (System.currentTimeMillis() < event.end + 86400000) {
+                    eventsList.add(event)
+                }
             }
         }
 

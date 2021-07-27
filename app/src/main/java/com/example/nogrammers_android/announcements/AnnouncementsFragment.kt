@@ -45,6 +45,7 @@ class AnnouncementsFragment(private val dbRef: DatabaseReference) : Fragment() {
                 false
         )
 
+        binding.loadingSpinner.visibility = View.VISIBLE
         /* Get announcements from db */
         announceDbRef = dbRef.child("announcements")
 
@@ -71,6 +72,7 @@ class AnnouncementsFragment(private val dbRef: DatabaseReference) : Fragment() {
                 }
                 /* Update recycler view contents */
                 adapter.submitList(announcementsList.sortedBy { it.date }.reversed())
+                binding.loadingSpinner.visibility = View.GONE
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

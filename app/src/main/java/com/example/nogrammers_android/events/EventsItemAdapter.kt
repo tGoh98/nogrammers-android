@@ -11,16 +11,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nogrammers_android.databinding.EventItemBinding
-import com.example.nogrammers_android.user.User
-import com.example.nogrammers_android.user.UserObject
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.util.ArrayList
 
 class EventsItemAdapter(private val data: List<Event>, val netid: String, val clickListener: EventsItemListener) :
         RecyclerView.Adapter<EventsItemAdapter.EventViewHolder>() {
@@ -43,6 +36,7 @@ class EventsItemAdapter(private val data: List<Event>, val netid: String, val cl
 
         fun bind(item: Event, clickListener: EventsItemListener) {
             binding.event = item
+            binding.loadingSpinner.visibility = View.VISIBLE
             binding.executePendingBindings()
             binding.clickListener = clickListener
             if (item.interestedUsers.contains(netid)) {
@@ -60,9 +54,12 @@ class EventsItemAdapter(private val data: List<Event>, val netid: String, val cl
                 val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
                 val eventImgView = binding.eventImage
                 eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, eventImgView.height, false))
+                binding.loadingSpinner.visibility = View.GONE
             }.addOnFailureListener {
                 /* Not found/error, use default */
                 Log.e("TAG", "Could not find event pic, using default image " + item.key)
+                binding.loadingSpinner.visibility = View.GONE
+                binding.eventImage.visibility = View.INVISIBLE
             }
         }
 

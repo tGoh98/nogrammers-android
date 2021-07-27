@@ -115,8 +115,8 @@ class AddEventFragment(val netId: String) : Fragment() {
          * Set up date and time pickers
          */
         val cal = Calendar.getInstance()
-        startTime = mutableListOf(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE))
-        endTime = mutableListOf(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE))
+        startTime = mutableListOf(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE))
+        endTime = mutableListOf(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE))
 
         binding.datePickerButton.setOnClickListener {
             if (binding.datePicker.visibility.equals(View.GONE)) {
