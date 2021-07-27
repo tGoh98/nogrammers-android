@@ -1,8 +1,10 @@
 package com.example.nogrammers_android.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -60,6 +62,10 @@ class LoginActivity : AppCompatActivity() {
 
             val netID = findViewById<EditText>(R.id.editTextNetID).text.toString().trim()
             val pwd = findViewById<EditText>(R.id.editTextPassword).text.toString()
+
+            /* Hide keyboard */
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
             if (netID == "" || netID.length < 3) Toast.makeText(
                 applicationContext,

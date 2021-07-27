@@ -42,12 +42,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/urgent"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/deleteAnnouncementIcon"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:targetApi="lollipop"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                    tools:ignore="SmallSp" />
 
             <ImageView
                 android:id="@+id/deleteAnnouncementIcon"

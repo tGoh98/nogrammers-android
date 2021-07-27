@@ -1,115 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".profile.ProfileFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".profile.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/pfpImgProfile"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginVertical="10dp"
-            android:innerRadius="0dp"
-            android:shape="ring"
-            android:thicknessRatio="1.9"
-            app:cardCornerRadius="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+                android:id="@+id/pfpImgProfile"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginVertical="10dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/pfpImgProfileSrc"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:contentDescription="@string/profile_image"
-                android:scaleType="centerCrop"
-                android:src="@drawable/splash"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    android:id="@+id/pfpImgProfileSrc"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/profile_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/splash"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/profileNameTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:text="@string/name"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/pfpImgProfile"
-            app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
+                android:id="@+id/profileNameTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:text="@string/name"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/pfpImgProfile"
+                app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
 
         <TextView
-            android:id="@+id/profileDot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="5dp"
-            android:text="@string/dot"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/profileNameTxt"
-            app:layout_constraintEnd_toStartOf="@id/profileNameNetId"
-            app:layout_constraintStart_toEndOf="@+id/profileNameTxt"
-            app:layout_constraintTop_toTopOf="@id/profileNameTxt" />
+                android:id="@+id/profileDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="5dp"
+                android:text="@string/dot"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/profileNameTxt"
+                app:layout_constraintEnd_toStartOf="@id/profileNameNetId"
+                app:layout_constraintStart_toEndOf="@+id/profileNameTxt"
+                app:layout_constraintTop_toTopOf="@id/profileNameTxt" />
 
         <TextView
-            android:id="@+id/profileNameNetId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/netid"
-            android:textColor="@color/goldenrod"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/profileDot"
-            app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
+                android:id="@+id/profileNameNetId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/netid"
+                android:textColor="@color/goldenrod"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/profileDot"
+                app:layout_constraintTop_toTopOf="@+id/pfpImgProfile" />
 
         <TextView
-            android:id="@+id/bioTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="7dp"
-            android:text="@string/bio"
-            android:textSize="17sp"
-            app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
-            app:layout_constraintTop_toBottomOf="@+id/profileNameTxt" />
+                android:id="@+id/bioTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
+                android:text="@string/bio"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="@+id/profileNameTxt"
+                app:layout_constraintTop_toBottomOf="@+id/profileNameTxt" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/profileChips"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            app:layout_constraintStart_toStartOf="@+id/pfpImgProfile"
-            app:layout_constraintTop_toBottomOf="@id/pfpImgProfile">
+                android:id="@+id/profileChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintStart_toStartOf="@+id/pfpImgProfile"
+                app:layout_constraintTop_toBottomOf="@id/pfpImgProfile">
 
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/profileTabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileChips"
-            app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
-            app:tabMode="fixed" />
+                android:id="@+id/profileTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profileChips"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/profileTabsPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileTabLayout" />
+                android:id="@+id/profileTabsPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profileTabLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

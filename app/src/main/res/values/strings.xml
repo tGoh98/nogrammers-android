@@ -33,7 +33,7 @@
     <string name="netid">NetID</string>
     <string name="bio">bio</string>
     <string name="password">Password</string>
-    <string name="login_signup">Login/Signup</string>
+    <string name="sign_in">Sign in</string>
     <string name="edit_profile">Edit profile</string>
     <string name="suggested_tags">Suggested Tags</string>
     <string name="action_filter">filter</string>
@@ -82,4 +82,6 @@
     <string name="admin_password">Admin password</string>
     <string name="login">Log In</string>
     <string name="login_msg">Log in with your Rice NetID and password!</string>
+    <string name="please_sign_in_using_your_esther_credentials">Please sign in using your ESTHER credentials</string>
+    <string name="coming_soon">Coming soon!</string>
 </resources>

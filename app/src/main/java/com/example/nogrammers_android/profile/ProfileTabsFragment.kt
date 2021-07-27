@@ -45,11 +45,14 @@ class ProfileTabsFragment : Fragment() {
         val position = requireArguments().getInt(ARG_POSITION)
 
         /* Create recycler view */
-        val adapter = ProfileItemAdapter((1..25).map {
-            ProfileItem("let's count to $it, version $position")
-        })
+        // TODO: Populate tabs here
+//        val adapter = ProfileItemAdapter((1..25).map {
+//            ProfileItem("let's count to $it, version $position")
+//        })
+        val adapter = ProfileItemAdapter(listOf(ProfileItem("Coming soon!")))
         binding.profileTabList.adapter = adapter
 
+        // Note: this is visibility: gone right now
         binding.tabPos.text = "Position: $position"
     }
 

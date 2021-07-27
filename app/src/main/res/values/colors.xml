@@ -16,4 +16,5 @@
     <color name="greyButton">#C4C4C4</color>
     <color name="greySearchBar">#E5E5E5</color>
     <color name="urgentRed">#D83C3C</color>
+    <color name="loginTint">#99C79125</color>
 </resources>
