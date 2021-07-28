@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import androidx.core.content.ContextCompat.getColor
@@ -89,7 +88,6 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
             binding.loadingSpinner.visibility = View.GONE
         }.addOnFailureListener {
             /* Not found/error, use default */
-            Log.e("TAG", "Could not find event pic, using default image " + event.key)
             binding.eventImage.visibility = View.GONE
             binding.loadingSpinner.visibility = View.GONE
         }
@@ -145,8 +143,7 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                // Getting Post failed
             }
         }
         database.addListenerForSingleValueEvent(updateListener)
@@ -171,8 +168,7 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                // Getting Post failed
             }
         }
         database.addListenerForSingleValueEvent(updateListener)
@@ -186,7 +182,6 @@ class EventDetailFragment(val event: Event, val netid: String) : Fragment() {
             eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, eventImgView.height, false))
         }.addOnFailureListener {
             /* Not found/error, use default */
-            Log.e("TAG", "Could not find event pic, using default image " + event.key)
             binding.pfpImgProfileSrc.setImageResource(R.drawable.splash)
         }
     }

@@ -9,7 +9,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,8 +72,7 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                // Getting Post failed
             }
         }
         database.addListenerForSingleValueEvent(updateListener)
@@ -159,12 +157,10 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
                 val uploadTask = storageRef.putBytes(imgData)
                 uploadTask.addOnFailureListener {
                     // Handle unsuccessful uploads
-                    Log.d("TAG", "profile upload failed")
                     unfreezeView()
                 }.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
-                    Log.d("TAG", "Profile upload succeeded. $taskSnapshot")
                     unfreezeView()
                     closeEditProfile()
                 }
@@ -245,7 +241,6 @@ class EditProfileFragment(private val userNetID: String, private val dbUserRef: 
             pfpView.setImageBitmap(Bitmap.createScaledBitmap(bmp, pfpView.width, pfpView.height, false))
         }.addOnFailureListener {
             /* Not found/error, use default */
-            Log.e("TAG", "Could not find profile pic, using default image")
         }
     }
 

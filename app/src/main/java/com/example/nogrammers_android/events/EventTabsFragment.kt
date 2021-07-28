@@ -2,7 +2,6 @@ package com.example.nogrammers_android.events
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -267,8 +266,7 @@ class EventTabsFragment() : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                // Getting Post failed
             }
         }
         database.addListenerForSingleValueEvent(updateListener)

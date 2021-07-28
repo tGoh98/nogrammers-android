@@ -3,7 +3,6 @@ package com.example.nogrammers_android.events
 import android.R
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class EventsItemAdapter(private val data: List<Event>, val netid: String, val cl
                 binding.loadingSpinner.visibility = View.GONE
             }.addOnFailureListener {
                 /* Not found/error, use default */
-                Log.e("TAG", "Could not find event pic, using default image " + item.key)
                 binding.loadingSpinner.visibility = View.GONE
                 binding.eventImage.visibility = View.INVISIBLE
             }
@@ -97,7 +95,6 @@ class EventsItemAdapter(private val data: List<Event>, val netid: String, val cl
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
-            Log.d("Tag","nothing selected")
         }
 
         private fun postEventToFirebase (event: Event) {

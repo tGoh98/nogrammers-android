@@ -2,7 +2,6 @@ package com.example.nogrammers_android.shoutouts
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +46,6 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
         }
         /* Add listener for cancel button */
         binding.cancelShoutoutBtn.setOnClickListener {
-            Log.d("cancel", "CANECLE")
             closeTab(binding.newShoutoutTxt)
         }
 
@@ -73,8 +71,7 @@ class ShoutoutsCreateFragment(val position: Int, val netID: String) : Fragment()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    // Getting Post failed, log a message
-                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                    // Getting Post failed
                 }
             }
             db.addListenerForSingleValueEvent(postListener)

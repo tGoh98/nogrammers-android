@@ -1,7 +1,6 @@
 package com.example.nogrammers_android.shoutouts
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,7 +69,6 @@ class ShoutoutsTabAdapterVH(private val data: List<Shoutout>, val netID: String,
 //                TODO : This code is almost the same as previous database code in other files, could refactor
                 var database: DatabaseReference
 
-                Log.d("Created FROM", "test")
                 if (position.equals(0)) {
                     database = Firebase.database.reference.child("shoutouts")
                 } else {

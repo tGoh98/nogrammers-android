@@ -3,7 +3,6 @@ package com.example.nogrammers_android.announcements
 import android.content.Context
 import android.graphics.Paint
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +61,6 @@ class AnnouncementsAdapter(private val context: Context, private val isAdmin: Bo
                             .setPositiveButton("Delete") { _, _ ->
                                 /* Respond to positive button press - delete from firebase and refresh view */
                                 val key = binding.firebaseKey.text.toString()
-                                Log.d("TAG", key)
                                 announceDbRef.child(key).removeValue()
                             }
                             .show()

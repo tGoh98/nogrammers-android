@@ -10,7 +10,6 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -275,11 +274,9 @@ class EditEventFragment(val event: Event) : Fragment() {
         val uploadTask = storageRef.putBytes(imgData)
         uploadTask.addOnFailureListener {
             // Handle unsuccessful uploads
-            Log.d("TAG", "event image upload failed")
         }.addOnSuccessListener { taskSnapshot ->
             // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
             // ...
-            Log.d("TAG", "event image upload succeeded. $taskSnapshot")
         }
     }
 
@@ -316,7 +313,6 @@ class EditEventFragment(val event: Event) : Fragment() {
             eventImgView.setImageBitmap(Bitmap.createScaledBitmap(bmp, eventImgView.width, 200, false))
         }.addOnFailureListener {
             /* Not found/error, use default */
-            Log.e("TAG", "No pic set")
         }
     }
 }

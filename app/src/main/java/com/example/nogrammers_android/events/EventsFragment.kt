@@ -3,7 +3,6 @@ package com.example.nogrammers_android.events
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Button

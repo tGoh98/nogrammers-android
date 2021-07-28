@@ -2,7 +2,6 @@ package com.example.nogrammers_android.shoutouts
 
 import android.graphics.BitmapFactory
 import android.graphics.Rect
-import android.util.Log
 import android.view.TouchDelegate
 import android.view.View
 import android.widget.ImageButton
@@ -49,7 +48,6 @@ fun ImageView.setPfp(item: Shoutout) {
             setImageBitmap(bmp)
         }.addOnFailureListener {
             /* Not found/error, use default */
-            Log.e("TAG", "Could not find profile pic, using default image")
         }
     }
 }

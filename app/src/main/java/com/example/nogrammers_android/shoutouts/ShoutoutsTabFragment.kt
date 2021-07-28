@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +103,6 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
-                    Log.d("NETID ", netID)
                     authors.clear()
                     authors.add(Shoutout())
                     for (ds : DataSnapshot in dataSnapshot.children) {
@@ -133,13 +131,10 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                     adapter.notifyDataSetChanged()
                     binding.loadingSpinner.visibility = View.GONE
                 }
-                Log.d("TAG", dataSnapshot.toString())
-                Log.d("TAG2", authors.toString())
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                // Getting Post failed
             }
         }
         database.addValueEventListener(updateListener)
@@ -151,7 +146,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("ERROR ON CANCELLED", " FOR nameListener in ShoutoutsTabFragment")
+                //stub
             }
 
         }
@@ -161,7 +156,6 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
         binding.shoutoutsView.adapter = adapter
 
         model.createMode.observe(viewLifecycleOwner, { newVal ->
-            Log.d("NEWVAL", newVal.toString())
             if (!newVal) {
                 hideNewShoutoutsFrag()
                 /* Overlay */
@@ -236,8 +230,7 @@ class ShoutoutsTabFragment(val position: Int, val netID: String, val sortBy: Int
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    // Getting Post failed, log a message
-                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+                    // Getting Post failed
                 }
             }
             database.addListenerForSingleValueEvent(postListener)

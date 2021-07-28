@@ -7,7 +7,6 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -23,8 +22,8 @@ class SplashScreen : AppCompatActivity() {
 
         /* Sign in as anonymous user for firebase access */
         Firebase.auth.signInAnonymously().addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) Log.d("TAG", "Successful anon login!")
-            else Log.d("TAG", "Anon login failed")
+//            if (task.isSuccessful) Log.d("TAG", "Successful anon login!")
+//            else Log.d("TAG", "Anon login failed")
         }
 
         super.onCreate(savedInstanceState)
@@ -52,7 +51,7 @@ class SplashScreen : AppCompatActivity() {
 //                val intent = Intent(this, MainActivity::class.java).apply {
 //                    putExtra(NETID_MESSAGE, "tmg5")
 //                }
-            val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
