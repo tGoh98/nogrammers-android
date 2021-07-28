@@ -7,7 +7,7 @@
 
         <variable
             name="shoutout"
-            type="com.example.nogrammers_android.shoutouts.Shoutout" />
+            type="com.duncan_college.nogrammers_android.shoutouts.Shoutout" />
         <import type="android.graphics.Typeface" />
     </data>
 

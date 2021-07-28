@@ -7,10 +7,10 @@
 
         <variable
             name="event"
-            type="com.example.nogrammers_android.events.Event" />
+            type="com.duncan_college.nogrammers_android.events.Event" />
         <variable
             name="clickListener"
-            type="com.example.nogrammers_android.events.EventsItemListener"/>
+            type="com.duncan_college.nogrammers_android.events.EventsItemListener"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
