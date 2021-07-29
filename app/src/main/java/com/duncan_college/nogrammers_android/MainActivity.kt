@@ -105,25 +105,30 @@ class MainActivity : AppCompatActivity() {
                 userData.clear()
                 /* Create new user if not exist */
                 if (!dataSnapshot.hasChild(userNetID)) {
-                    dbRefUsers.child(userNetID).setValue(User(userNetID))
-                    userData.add(User(userNetID))
+                    curUser = User(userNetID);
+                    dbRefUsers.child(userNetID).setValue(curUser)
+                    userData.add(curUser)
+
                 }
                 for (child in dataSnapshot.children) {
                     val childUser = child.getValue(UserObject::class.java) as UserObject
                     userData.add(
-                            User(
-                                    childUser.netID,
-                                    childUser.gradYr,
-                                    childUser.name,
-                                    childUser.bio,
-                                    childUser.tags,
-                                    childUser.interestedEvents,
-                                    childUser.goingEvents
-                            )
+                        User(
+                            childUser.netID,
+                            childUser.gradYr,
+                            childUser.name,
+                            childUser.bio,
+                            childUser.tags,
+                            childUser.interestedEvents,
+                            childUser.goingEvents
+                        )
                     )
                 }
                 /* Set user */
-                curUser = userData.filter { it.netID == userNetID }[0]
+                var curUserArray = userData.filter { it.netID == userNetID };
+                if (curUserArray.isNotEmpty()) {
+                    curUser = curUserArray[0];
+                }
                 selectedNetId = curUser.netID // Default selectedNetId to current user's
             }
 
