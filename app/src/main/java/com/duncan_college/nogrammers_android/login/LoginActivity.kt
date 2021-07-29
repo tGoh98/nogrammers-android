@@ -22,7 +22,7 @@ import java.io.UnsupportedEncodingException
 import java.net.CookieHandler
 import java.net.CookieManager
 
-const val NETID_MESSAGE = "com.example.nogrammers_android.login.NETID_MESSAGE"
+const val NETID_MESSAGE = "com.duncan_college.nogrammers_android.login.NETID_MESSAGE"
 
 
 /**
