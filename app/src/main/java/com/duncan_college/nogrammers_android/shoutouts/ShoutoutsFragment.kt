@@ -30,7 +30,7 @@ class ShoutoutsFragment(private val netID: String, val sortBy: Int) : Fragment()
         TabLayoutMediator(binding.shoutoutsTabLayout, binding.shoutoutsTabsPager) { tab, pos ->
             when (pos) {
                 0 -> tab.text = "Shoutouts"
-                else -> tab.text = "Shit"
+                else -> tab.text = "Stuff"
             }
         }.attach()
 

@@ -24,11 +24,11 @@
     <string name="president">President</string>
     <string name="add_position">+ add position</string>
     <string name="cys4">cys4</string>
-    <string name="new_shoutout">New shoutout/shit</string>
+    <string name="new_shoutout">New shoutout/stuff</string>
     <string name="shoutout_shit_title">Name</string>
     <string name="shoutout_shit_body">Message</string>
-    <string name="post_shoutout_shit">Post shoutout/shit</string>
-    <string name="create_shoutout_shit">Create Shoutout/Shit</string>
+    <string name="post_shoutout_shit">Post shoutout/stuff</string>
+    <string name="create_shoutout_shit">Create Shoutout/Stuff</string>
     <string name="name">[Name]</string>
     <string name="netid">NetID</string>
     <string name="bio">bio</string>
